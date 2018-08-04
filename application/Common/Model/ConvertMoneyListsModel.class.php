@@ -11,7 +11,7 @@ class ConvertMoneyListsModel extends CommonModel
         $User = M('Users');
 		$rg_arr = array('amount' => '奖金积分', 'shop_amount' => '电子积分', 'good_amount' => '商城积分');
 		$uid = sp_get_current_userid();
-		if(is_numeric($post['amount']) && $post['amount'] >= 100){
+		if(is_numeric($post['amount']) && $post['amount'] >= 100 && (!($post['amount'] % 100))){
 			$conv_amount = intval(trim($post['amount']));
 		}else{
 			return -1000;
