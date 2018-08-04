@@ -1,0 +1,40 @@
+<?php
+return array (
+  'app' => 'Admin',
+  'model' => 'Business',
+  'action' => 'default',
+  'data' => '',
+  'type' => '1',
+  'status' => '1',
+  'name' => '业务管理',
+  'icon' => 'bar-chart',
+  'remark' => '',
+  'listorder' => '3',
+  'children' => 
+  array (
+    array (
+      'app' => 'Admin',
+      'model' => 'Business',
+      'action' => 'index',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '奖金明细',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+    array (
+      'app' => 'Admin',
+      'model' => 'Business',
+      'action' => 'results',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '个人业绩',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+  ),
+);

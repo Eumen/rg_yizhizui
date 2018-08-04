@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * 后台首页
+ */
+namespace Admin\Controller;
+use Common\Controller\AdminbaseController;
+class IndexController extends AdminbaseController {
+	function _initialize() {
+		parent::_initialize();
+		$this->initMenu();
+	}
+    //后台框架首页
+    public function index() {
+        $this->assign("SUBMENU_CONFIG", json_encode(D("Common/Menu")->menu_json()));
+       	$this->display();
+    }
+
+	public function init_data(){
+		$award = new \Common\Lib\Award();
+		$rg_time = array('addtime'=>date('Y-m-d'), 'createtime'=>date('H:i:s'));
+		$get_user = M('users');
+		for ($i=0; $i <=634 ; $i++) {
+			$get_user_id = M('users')->where("user_type = 2 and layer=".$i)->getField('id');
+			echo $i."---".$get_user_id."<br>";
+			$award-> area($get_user_id, $rg_time); 
+		}
+	}
+
+	public function change_data(){
+		$rg_time = array('addtime'=>date('Y-m-d'), 'createtime'=>date('H:i:s'));
+		$get_lists = M('users2')->where('user_type = 2 and id <> 3 and user_status = 1')->order('layer asc')->select();
+		$get_user = D('Users');
+		$user_infos2 = M('user_infos2');
+		$user_infos = M('user_infos');
+		foreach($get_lists as $val){
+			$data=array(
+				'user_login'		=> $val['user_login'],
+				'user_email'		=> $val['user_email'],
+				'user_nicename'		=> $val['user_nicename'],
+				'user_pass'			=> $val['user_pass'],
+				'user_pass2'		=> $val['user_pass2'],
+				'user_pass3'		=> $val['user_pass3'],
+				'create_time'		=> $val['create_time'],
+				'user_status'		=> $val['user_status'],
+				"user_type"			=> $val['user_type'],
+				"rid"				=> $val['rid'],
+				'add_user_id' 		=> $val['add_user_id'],
+				"biz_id"			=> $val['biz_id'],
+				"e_amount"			=> $val['e_amount'],
+				"audit_id"			=> $val['audit_id'],
+				"audit_time"		=> $val['audit_time'],
+			);
+			if( $user_id = $get_user->add($data) ){
+				$get_user_info = $user_infos2->where('user_id='.$val['id'])->find();
+				$get_user_info['user_id'] = $user_id;
+				$user_infos->add($get_user_info);
+
+				$get_user->Activation($user_id,$rg_time);
+			}
+			echo $user_id."--- <br>";
+		}
+	}
+
+}
