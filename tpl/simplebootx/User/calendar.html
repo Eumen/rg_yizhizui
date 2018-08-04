@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<!-- Menu CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+<!-- Calendar CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/calendar/dist/fullcalendar.css" rel="stylesheet" />
+
+<tc_include file="Public:head" />
+
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">日历纪录</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">日历纪录</li>
+                    </ol>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="white-box">
+                        <h3 class="box-title">拖动您的事件</h3>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div id="calendar-events" class="m-t-20">
+                                    <div class="calendar-events" data-class="bg-info"><i class="fa fa-circle text-info"></i> 事件一</div>
+                                    <div class="calendar-events" data-class="bg-success"><i class="fa fa-circle text-success"></i> 事件二</div>
+                                    <div class="calendar-events" data-class="bg-danger"><i class="fa fa-circle text-danger"></i> 事件三</div>
+                                    <div class="calendar-events" data-class="bg-warning"><i class="fa fa-circle text-warning"></i> 事件四</div>
+                                </div>
+                                <!-- checkbox -->
+                                <div class="checkbox">
+                                    <input id="drop-remove" type="checkbox">
+                                    <label for="drop-remove">
+                                        移除拖动的事件
+                                    </label>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#add-new-event" class="btn btn-lg m-t-40 btn-danger btn-block waves-effect waves-light">
+                                    <i class="ti-plus"></i> 添加事件
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="white-box">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- BEGIN MODAL -->
+            <div class="modal fade none-border" id="my-event">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title"><strong>添加事件</strong></h4>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-success save-event waves-effect waves-light">创建</button>
+                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Add Category -->
+            <div class="modal fade none-border" id="add-new-event">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title"><strong>添加</strong> 类别</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">分类名称</label>
+                                        <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">选择颜色</label>
+                                        <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
+                                            <option value="success">Success</option>
+                                            <option value="danger">Danger</option>
+                                            <option value="info">Info</option>
+                                            <option value="primary">Primary</option>
+                                            <option value="warning">Warning</option>
+                                            <option value="inverse">Inverse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">保存</button>
+                            <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MODAL -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+
+<!-- Calendar JavaScript -->
+<script src="__TMPL__/Public/../plugins/bower_components/calendar/jquery-ui.min.js"></script>
+<script src="__TMPL__/Public/../plugins/bower_components/moment/moment.js"></script>
+<script src='__TMPL__/Public/../plugins/bower_components/calendar/dist/fullcalendar.min.js'></script>
+<script src="__TMPL__/Public/../plugins/bower_components/calendar/dist/jquery.fullcalendar.js"></script>
+<script src="__TMPL__/Public/../plugins/bower_components/calendar/dist/cal-init.js?2017"></script>
+</body>
+
+</html>

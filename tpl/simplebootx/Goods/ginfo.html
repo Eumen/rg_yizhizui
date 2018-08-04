@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<style type="text/css">
+.g_con{ width: 100%; background: #FFF; overflow: hidden; }
+.g_con p{padding: 0px;margin: 0px;}
+.g_con img{ max-width: 100% !important; height: auto !important; }
+</style>
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+
+<if condition="$rg_user neq ''"> 
+    <tc_include file="Public:usernav"/>
+</if>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper"<if condition="$rg_user eq ''"> style="margin:0px;"</if>>
+        <div class="container-fluid">
+            <!-- .row -->
+            <div class="row">
+				<div class="white-box">
+            		<div class="row">
+	                	<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="white-box text-center"><a href="{$goods.smeta}" target="_blank"><img src="{$goods.smeta}" width="100%" /></a></div>
+						</div>
+	                	<div class="col-lg-8 col-md-8 col-sm-6">
+							<h4 class="box-title m-t-40">{$goods.name}</h4>
+							<p>{$goods.info}</p>
+							<h2 class="m-t-40">¥ {$goods.price} </h2>
+                            <a href="{:U('Goods/Index/good_info',array('id'=>$goods['id']))}" class="btn btn-inverse btn-rounded m-r-5" data-toggle="tooltip" title="立即购买"><i class="ti-shopping-cart"></i> </a>
+                            <a href="{:U('Goods/Index/good_info',array('id'=>$goods['id']))}" class="btn btn-danger btn-rounded"> 立即购买 </a>
+	                        <ul class="list-icons">
+                        		<li><i class="fa fa-check text-success"></i> 说明：{$goods.explains} </li>
+	                        </ul>
+			            </div>
+		            </div>
+				</div>
+			</div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+				<div class="g_con">
+                    {$goods.content}
+				</div>
+			</div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+
+<div id="pay_btn" style="display: none;"></div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+</body>
+</html>
+</html>

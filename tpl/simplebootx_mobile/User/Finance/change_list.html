@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 800px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">转账明细</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+                <tr>
+                    <th>转出用户</th>
+                    <th>转入用户</th>
+                    <th>转帐金额</th>
+                    <th>实到金额</th>
+                    <th>使用币种</th>
+                    <th>备注</th>
+                    <th>转帐时间</th>
+                </tr>
+                <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.user_name}</td>
+                    <td>{$vo.to_user_name}</td>
+                    <td>{$vo.amount}</td>
+                    <td>{$vo.get_money}</td>
+                    <td>{$vo.types}</td>
+                    <td>{$vo.reason}</td>
+                    <td>{$vo.addtime}</td>
+                </tr>
+                </foreach>
+            
+                <if condition="$list eq null">
+                <tr>
+                    <td colspan="20"><div align="center">您当前没有明细</div></td>
+                </tr>
+                </if>
+            </table>
+            <div class="pagination">{$Page}</div>
+        </div>
+	</div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>
+

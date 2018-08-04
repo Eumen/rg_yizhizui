@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+
+<!-- Menu CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+<!-- chartist CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/chartist-js/dist/chartist.min.css" rel="stylesheet">
+<link href="__TMPL__/Public/../plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+<!-- Vector CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">
+                    		等级 : <font style="color: red;">{$rg_user.rand|fs_user_rand}</font>
+                    </h4>
+                </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">Home</li>
+                    </ol>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- Other sales widgets -->
+            <!-- ============================================================== -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <div class="white-box">
+                                <h3 class="box-title" style="margin-bottom: 8px;">推荐人信息</h3>
+                                <div class="breadcrumb" style="margin-bottom:0px;padding: 0px 15px;">
+                                    <php>$rinfo = M('user_infos')->where(array('user_id'=>$rg_user['rid']))->find();</php>
+                                    姓名:{$rinfo['true_name']|default='无'}</br>
+                                    电话:{$rinfo['tel']|default='无'}</br>
+                                    微信:{$rinfo['weixin']|default='无'}</br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <div class="white-box"><div class="row">
+                                <div class="col-xs-6"><a href="{:U('User/Business/lists_user_rid')}">
+                                    <h3 class="box-title" style="margin-bottom: 6px;">推荐会员</h3>
+                                    <ul class="list-inline two-part">
+                                        <li></li>
+                                        <li><span class="counter">{$rid|default="0"}</span></li>
+                                    </ul>
+                                </a></div>
+                                <div class="col-xs-6"><a href="{:U('User/Business/net_tree')}">
+                                    <h3 class="box-title" style="margin-bottom: 6px;">我的团队</h3>
+                                    <ul class="list-inline two-part">
+                                        <li></li>
+                                        <li><span class="counter">{$rid_number|default="0"}</span></li>
+                                    </ul>
+                                </a></div>
+                            </div></div>
+                        </div>
+                        <div style="clear: both;"></div>
+
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <a href="{:U('User/Finance/award_list')}">
+                            <div class="white-box">
+                                <h3 class="box-title">奖金积分总额</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.amount|default="0"}</span></li>
+                                </ul>
+                            </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <a href="{:U('User/Finance/award_list')}">
+                            <div class="white-box">
+                                <h3 class="box-title">种子积分总额</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-inverse"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.e_amount|default="0"}</span></li>
+                                </ul>
+                            </div>
+                            </a>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <a href="{:U('User/Finance/award_list')}">
+                            <div class="white-box">
+                                <h3 class="box-title">电子积分总额</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-danger"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.shop_amount|default="0"}</span></li>
+                                </ul>
+                            </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-12">
+                            <a href="{:U('User/Finance/award_list')}">
+                            <div class="white-box">
+                                <h3 class="box-title">注册积分总额</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-red"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.r_amount|default="0"}</span></li>
+                                </ul>
+                            </div>
+                            </a>
+                        </div>
+                    	                        
+                    </div>
+                </div>
+                
+                
+                <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="table-responsive" style="height: 400px;background: #FFF;">
+                        <table class="table table-hover manage-u-table">
+                        <thead>
+                            <tr><th colspan="10" style="background:#EEE;">信息列表</th></tr>
+                            <tr>
+                                <th width="100">标题</th>
+                                <th width="150">时间</th>
+                                <th width="50">操作</th>
+                            </tr>
+                        </thead>
+                        <foreach name="posts" item="vo">
+                        <tr>
+                            <td>{$vo.post_title}</td>
+                            <td>{$vo.post_date}</td>
+                            <td><a href="{:leuu('Portal/article/index',array('id'=>$vo['tid']))}">查看详情</a></td>
+                        </tr>
+                        </foreach>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            
+            <!-- ============================================================== -->
+            <!-- Demo table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-md-12 m-t-10">
+                    <div class="panel">
+                        <div class="panel-heading" style="float:left;">我推荐的会员</div>
+                        <div class="panel-heading" style="float:right;font-size:12px;color:#847b7b;">
+                        	<a href="{:U('User/Business/lists_user_rid')}">更多...</a>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div class="table-responsive">
+                            <table class="table table-hover manage-u-table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">账号</th>
+                                        <th>姓名</th>
+                                        <th>联系电话</th>
+                                        <th>等级</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+	                        			<foreach name="my_members" item="vo">
+	                                    <tr>
+	                                        <td class="text-center">{$vo.user_login}</td>
+	                                        <td><span class="font-medium">{$vo.id|fs_user_info="true_name"}</span></td>
+	                                        <td>{$vo.id|fs_user_info="tel"}</td>
+	                                        <td>{$vo.rand|fs_user_rand}</td>
+	                                    </tr>
+	                        			</foreach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<script src="__ROOT__/statics/js/layer/layer.js"></script>
+<script>
+	$(function(){
+		$.ajax({
+		   type: "POST",
+		   url: "{:U('User/Profile/check_user_info')}",
+		   data: {},
+		   success: function(msg){
+		    	 if(msg.status == 1){
+		    	 	layer.msg('您的资料还未完善？', {
+				  time: 0 
+				  ,btn: ['现在完善', '等等先']
+				  ,yes: function(index){
+				    layer.close(index);
+				   	window.location.href="{:U('User/Profile/edit')}";
+				  }
+				});
+		    	 }
+		    
+		   }
+		});
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+
+<style type="text/css">
+.edit_info dd{background-color:#fff;width:100%;height:50px;line-height:50px;border-bottom:1px solid #eee;margin:auto;}
+.edit_info dd.fs_voteimg{ width:auto;height:auto;line-height:inherit;margin-left:0px;}
+.fs_voteimg{ padding:10px 0px;overflow:hidden;}
+.fs_side{ border:dashed 1px #ccc;background-color:#eee; height:150px;line-height:150px; width:46%; min-width:100px; text-align: center; float: left; margin:0 1.5% 10px 1.5%; position: relative;}
+.fs_side span{position: absolute;top: 0px;right: 0px; padding: 5px; color: #333; background: rgba(255,255,255,.8); display: block;line-height: initial;}
+.fs_txtinfo span{ color: #F00; text-align: center;display: block; }
+</style>
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">修改密码</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">修改密码</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="white-box">
+                        <div class="user-bg"> <img width="100%" alt="user" src="__TMPL__/Public/../plugins/images/large/img1.jpg">
+                            <div class="overlay-box">
+                                <div class="user-content">
+                                    <a href="javascript:void(0)"><img src="{$rg_user.avatar}" class="thumb-lg img-circle" alt="img"></a>
+                                    <h4 class="text-white">{$user_login}</h4>
+                                    <h5 class="text-white">{$rg_user.rand|fs_user_rand}</h5> </div>
+                            </div>
+                        </div>
+                        <div class="user-btm-box">
+                            <div class="col-md-4 col-sm-4 text-center">
+                                <p class="text-purple"><i class="fa-fw" style="width: auto !important;">奖金积分</i></p>
+                                <h1>{$rg_user.amount|default='0.00'}</h1> </div>
+                            <div class="col-md-4 col-sm-4 text-center">
+                                <p class="text-blue"><i class="fa-fw" style="width: auto !important;">种子积分</i></p>
+                                <h1>{$rg_user.e_amount|default='0.00'}</h1> </div>
+                            <div class="col-md-4 col-sm-4 text-center">
+                                <p class="text-danger"><i class="fa-fw" style="width: auto !important;">电子积分</i></p>
+                                <h1>{$rg_user.shop_amount|default='0.00'}</h1> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="white-box">
+                        <h3 class="box-title m-b-0">修改头像</h3>
+                        <p class="text-muted m-b-30 font-13"> 选择自己喜欢的头像 </p>
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                      <div class="col-xs-12 edit_info">
+                                      <dd class="fs_voteimg">
+                                          <input type="file" onchange="previewImage(this)" style="display:none;" id="previewImg_vote" name="previewImg_vote" accept="image/*">
+                                          <div id="voteUploadBtn" class="fs_side" onclick="$('#previewImg_vote').click();">+上传照片</div>
+                                          <div class="fs_side voteside">+</div>
+                                      </dd>
+                                      </div>
+                                    </div>
+                                    <div class="form-group text-center m-t-20">
+                                      <div class="col-xs-12">
+                                        <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light J_ajax_submit_btn" onclick="save();" type="submit">提交</button>
+                                      </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+
+<script src="__TMPL__/Public/js/jasny-bootstrap.js"></script>
+<script type="text/javascript" src="__ROOT__/statics/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="http://my.e7wei.com/Public/static/js/swiper.vote.js"></script>
+<script type="text/javascript">
+function previewImage(file){
+    var imgPath = $("#previewImg_vote").val();
+
+    var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1).toLowerCase();
+    if (strExtension != 'jpg' && strExtension != 'gif'  && strExtension != 'png' && strExtension != 'bmp' && strExtension != 'jpeg') {
+        layer.msg("请选择图片文件");
+        return false;
+    }
+
+    var photos = new Array();
+    $(".fs_voteimg .photo").each(function(i){
+        photos.push($(this).find("img").attr("src"));
+    });
+    if(photos.length>1){
+        layer.msg("照片文件最多上传一个");
+        return false;
+    }
+
+    $.ajaxFileUpload({
+        url:"{:leuu('User/Profile/avatar_upload')}",   //处理图片的脚本路径
+        type: 'post',       //提交的方式
+        secureuri :false,   //是否启用安全提交
+        fileElementId :"previewImg_vote",     //file控件ID
+        dataType : 'json',  //服务器返回的数据类型      
+        success : function (data, status){  //提交成功后自动执行的处理函数
+            if(data.error=='0'){
+                $('.fs_voteimg .voteside').remove();
+                $('.fs_voteimg').append('<div class="fs_side photo"><img src="'+data.pic+'" style="width:100%;max-width:133;height:150px" ><span onclick="$(this).parent().remove();">X</span></div>');
+            }else{
+                layer.msg(data.error);
+                return false;
+            }
+        },
+        error: function(data, status, e){   //提交失败自动执行的处理函数
+            layer.msg("上传失败，请检查网络后重试");
+            return false;
+        }
+    });
+}
+
+function save(){
+    var photos = new Array();
+    $(".fs_voteimg .photo").each(function(i){
+        photos.push($(this).find("img").attr("src"));
+    });
+    if(!photos.length){
+        layer.msg("请上传照片");
+        return false;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "{:U('User/Profile/avatar_update')}",
+        data: {"photos":photos},
+        error: function (request) {
+            layer.msg("网络连接失败，稍后重试");
+        },
+        success: function (data) {
+            if (data.status) {
+                layer.msg(data.info);
+                return false;
+            }else{
+                layer.msg(data.info);
+                return false;
+            }
+        }
+    });
+}
+</script>
+</body>
+</html>

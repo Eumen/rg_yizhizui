@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">订单列表</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">优惠券</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+                    <div class="table-responsive" style="border: none;">
+                    	<table class="table table-hover table-bordered table-list">
+                            <thead>
+                                <tr>
+                                    <th width="60">购买产品</th>
+                                    <th width="100">优惠券号</th>
+                                    <th width="100">券上金额</th>
+                                    <th width="150">获得时间</th>
+                                    <th width="150">使用时间</th>
+                                    <th width="50">状态</th>
+                                </tr>
+                            </thead>
+                            <foreach name="orders" item="vo">
+    	                        <tr>
+    	                            <td>{$vo.order_name}</td>
+    	                            <td>{$vo.order_number}</td>
+    	                            <td>{$vo.coupon}</td>
+    	                            <td>{$vo.add_time|date='Y-m-d',###}</td>
+    	                            <td>
+    	                            		<if condition="$vo.coupon_use_time gt 0">{$vo.coupon_use_time|date='Y-m-d',###}
+    	                            		<else/><span style="color: green;">未使用</span>
+    	                            		</if>
+    	                            </td>
+    	                             <td>
+    	                             	<if condition="$vo.coupon_status eq 0"><span style="color: green;">未使用</span>
+    	                            		<else/><span style="color: red;">未使用</span>
+    	                            		</if>
+    	                            </td>
+    	                        </tr>
+                            </foreach>
+                            
+                            <if condition="orders eq null">
+    	                        <tr><td colspan="20"><div align="center">您当前没有优惠券</div></td> </tr>
+                            </if>
+                        </table>
+                        <div class="pagination">{$page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+</body>
+</html>

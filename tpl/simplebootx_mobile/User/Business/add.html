@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.controls input{width: 94%;background: #888; border: none; color: #fff;}
+.controls select{width: 98%;background: #888; border: none; color: #fff;}
+.form-horizontal{display: block;margin: 10px;}
+</style>
+</head>
+
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name"><div class="name_tit">创建账号</div></div>
+    </div>
+    <div class="row">
+        <form class="form-horizontal J_ajaxForm" action="{:U('User/Business/doregister')}" method="post">
+            <div class="control-group">
+                <label class="control-label" for="input_username">会员账号</label>
+                <div class="controls">
+                    <input type="text" id="input_username" name="username" required placeholder="请输入账号" class="span3">
+        			<span class="must_red">*</span>
+        			<a href="javascript:checkConfirm1( $('#input_username').val() )" style="color:#fff;">检查用户是否存在</a>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="input_recname">引介人</label>
+                <div class="controls">
+                    <input type="text" id="input_recname" name="recname" value="{$rg_user.user_login}" required placeholder="请输入引介人" class="span3">
+                    <span class="must_red">*</span>
+                    <a href="javascript:checkConfirm2( $('#input_recname').val() )" style="color:#fff;">检查引介人是否存在</a>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="input_tel">联系手机号</label>
+                <div class="controls">
+                    <input type="text" id="input_tel" name="tel" required placeholder="请输入联系手机号" class="span3">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input_password">密码设置</label>
+                <div class="controls">
+                    <input type="text" id="input_password" name="password" required placeholder="请输入密码设置" class="span3">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="input_verify">验证码</label>
+                <div class="controls">
+                    <input type="text" id="input_verify" name="verify" placeholder="请输入验证码" style=" width: 100px;">
+                    {:sp_verifycode_img('code_len=4&font_size=15&width=100&height=35&charset=1234567890&use_noise=0&use_curve=0')}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_repassword"></label>
+                <div class="controls">
+                    <button class="btn btn-primary J_ajax_submit_btn" style=" width:150px;" type="submit" data-wait="1500">确定注册</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+    
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+<script type="text/javascript">
+function checkConfirm1( username ){
+	if( username != ''){
+		$.post("{:U('User/Business/rg_isexit')}", {username:username}, function(data){
+			if (data.state === 'fail') {
+				Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+			}else{
+				Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+			}
+		});
+	}else{
+		Wind.use('noty', function () { noty({text: "请输入用户名", type:'error', layout:'center'}); });
+	}
+}
+function checkConfirm2( username ){
+    if( username != ''){
+        $.post("{:U('User/Business/rg_isexit_rid')}", {username:username}, function(data){
+            if (data.state === 'fail') {
+                Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+            }else{
+                Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+            }
+        });
+    }else{
+        Wind.use('noty', function () { noty({text: "请输入引介人", type:'error', layout:'center'}); });
+    }
+}
+function checkConfirm3( username ){
+    if( username != ''){
+        $.post("{:U('User/Business/rg_isexit_pid')}", {username:username}, function(data){
+            if (data.state === 'fail') {
+                Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+            }else{
+                Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+            }
+        });
+    }else{
+        Wind.use('noty', function () { noty({text: "请输入接点人", type:'error', layout:'center'}); });
+    }
+}
+</script>
+</body>
+</html>

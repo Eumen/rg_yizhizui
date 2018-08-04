@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">我要留言</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">我要留言</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+                    <form class="form-horizontal form-material J_ajaxForm" method="post" action="{:u('User/Guestbook/addmsg')}">
+                        <div class="form-group">
+                                <label class="col-md-12">用户名</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control form-control-line" placeholder="请输入姓名" name="full_name" value="{$rg_user.user_login}" readonly>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-md-12">标题</label>
+                                <div class="col-md-12">
+                                <input type="text" class="form-control form-control-line" placeholder="请输入标题" name="title"></div>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-md-12">内容</label>
+                                <div class="col-md-12">
+                                <textarea class="form-control form-control-line" id="message" placeholder="请输入您想要说的话" style="height:100px;" name="msg"></textarea></div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success J_ajax_submit_btn">发送留言</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+			</div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+</body>
+</html>

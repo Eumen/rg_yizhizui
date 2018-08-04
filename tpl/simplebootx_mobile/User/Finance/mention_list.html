@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.cRed{ color:#FF0000;}
+.cGreen{ color:#00FF00;}
+
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 1000px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+<body class="body-white">
+<tc_include file="Public:nav" />
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name"><div class="name_tit">提现明细</div></div>
+    </div>
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+                <thead>
+                    <tr>
+                        <th width="180">账户类型</th>
+                        <th width="180">账户号码</th>
+                        <th width="180">账户名</th>
+                        <th width="180">开户地址</th>
+                        <th width="50">提现</th>
+                        <th width="50">手续</th>
+                        <th width="50">到账</th>
+                        <th width="100">时间</th>
+                        <th width="80">状态</th>
+                        <th width="50">操作</th>
+                    </tr>
+                </thead>
+                <foreach name="list" item="vo">
+	                <tr>
+	                    <td>{$vo.bank_type}</td> 
+	                    <td>{$vo.bank_number}</td> 
+	                    <td>{$vo.bank_user_name}</td> 
+	                    <td>{$vo.bank_adree}</td> 
+	                    <td>{$vo.amount}</td>
+	                    <td>{$vo.charge}</td>
+	                    <td>{$vo.act_amount} </td>
+	                    <td>{$vo.addtime}</td>
+	                    <td><if condition="$vo.status eq 0"><span class="cRed">未处理</span><elseif condition="$vo.status eq 1"/><span class="cGreen">已处理</span><elseif condition="$vo.status eq 3"/><span class="cGreen">已撤销</span></if></td>
+	                		<td><if condition="$vo.status eq 0">
+	                    		<a href="{:U('User/Finance/mention_cansel',array('id'=>$vo['id'] ))}" class="J_ajax_dialog_btn" data-msg="您确认要撤销么，撤销后金额返还到原账号中">撤销</a><else /> -- </if>
+	                     </td>
+	                </tr>
+                </foreach>
+                
+                <if condition="$list eq null">
+               		 <tr><td colspan="20"><div align="center">您当前没有明细</div></td></tr>
+                </if>
+            </table>
+            <div class="pagination">{$Page}</div>
+        </div>
+    </div>
+</div>
+<!-- /container -->
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

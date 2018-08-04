@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<link href="__TMPL__Public/css/style_good.css" rel="stylesheet" type="text/css" />
+<style>
+	body, ul, li, p, h1, h2, h3, h4, h5, input, select {
+	    color: #444;
+	}
+	label{color: #444444;}
+</style>
+</head>
+<body>
+ <tc_include file="Public:nav" />
+  <!--商品分类菜单 start-->
+  <div class="content">
+	  <div class="cp_img">
+			  <div id="cp_xq" class="scrollimg">
+			      <div class="bd">
+			          <div class="tempWrap">
+			             <ul>
+			                <li>
+			                   <a class="img" style="background-image: url({$goods.smeta});"></a>
+			                </li>
+			              </ul>
+			           </div>
+			      </div>
+			  </div>
+		</div>  
+	  <div class="cp_info">
+	  	<dl>
+	  		<dt>长款毛呢大衣</dt>
+		  	<dd class="txt_1 clearfix">
+		  	 	<div class="price fl">
+		  	 		<p class="p1">￥{$goods.price}<span><b></b>原价￥{$goods.old_price}</span></p>
+		  	 	</div>
+		  	 	<span class="time fr">立即升级：{$goods.rand|fs_user_rand}</span>
+		  	</dd>
+		  	<dd class="txt_2">温馨提示：{$goods.info}</dd>
+		  	 <form class="form-horizontal J_ajaxForm" action="{:U('Goods/Index/good_info')}" method="post">
+		  	 	<div class="control-group">
+	                            <label class="control-label" for="input_username">联系人</label>
+	                            <div class="controls">
+	                                <input type="text" value="{$info.true_name}" id="username"  name="username" required placeholder="请输入姓名" class="span3">
+	                            		<input type="hidden" name="gid" value="{$goods.id}">
+	                            </div>
+	                        </div>
+	    
+	                        <div class="control-group">
+	                            <label class="control-label" for="tel">联系方式</label>
+	                            <div class="controls">
+	                                <input type="text" id="tel" name="tel" value="{$info.tel}" placeholder="请输入联系方式" class="span3">
+	                            </div>
+	                        </div>
+	    						<div class="control-group">
+	                            <label class="control-label" for="addre">详细地址</label>
+	                            <div class="controls">
+	                                <input type="text" id="addre" name="addre" value="{$info.addre}" placeholder="请输入详细地址" class="span3">
+	                            </div>
+	                        </div>
+	                        
+	    						<div class="control-group">
+	                            <label class="control-label" for="input_accountinfo">发货备注</label>
+	                            <div class="controls">
+	                               <textarea style="height: 90px;width:96%;" name="info"></textarea>
+	                               <p style="font-weight: bold;color: #67ff00;margin-top: 10px;">
+	                               		温馨提示:下单前请完善好个人信息资料，下单后按照默认信息提交到公司&nbsp;
+	                               		<a href="{:U('User/Profile/edit')}" style="color: red;">完善资料</a>
+	                               </p>
+	                            </div>
+	                        </div>
+	                        
+			  	<dd class="btn" style="display: inline;background: #fff;">
+			  		<input type="hidden" name="gid" value="{$goods.id}">
+			  		 <button class="btn btn-danger J_ajax_submit_btn" style="width: 90%;" type="submit" data-wait="1500">立即购买</button>
+			  	</dd>
+		  	</form>
+	  	</dl>
+	  </div> 
+	  <div class="info_tab">
+	  	  <div class="slideTxtBox">
+	  	  	  <div class="hd">
+				<span style="color: red;margin-left: 10px;font-size: 14px;font-weight: bold;}">基本信息</span>
+			 </div>
+			 <div class="bd" style="margin: 10px;">
+			 	{$goods.content}
+			 </div>
+	  	  </div>
+	  </div>
+  </div>
+</body>
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</html>

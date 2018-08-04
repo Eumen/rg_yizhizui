@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<link href="__TMPL__Public/css/style_good.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+ <tc_include file="Public:nav" />
+  <!--商品分类菜单 start-->
+  <div class="content">
+  	<div class="channel-con">
+  		<div class="brand">
+  			<div class="title"><span>产品列表</span></div>
+  			<div class="con">
+  				<ul>
+  					<volist name="goods" id="vo">
+	  					<li>
+	  						<a href="{:U('Goods/Index/good_info',array('id'=>$vo['id']))}" class="img" style="background-image: url({$vo.smeta})">
+	  							<p class="time">
+	  								{$vo.name} &nbsp;￥{$vo.price}<span>{$vo.rand|fs_user_rand}</span>
+	  							</p>
+	  						</a>
+	  					</li>
+  					</volist>
+  				</ul>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+</body>
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</html>

@@ -1,0 +1,112 @@
+<style type="text/css">
+.Fs_meun{height: 50px; line-height: 50px; width: 100%; position:fixed; top: 0px; z-index: 99; }
+.Fs_logo{ width: 60%; font-size: 20px; background: #e49f23; text-align: center; letter-spacing:8px;}
+.Fs_show{ width: 40%; text-align: center;font-size: 25px; background: #eee;color: #999;}
+
+.nav_wraper{top: 50px; position:fixed; background: #444; z-index: 99; width: 60%; display: none; overflow-y: auto; }
+
+.nav-list { padding: 0; margin: 0;}
+.nav-list>li{position: relative;}
+.nav-list>li.open { width: 100%; height: 100%; }
+.nav-list>li>a {margin:0; display:block; height:38px;line-height:36px; font-size:13px; color:#fff; }
+.nav-list li.open .dropdown-toggle, .nav-list>li.dropdown.open.active>a:hover{ background: none; color:#fff; }
+
+.nav-list>li a>.arrow { position: absolute; top:12px; right: 9px; display: inline-block; width: 14px!important; height: 14px; padding: 0; font-size: 18px; line-height: 14px; color: #fff; text-shadow: none; }
+.nav-list>li>a:hover, .nav-list>li .submenu>li>a:hover{ background: none; color:#fff; text-decoration:none; }
+.nav-list>li .submenu{ position: relative; display: none; }
+.nav-list>li .submenu>li>a { position:relative; display:block; padding:7px 0 8px 37px; margin:0; font-size:14px; }
+.nav-list>li .submenu>li a>[class*="fa-"]:first-child{ padding-right:5px;}
+
+#copyright{ margin-top: 50px; padding:0px 20px; text-align: center;line-height: 20px; font-size: 11px; font-weight:normal;}
+</style>
+<div style="height: 50px;width: 100%"></div>
+<div class="Fs_meun">
+	<div class="Fs_logo fl">XCTECH</div>
+	<div class="Fs_show fr"><i class="fa fa-th normal"></i></div>
+</div>
+<div class="nav_wraper">
+	<div id="sidebar">
+        <ul class="nav nav-list">
+	        	<li>
+                <a href="{:U('User/Center/index')}" class="dropdown-toggle">
+                    <span class="menu-text normal">返回首页</span>
+                </a>
+	        </li>
+	        	<li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <span class="menu-text normal">业务中心</span>
+                    <b class="arrow fa fa-angle-right normal"></b>
+                </a>
+                <ul class="submenu" style="display:none;">
+                    <li><a href="{:U('User/Business/add')}"><i class="fa fa-caret-right"></i><span class="menu-text">注册会员</span></a></li>
+                    <li><a href="{:U('User/Business/lists_user_rid')}"><i class="fa fa-caret-right"></i><span class="menu-text">引荐会员</span></a></li>
+                    <li><a href="{:U('User/Business/lists_user_add')}"><i class="fa fa-caret-right"></i><span class="menu-text">我的注册</span></a></li>
+                </ul>
+            </li>
+        		<li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <span class="menu-text normal">财务中心</span>
+                    <b class="arrow fa fa-angle-right normal"></b>
+                </a>
+                <ul class="submenu" style="display:none;">
+                		<li><a href="{:U('User/Finance/award_list')}"><i class="fa fa-caret-right"></i><span class="menu-text">奖金明细表</span></a></li>
+                		<li><a href="{:U('User/Finance/mention')}"><i class="fa fa-caret-right"></i><span class="menu-text">奖金币提现</span></a></li>
+                		<li><a href="{:U('User/Finance/mention_list')}"><i class="fa fa-caret-right"></i><span class="menu-text">现提现列表</span></a></li>
+                </ul>
+            </li>
+             <li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <span class="menu-text normal">购物中心</span>
+                    <b class="arrow fa fa-angle-right normal"></b>
+                </a>
+                <ul class="submenu" style="display:none;">
+                    <li><a href="{:u('Goods/Index/index')}"><i class="fa fa-caret-right"></i><span class="menu-text">商品列表</span></a></li>
+                    <li><a href="{:u('Orders/Index/index')}"><i class="fa fa-caret-right"></i><span class="menu-text">订单中心</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <span class="menu-text normal">个人中心</span>
+                    <b class="arrow fa fa-angle-right normal"></b>
+                </a>
+                <ul class="submenu" style="display:none;">
+                    <li><a href="{:u('User/Profile/edit')}"><i class="fa fa-caret-right"></i><span class="menu-text">修改资料</span></a></li>
+                    <li><a href="{:u('User/Profile/password')}"><i class="fa fa-caret-right"></i><span class="menu-text">修改密码</span></a></li>
+                </ul>
+            </li>
+        	<li>
+                <a href="javascript:;" class="dropdown-toggle">
+                    <span class="menu-text normal">信息中心</span>
+                    <b class="arrow fa fa-angle-right normal"></b>
+                </a>
+                <ul class="submenu" style="display:none;">
+                    <li><a href="{:U('User/Guestbook/index')}"><i class="fa fa-caret-right"></i><span class="menu-text">在线留言</span></a></li>
+                    <li><a href="{:U('User/Guestbook/messages')}"><i class="fa fa-caret-right"></i><span class="menu-text">公司回复</span></a></li>
+                    <li><a href="{:U('Portal/List/index')}"><i class="fa fa-caret-right"></i><span class="menu-text">系统公告</span></a></li>
+                </ul>
+            </li>
+        	<li>
+                <a href="{:U('User/Index/logout')}" class="dropdown-toggle">
+                    <span class="menu-text normal">安全退出</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="copyright">
+    	<p>Copyright 2017 {$site_name} Inc. All rights reserved.</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$(".nav_wraper").height( $(window).height()-$(".Fs_meun").height() );
+
+	$(".Fs_show").click(function(){
+		if($(".nav_wraper").css("display") == "none"){
+			$(".nav_wraper").animate({"width":$(".Fs_logo").width()},100).show();
+		}else{
+			$(".nav_wraper").hide();
+		}
+	});
+})
+</script>

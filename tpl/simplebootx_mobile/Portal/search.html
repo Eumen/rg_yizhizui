@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>搜索 {$site_name} </title>
+<meta name="keywords" content="" />
+<meta name="description" content="">
+<tc_include file="Public:head" />
+</head>
+<body class="">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">信息列表</div>
+        </div>
+    </div>
+	<div class="row">
+			<div class="main-title">
+						<php>
+							$result=sp_sql_posts_paged_bykeyword($keyword,"",20);
+						</php>
+						<h3>'{$keyword}' 搜索结果 </h3>
+						<p>{$result['count']}条结果</p>
+			</div>
+					
+			<volist name="result['posts']" id="vo">
+			<php>$smeta=json_decode($vo['smeta'], true);</php>
+			<div class="list-boxes">
+				<h2><a href="{:leuu('article/index',array('id'=>$vo['tid']))}">{$vo.post_title}</a></h2>
+				<p>{$vo.post_excerpt}</p>
+				<div>
+					<div class="pull-left">
+						<div class="list-actions">
+						<a href="javascript:;"><i class="fa fa-eye"></i><span>{$vo.post_hits}</span></a>
+						<a href="{:U('article/do_like',array('id'=>$vo['object_id']))}" class="J_count_btn"><i class="fa fa-thumbs-up"></i><span class="count">{$vo.post_like}</span></a>
+						<a href="{:U('user/favorite/do_favorite',array('id'=>$vo['object_id']))}" class="J_favorite_btn" data-title="{$vo.post_title}" data-url="{:U('portal/article/index',array('id'=>$vo['tid']))}" data-key="{:sp_get_favorite_key('posts',$vo['object_id'])}">
+							<i class="fa fa-star-o"></i>
+						</a>
+						</div>
+					</div>
+					<a class="btn btn-warning pull-right" href="{:leuu('article/index',array('id'=>$vo['tid']))}">查看更多</a>
+				</div>
+			</div>
+			</volist>
+		
+			<div class="pagination">
+				<ul>
+					{$result['page']}
+				</ul>
+			</div>
+	</div>
+</div>
+<tc_include file="Public:footer"/>
+<tc_include file="Public:scripts"/>
+</body>
+</html>

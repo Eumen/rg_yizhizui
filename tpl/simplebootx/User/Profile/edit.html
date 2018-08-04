@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+
+<!-- Menu CSS -->
+<link href="__TMPL__/Public/../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">个人资料</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">个人资料</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <php>$sexs=array("0"=>"保密","1"=>"男","2"=>"女");</php>
+                <div class="white-box">
+                    <ul class="nav nav-tabs tabs customtab">
+                        <li class="active tab">
+                            <a href="#profile" data-toggle="tab"> <span class="visible-xs">
+                            		<i class="fa fa-user"></i></span> <span class="hidden-xs">基本资料</span> </a>
+                        </li>
+                        <li class="tab">
+                            <a href="#settings" data-toggle="tab" aria-expanded="false"> <span class="visible-xs">
+                            		<i class="fa fa-cog"></i></span> <span class="hidden-xs">完善资料</span> </a>
+                        </li>
+                        <li class="tab">
+                            <a href="#yinhang" data-toggle="tab" aria-expanded="false"> 
+                            	<span class="visible-xs">
+                            		<i class="fa fa-weixin"></i></span> <span class="hidden-xs">银行账户</span>
+                            </a>
+                        </li>
+                        <li class="tab">
+                            <a href="#yunliantong" data-toggle="tab" aria-expanded="false"> 
+                            	<span class="visible-xs">
+                            		<i class="fa fa-weixin"></i></span> <span class="hidden-xs">其他</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="profile">
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6 b-r"> <strong>姓名</strong>
+                                    <br>
+                                    <p class="text-muted">{$info.true_name|default='无'}</p>
+                                </div>
+                                <div class="col-md-3 col-xs-6 b-r"> <strong>联系电话</strong>
+                                    <br>
+                                    <p class="text-muted">{$info.tel|default='无'}</p>
+                                </div>
+                                <div class="col-md-3 col-xs-6 b-r"> <strong>等级</strong>
+                                    <br>
+                                    <p class="text-muted">{$rg_user.rand|fs_user_rand}</p>
+                                </div>
+                                <div class="col-md-3 col-xs-6"> <strong>身份证</strong>
+                                    <br>
+                                    <p class="text-muted">{$info.identity_id|default='无'}</p>
+                                </div>
+                                <div class="col-md-12 col-xs-12"> <strong>联系地址</strong>
+                                    <br>
+                                    <p class="text-muted">{$info.address|default='无'}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <p class="m-t-30">{$info.info}</p>
+                        </div>
+                        <div class="tab-pane" id="settings">
+                            <form class="form-horizontal form-material J_ajaxForm" action="{:u('profile/edit_post')}" method="post">
+                                <div class="form-group">
+                                    <label class="col-md-12">姓名</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="true_name" value="{$info.true_name}" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">电话</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="tel" value="{$info.tel}" class="form-control form-control-line"> </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="col-md-12">身份证</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="identity_id" value="{$info.identity_id}" readonly class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success J_ajax_submit_btn">更新资料</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane" id="yinhang">
+                            <form class="form-horizontal form-material J_ajaxForm" action="{:u('profile/edit_post')}" method="post">
+                                <div class="form-group">
+                                    <label class="col-md-12">账户</label>
+                                    <div class="col-md-12">
+                                        <select name="account_type" id="account_type" class="form-control">
+                                            <option value="中国银行" <if condition="$info['account_type'] eq '中国银行'">selected</if>>中国银行</option>
+                                            <option value="农业银行" <if condition="$info['account_type'] eq '农业银行'">selected</if>>农业银行</option>
+                                            <option value="工商银行" <if condition="$info['account_type'] eq '工商银行'">selected</if>>工商银行</option>
+                                            <option value="建设银行" <if condition="$info['account_type'] eq '建设银行'">selected</if>>建设银行</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">开户姓名</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="account_name" value="{$info.account_name}" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">开户账号</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="account_no" value="{$info.account_no}" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success J_ajax_submit_btn">更新资料</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane" id="yunliantong">
+                            <form class="form-horizontal form-material J_ajaxForm" action="{:u('profile/edit_post')}" method="post">
+                                <!--<div class="form-group">
+                                    <label class="col-md-12">云联通</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="ylt" value="{$info.ylt}" class="form-control form-control-line"> </div>
+                                </div>-->
+                                <div class="form-group">
+                                    <label class="col-md-12">微信</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="weixin" value="{$info.weixin}" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">QQ</label>
+                                    <div class="col-md-12">
+                                        <input type="text" name="qq" value="{$info.qq}" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success J_ajax_submit_btn">更新资料</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+
+</body>
+</html>

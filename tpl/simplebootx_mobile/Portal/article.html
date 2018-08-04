@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.rg_title{ font-size:16px; font-weight:700; border-bottom: #CC0000 solid 2px; padding:5px 10px 15px 10px; margin-bottom:20px;}
+#article_content img{height:auto !important}
+#article_content {word-wrap: break-word;}
+.btn {margin-top: 33px;}
+h1, h2, h3, h4, h5, h6,a{color:#fff;}
+</style>
+</head>
+
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">详细内容</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="tc-box first-box article-box">
+            <div>{$post_title}</div>
+            <div class="article-infobox">
+                <span>{$post_date} by {$user_nicename|default=$user_login}</span>
+                <span>
+                    <a href="javascript:;"><i class="fa fa-eye"></i><span>{$post_hits}</span></a>
+                    <a href="{:U('article/do_like',array('id'=>$object_id))}" class="J_count_btn"><i class="fa fa-thumbs-up"></i><span class="count">{$post_like}</span></a>
+                    <a href="{:U('user/favorite/do_favorite',array('id'=>$object_id))}" class="J_favorite_btn" data-title="{$post_title}" data-url="{:U('article/index',array('id'=>$tid))}" data-key="{:sp_get_favorite_key('posts',$object_id)}">
+                        <i class="fa fa-star-o"></i>
+                    </a>
+                </span>
+            </div>
+            <hr>
+            <div id="article_content">
+            {$post_content}
+            </div>
+            <if condition="!empty($post_source)">
+                <div>
+                    <b>注：本文转载自{$post_source}，转载目的在于传递更多信息，并不代表本网赞同其观点和对其真实性负责。如有侵权行为，请联系我们，我们会及时删除。</b>
+                </div>
+            </if>
+            <div>
+                <if condition="!empty($prev)">
+                <a href="{:U('article/index',array('id'=>$prev['tid']))}" class="btn btn-primary pull-left">上一篇</a>
+                </if>
+                <if condition="!empty($next)">
+                <a href="{:U('article/index',array('id'=>$next['tid']))}" class="btn btn-warning pull-right">下一篇</a>
+                </if>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

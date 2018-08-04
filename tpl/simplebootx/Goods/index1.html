@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+
+<style type="text/css">
+a.img{ display: block;}
+.scrollimg{ position:relative; overflow:hidden; margin:0px auto; background:#fff; height: 200px; overflow:hidden;}/* 设置焦点图最大宽度 */ 
+.scrollimg .hd{position:absolute; height:16px; line-height:16px; bottom:10px; right:20px; z-index:1;}
+.scrollimg .hd li{ display: inline-block; background:#ddd; width: 16px; height: 4px;  margin-right: 5px; text-indent:-9999px; overflow:hidden;}
+.scrollimg .hd li.on{background:#ff6767;}
+.scrollimg .bd .tempWrap{ overflow:hidden; position:relative; }
+.scrollimg .bd .tempWrap ul{ -webkit-margin-before:0; -webkit-margin-after: 0;  -webkit-padding-start:0; }  
+.scrollimg .bd li{ position:relative; text-align:center; overflow:hidden;}
+.scrollimg .bd li .img{ width:100%; height: 200px; }
+</style>
+</head>
+
+<body class="fix-header">
+
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+<if condition="$rg_user neq ''"> 
+    <tc_include file="Public:usernav"/>
+</if>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper"<if condition="$rg_user eq ''"> style="margin:0px;"</if>>
+<php>
+$fs_focus=slide_banner(1,'listorder asc, slide_id desc');
+$fs_focus=empty($fs_focus)?$default_home_slides:$fs_focus;
+</php>
+            <div id="scrollimg" class="scrollimg">
+		        <div class="bd">
+		            <div class="tempWrap">
+		                <ul>
+		                    <foreach name="fs_focus" item="vo">
+		                        <li><a href="{$vo.slide_url}" class="img" style="background-image: url({:sp_get_asset_upload_path($vo['slide_pic'])});background-size: 100% 100%;"></a></li>
+		                    </foreach>
+		                </ul>
+		            </div>
+		        </div>
+		        <div class="hd">
+		            <ul>
+						<foreach name="fs_focus" item="vo"><php>$i++;</php>
+		                <li<php>if($i==1){</php> class="on"<php>}</php>>{$i}</li>
+						</foreach>
+		            </ul>
+		        </div>
+		    </div>
+
+        <div class="container-fluid">
+            <!-- .row -->
+            <style type="text/css">.product-img img{max-width: initial !important;height: auto; width: 100%;}</style>
+    		<div class="row">
+			<volist name="goods" id="vo">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="margin: 10px 0 0; padding:0px 15px 15px 15px; background: #fff;">
+                        <div class="product-img">
+                            <img src="{$vo.smeta}" />
+                            <div class="pro-img-overlay">
+                                	<a href="{:U('Goods/Index/good_info',array('id'=>$vo['id']))}" class="bg-info">
+                                		<i class="ti-shopping-cart"></i>
+                                	</a> 
+                                	<a href="{:U('Goods/Index/ginfo',array('id'=>$vo['id']))}" class="bg-danger">
+                                		<i class="ti-receipt"></i>
+                                	</a>
+                            </div>
+                        </div>
+                        <div class="product-text">
+                            <span class="pro-price bg-danger">¥{$vo.price}</span>
+                            <h3 class="box-title m-b-0">{$vo.name}</h3>
+                            <small class="text-muted db">
+                           	 	说明：{$vo.explains}<br>
+                            </small>
+                        </div>
+                </div>
+			</volist>
+			</div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+
+<script type="text/javascript" src="__TMPL__Public/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript">
+TouchSlide({ slideCell: "#scrollimg", titCell: ".hd ul", mainCell: ".bd ul", effect: "leftLoop", autoPage: true, autoPlay: true });
+</script>
+</body>
+</html>

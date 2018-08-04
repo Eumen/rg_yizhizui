@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <div class="page-title" style="margin: 10px 20px 0 0;"><h4><a href="{:U('User/Finance/convert_money')}">前往转电子积分</a></h4></div>
+                </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">转账明细</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+                    <div class="table-responsive" style="border: none;">
+                        <table class="table table-hover table-bordered table-list">
+                          	<tr>
+                                <th>原币种</th> 
+                                <th>转换币种</th> 
+                                <th>转换金额</th>
+                                <th>手续费</th>
+                                <th>电子积分</th>
+                                <th>商城积分</th>
+                                <th>转换时间</th>
+                          	</tr>
+                          	<foreach name="list" item="vo">
+                          	<tr>
+                                <td>{$vo.types}</td>
+                                <td>{$vo.totypes}</td>
+                                <td>{$vo.amount}</td>
+                                <td>{$vo.fee}</td>
+                                <td>{$vo.shop_amount}</td>
+                                <td>{$vo.good_amount}</td>
+                                <td>{$vo.addtime}</td>
+                          	</tr>
+                        	</foreach>
+                            <if condition="$list eq null">
+                            <tr>
+                                <td colspan="20"><div align="center">您当前没有明细</div></td>
+                            </tr>
+                            </if>
+                        </table>
+                        <div class="pagination">{$Page}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+</body>
+</html>
+

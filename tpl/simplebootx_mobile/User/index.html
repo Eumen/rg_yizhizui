@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.rg_title{ font-size:16px; font-weight:700; border-bottom: #CC0000 solid 2px; padding:5px 10px 15px 10px; margin-bottom:20px;}
+</style>
+</head>
+<body class="body-white" id="top">
+	<tc_include file="Public:nav" />
+    <div class="container tc-main">
+        <div class="row">
+            <div class="span2">
+                <tc_include file="Public:usernav"/>
+            </div>
+			<div class="span10">
+            	<div class="rg_border rg_padding" style="min-height:420px;">
+                    <div class="rg_title">奖金明细</div>
+                    <table class="table table-hover table-bordered">
+                        <tbody>
+                        <tr><td colspan="4">
+                        <if condition="empty($avatar)">
+                        <img src="__TMPL__/Public/images/headicon_128.png" class="headicon" style="display:block; margin:auto;"/>
+                        <else/>
+                        <img src="{:U('User/Public/avatar',array('id'=>$id))}" class="headicon" style="display:block; margin:auto;"/>
+                        </if>
+                        </td></tr>
+                        <tr>
+                            <td width="80">用户名：</td>
+                            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+                            <td width="80">推荐人：</td>
+                            <td>{$rec_name|default='无'}</td>
+                        </tr>
+                        <tr>
+                            <td>爱心豆：</td>
+                            <td class="font_color" style="font-size:22px;">{$amount|default='0.00'}</td>
+                            <td>诚信豆：</td>
+                            <td class="font_color" style="font-size:22px;">{$e_amount|default='0'}</td>
+                        </tr>
+                        <tr>
+                            <td>昵称：</td>
+                            <td>{$user_nicename|default='未填写'}</td>
+                            <td>QQ：</td>
+                            <td>{$user_qq|default='未填写'}</td>
+                        </tr>
+                        <tr>
+                            <td>性别：</td>
+                            <td>
+                            <php>$sexs=array("0"=>"保密","1"=>"男","2"=>"女");</php>
+                            {$sexs[$sex]}
+                            </td>
+                            <td>生日：</td>
+                            <td>{$birthday|default='未填写'}</td>
+                        </tr>
+                        <tr>
+                            <td>个人网址：</td>
+                            <td>{$user_url|default='未填写'}</td>
+                            <td>个性签名：</td>
+                            <td>{$signature|default='未填写'}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+			</div>
+		</div>
+	</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

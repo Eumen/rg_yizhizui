@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">推荐关系</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">推荐关系</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box" style="max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                    <div class="row"><div class="white-box">
+                        <a href="{:U('User/Business/net_tree')}" class="btn btn-success waves-effect waves-light m-r-10">返回顶层</a>
+                    </div></div>
+                    <div class="row">
+                        <div id="treeview9" class=""></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+            <div class="row">
+                <div class="white-box">
+                    <div class="table-responsive">
+                        <table class="table table-hover manage-u-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">账号</th>
+                                    <th>姓名</th>
+                                    <th>联系电话</th>
+                                    <th>等级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <foreach name="rg_members" item="vo">
+                                    <tr>
+                                        <td class="text-center">{$vo.user_login}</td>
+                                        <td><span class="font-medium">{$vo.id|fs_user_info="true_name"}</span></td>
+                                        <td>{$vo.id|fs_user_info="tel"}</td>
+                                        <td>{$vo.rand|fs_user_rand}</td>
+                                    </tr>
+                                    </foreach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+
+<!-- Treeview Plugin JavaScript -->
+<script src="__TMPL__/Public/../plugins/bower_components/bootstrap-treeview-master/dist/bootstrap-treeview.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    <php>        
+    $id_byp = M('Users')->where( array('user_login'=>$_POST['keyword'], 'user_type'=>2, 'id'=>array('EGT', $rg_user['id'])) )->getField('id');
+    $id = $id_byp ? $id_byp  : $rg_user['id'];
+    $id = !empty($_GET['uid']) ? $_GET['uid'] : $id;
+    $objUser            = M('Users')->where( array('id'=>$id, 'user_type'=>2) )->find();
+    //$count_rid          = M('Users')->where( array('rid'=>$id, 'user_type'=>2) )->count();
+    $add_time = date('Y-m-d',strtotime($objUser['create_time']));
+    $user_rand = fs_user_rand($objUser['rand']);
+    $user_name = M('user_infos')->where( array('user_id'=>$id) )->getField('true_name');
+    echo "var defaultData = [{text: '[1]". $objUser["user_login"]." " .$user_name." ".$add_time." ".$user_rand."', href: '".U('User/Business/net_tree', array('uid'=>$objUser["id"]))."'";
+    bind_tree($id, 1);
+    
+    function bind_tree($id, $layer) {
+        if($layer > 3){  return ; }else{ $layer ++; }
+        $objUserList = M('Users')->where( array('rid'=>$id, 'user_type'=>2) )->select();
+        if(!empty($objUserList)){
+            echo ", nodes: [";
+            foreach($objUserList as $_k=>$_v){
+                $count_rid          = M('Users')->where( array('rid'=>$_v['id'], 'user_type'=>2) )->count();
+                
+                $add_time = date('Y-m-d',strtotime($_v['create_time']));
+			    $user_rand = fs_user_rand($_v['rand']);
+			    $user_name = M('user_infos')->where( array('user_id'=>$_v['id']) )->getField('true_name');
+    
+                if($_v["user_status"] == 1){
+                    $status = '<span class="cGreen">已激活</span>' ;
+                }else if($_v["user_status"] == 2){
+                    $status = '<span class="cGreen">锁定</span>' ;
+                }else if($_v["user_status"] == 3){
+                    $status = '<span class="cGreen">出局</span>' ;
+                }else{
+                    $status = '<span class="cRed">未激活</span>';
+                }
+                echo "{text: '[".$layer."]". $_v["user_login"]. " " .$user_name." ".$add_time." ".$user_rand. "', href: '".U('User/Business/net_tree', array('uid'=>$_v["id"]))."'";
+
+                bind_tree($_v['id'], $layer);
+
+                echo "},";
+            }
+            echo "]";
+        }
+    }
+    echo "}];";
+    </php>
+
+    $('#treeview9').treeview({
+        selectedBackColor: "#03a9f3",
+        onhoverColor: "rgba(0, 0, 0, 0.05)",
+        expandIcon: 'ti-plus',
+        collapseIcon: 'ti-minus',
+        nodeIcon: "glyphicon glyphicon-user",
+        enableLinks: true,
+        data: defaultData
+    });
+});
+</script>
+</body>
+
+</html>

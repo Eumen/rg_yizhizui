@@ -1,0 +1,71 @@
+<!-- ==================s============================================ -->
+<!-- Topbar header - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<nav class="navbar navbar-default <if condition="$rg_user neq ''">navbar-static-top</if> m-b-0">
+    <div class="navbar-header">
+        <div class="top-left-part" style="width: auto;">
+            <!-- Logo -->
+            <a class="logo" href="<if condition="$rg_user neq ''">{:U('User/Center/index')}<else/>index.php</if>"><b><img src="__TMPL__/Public/images/logo.png" alt="home" class="dark-logo" height="40" /></b></a>
+        </div>
+        <!-- /Logo -->
+        <if condition="$rg_user neq ''">
+        <!-- Search input and Toggle icon -->
+        <ul class="nav navbar-top-links navbar-left">
+            <li><a href="javascript:void(0)" class="open-close waves-effect waves-light visible-xs"><i class="ti-close ti-menu"></i></a></li>
+            <li class="dropdown">
+            		<php>$unmsg = M('guestbook')->where(array('user_id'=>session('user.id'),'rstatus'=>1))->count();</php>
+                <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"> 
+                		<i class="mdi mdi-gmail"></i>
+                		<if condition="$unmsg gt 0 ">
+                    		<div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                    	</if>
+                </a>
+                <ul class="dropdown-menu mailbox animated bounceInDown">
+                    <li><div class="drop-title">您有<font style="color: red;">{$unmsg}</font>条未读信息</div></li>
+                    <li>
+                        <a class="text-center" href="{:U('User/Guestbook/messages')}"> <strong>查看全部信息</strong> <i class="fa fa-angle-right"></i> </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-top-links navbar-right pull-right">
+            <li>
+                <form role="search" class="app-search hidden-sm hidden-xs m-r-10">
+                    <input type="text" placeholder="Search..." class="form-control"> <a href=""><i class="fa fa-search"></i></a> </form>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="{$rg_user.avatar}" alt="user-img" width="36" height="36" class="img-circle"><b class="hidden-xs">{$rg_user.user_login}</b><span class="caret"></span> </a>
+                <ul class="dropdown-menu dropdown-user animated flipInY">
+                    <li>
+                        <div class="dw-user-box">
+                            <div class="u-img"><img src="{$rg_user.avatar}" alt="user" /></div>
+                            <div class="u-text">
+                                <h4>{$rg_user.user_login}</h4>
+                                <p class="text-muted">{$rg_user.rand|fs_user_rand}</p>
+                                <a href="{:u('User/Center/index')}" class="btn btn-rounded btn-danger btn-sm">个人中心</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{:u('User/Profile/edit')}"><i class="mdi mdi-account-edit"></i> 完善资料</a></li>
+                    <li><a href="{:u('User/Profile/password')}"><i class="fa fa-edit"></i> 密码修改</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{:u('User/Index/logout')}"><i class="fa fa-power-off"></i> 退出</a></li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <else />
+        <ul class="nav navbar-top-links navbar-right pull-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle profile-pic" href="{:U('user/Login/index')}"><b>用户登录</b></a>
+            </li>
+        </ul>
+        </if>
+    </div>
+    <!-- /.navbar-header -->
+    <!-- /.navbar-top-links -->
+    <!-- /.navbar-static-side -->
+</nav>
+<!-- End Top Navigation -->

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.rg_content{ text-align:center; line-height:30px; color:#c51313;}
+.rg_result{ font-size:40px; text-align:center; padding:90px 0px 20px 0px; color:#c51313;}
+</style>
+</head>
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="white-box">
+            	<div class="rg_border rg_padding" style="min-height:600px;">
+                	<div class="rg_title"></div>
+                    <div class="rg_content">
+                		<p class="rg_result">成功添加</p>
+                    	<p>注册账号：<font style="font-size:20px;">{$add_user.user_login}</font></p>
+                        <p><a href="{:U('User/Business/lists_centers')}" >前往激活</a></p>
+                    	<!--<p>注:二级密码与初始密码一致.</p>-->
+                    </div>
+                </div>
+            </div>
+		</div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+</body>
+</html>

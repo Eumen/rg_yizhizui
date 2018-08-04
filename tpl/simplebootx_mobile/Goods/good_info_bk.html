@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<link href="__TMPL__Public/iconfont/iconfont.css" rel="stylesheet">
+<style type="text/css">
+.rg_title{ font-size:16px; font-weight:700; border-bottom: #CC0000 solid 2px; padding:5px 10px 15px 10px; margin-bottom:20px;}
+.conlist5 {width: 760px; }
+.conlist5 li {  width: 100%; float: left; margin-bottom: 20px; }
+.conlist5 li dl {  margin-right: 25px; padding-right: 12px;  background: #fff; border: 1px solid #efefef; box-shadow: 0 0 5px rgba(0,0,0,.1); }
+.conlist5 .img { width: 230px; height: 180px;  margin: 10px 20px;  text-align: center; float: left;}
+.conlist5 dt {
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    border-bottom: 1px solid #fec0c2;
+    padding-top: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.conlist5 .fan { height: 60px;  line-height: 60px; font-size: 26px; font-weight: bold; color: #F45252; }
+.conlist5 .info {  height: 54px;  margin: 10px 0; }
+.conlist5 .time {  height: 30px; line-height: 30px;  font-size: 13px;  padding-left: 70px; }
+.conlist5 .info .buy {
+    display: block;
+    position: relative;
+    width: 115px;
+    height: 46px;
+    line-height: 46px;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 5px;
+    background: #F45252;
+    cursor: pointer;
+    float: left;
+}
+.conlist5 .img img { height: 160px; max-width: 100%;  vertical-align: middle; }
+.con-02 .shops {  width: 731px; height: 222px; position: relative; background: #fff;  margin: 50px auto 20px; }
+.con-02 .shops .bd { width: 700px;  margin: 0 auto; }
+.con-02 .shops .btn {
+    display: block;
+    position: absolute;
+    top: 0;
+    height: 208px;
+    width: 40px;
+    text-align: center;
+    line-height: 208px;
+    color: #fff;
+    font-size: 30px;
+    background: rgba(0,0,0,.7);
+    cursor: pointer;
+}
+.con-02 .shops .picList{  width: 600px; left: 45px; position: relative;  overflow: hidden; padding: 0px;  margin: 0px;height: 200px;margin-left: 50px !important; }
+.con-02 .shops .bd .img { height: 120px; text-align: center; margin: 10px; overflow: hidden;   transition-duration:0.5s;z-index:1;}
+.con-02 .shops .bd .img:hover {
+	 transform: scale(1.2);
+     -webkit-transform: scale(1.2); /*Safari 和 Chrome*/
+     -moz-transform: scale(1.2); /*Firefox*/
+     -ms-transform: scale(1.2); /*IE9*/
+      -o-transform: scale(1.2); /*Opera*/
+}
+.con-02 .shops .bd li {  height: 120px; }
+.con-02 .shops .bd .tempWrap { width: 650px !important;}
+.layui-layer .layui-layer-page .layui-layer-photos {
+	z-index: 19891040; width: 586px !important; height: 352px !important; top: 180.5px; left: 636px;
+}
+</style>
+</head>
+<body class="body-white" id="top">
+	<tc_include file="Public:nav" />
+
+    <div class="container tc-main">
+        <div class="row">
+            <div class="span2">
+                <tc_include file="Public:usernav"/>
+            </div>
+			<div class="span10">
+	            	<div class="rg_border rg_padding">
+	               <div class="rg_title">商品购买</div>
+	               <div style="text-align: center;height: 180px;">
+		            	  <ul class="conlist5 clearfix">
+		            		<li>
+		                  	<dl class="clearfix">
+		                  		<a href="{$goods.smeta}" target="_blank">
+		                            <dd class="img fl">
+		                                <img src="{$goods.smeta}">
+		                                <span class="middle"></span>
+		                            </dd>
+		                            <dt>{$goods.name}</dt>
+		                          </a>
+		                          <dd class="info">
+		                            	<a> 
+		                            		<div class="price fl"> 
+			                            		 <p class="p1">原价：¥ {$goods.old_price}</p>
+			                            		 <p class="p2">折后价：<span>¥ {$goods.price}</span></p> 
+			                            		 <p class="p2">升级：<span>{$goods.rand|fs_user_rand}</span></p>
+			                            		 <p class="p2">温馨提示：<span>{$goods.info}</span></p>
+			                            		 
+		                            		</div> 
+		                            	</a>
+		                            </dd>
+		                        </dl>
+		                    </li>
+		                 </ul>
+		            </div>
+                            
+	                <div >
+	                    <form class="form-horizontal J_ajaxForm" action="{:U('Goods/Index/good_info')}" method="post">
+	                        <div class="control-group">
+	                            <label class="control-label" for="input_username">联系人</label>
+	                            <div class="controls">
+	                                <input type="text" value="{$info.true_name}" id="username"  name="username" required placeholder="请输入姓名" class="span3">
+	                            		<input type="hidden" name="gid" value="{$goods.id}">
+	                            </div>
+	                        </div>
+	    
+	                        <div class="control-group">
+	                            <label class="control-label" for="tel">联系方式</label>
+	                            <div class="controls">
+	                                <input type="text" id="tel" name="tel" value="{$info.tel}" placeholder="请输入联系方式" class="span3">
+	                            </div>
+	                        </div>
+	    						<div class="control-group">
+	                            <label class="control-label" for="addre">详细地址</label>
+	                            <div class="controls">
+	                                <input type="text" id="addre" name="addre" value="{$info.addre}" placeholder="请输入详细地址" class="span3">
+	                            </div>
+	                        </div>
+	                        
+	    						<div class="control-group">
+	                            <label class="control-label" for="input_accountinfo">发货备注</label>
+	                            <div class="controls">
+	                               <textarea style="height: 90px;width: 460px;" name="info"></textarea>
+	                               <p style="font-weight: bold;color: #67ff00;margin-top: 10px;">
+	                               		温馨提示:下单前请完善好个人信息资料，下单后按照默认信息提交到公司&nbsp;
+	                               		<a href="{:U('User/Profile/edit')}" style="color: red;">完善资料</a>
+	                               </p>
+	                            </div>
+	                        </div>
+	                      
+	                        <div class="control-group">
+	                            <label class="control-label" for="input_repassword"></label>
+	                            <div class="controls">
+	                                <button class="btn btn-primary J_ajax_submit_btn" style=" width:150px;" type="submit" data-wait="1500">立即购买</button>
+	                            </div>
+	                        </div>
+	                    	   </form>
+	                    </div>
+	                    
+                </div>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+<script src="__TMPL__Public/js/jquery.SuperSlide.2.1.1.js"></script>
+<script src="__ROOT__/js/layer/layer.js"></script>
+
+<script type="text/javascript">
+	jQuery(".shops").slide({
+	    mainCell: ".bd ul", autoPage: false, effect: "left",
+	    vis: 4, trigger: "click", delayTime: 900, speed : 'slow', controls: true,  timer:5000
+	});
+	layer.photos({ photos: '#layer-photos-demo' ,anim: 5,area: ['780px', '880px'] });
+	function select_goods(_this){
+		$("#good_id").val($(_this).attr('data-id'));
+		$("#order_name").val($(_this).attr('data-name'));
+		$("#clothes_type").val($(_this).attr('data-type'));
+	}
+	
+	$(function(){
+		$(".fs_goods_info").click(function(){
+			var _id = $(this).attr('data-id')
+			var _name = $(this).attr('data-name');
+			layer.msg(_name);
+			layer.open({
+		      type: 2,
+		      title: _name+' 产品介绍',
+		      shadeClose: true,
+		      shade: false,
+		      maxmin: true, 
+		      area: ['993px', '700px'],
+		      content: '{:U("Goods/Index/sub_ginfo")}/gid/'+_id
+		    });
+		    
+		});
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">奖金明细</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">奖金明细</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+                    <div class="well">
+                        <div class="mb10">
+                            钱包总合计：<font color="red">{$rg_sum|default='0.00'}</font>，
+                            &nbsp;&nbsp;&nbsp;
+                            今天合计：<font color="red">{$rg_today_sum|default='0.00'}</font>
+                        </div>
+                    </div>
+                	<div class="table-responsive" style="border: none;">
+                        <table class="table table-hover table-bordered table-list">
+                           <tr>
+                                <th>日期</th> 
+                                <th>红包返还</th>
+                                <th>推荐奖金</th>
+                                <th>见点奖</th>
+                                <th>报单奖金</th>
+                                <th>领导奖金</th>
+                                <th>董事奖金</th>
+                                <th>管理费</th>
+                                <th>合计</th>
+                            </tr>
+                            <foreach name="list" item="vo">
+                                <tr>
+                                    <td>{$vo.addtime}</td>
+                                    <td>{$vo.sum_hongbao|default='0.00'}</td>
+                                    <td>{$vo.sum_rid|default='0.00'}</td>
+                                    <td>{$vo.sum_point|default='0.00'}</td>
+                                    <td>{$vo.sum_center|default='0.00'}</td>
+                                    <td>{$vo.sum_leader|default='0.00'}</td>
+                                    <td>{$vo.sum_qgfh|default='0.00'}</td>
+                                    <td>{$vo.sum_manager|default='0.00'}</td>
+                                    <td>{$vo.total|default='0.00'}</td>
+                                </tr>
+                             </foreach>
+                        
+                            <if condition="$list eq null">
+                            <tr>
+                                <td colspan="20"><div align="center">您当前没有明细</div></td>
+                            </tr>
+                            </if>
+                            <tr>
+                                <td colspan="20">
+                                    <div class="text-right">
+                                        <ul class="pagination">{$Page}</ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+    			</div>
+    		</div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+</body>
+</html>

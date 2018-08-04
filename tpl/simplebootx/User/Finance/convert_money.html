@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <div class="page-title" style="margin: 10px 20px 0 0;"><h4><a href="{:U('User/Finance/convert_list')}">前往转换明细</a></h4></div> 
+                </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">转电子积分</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+                    <div class="well">
+                        <div class="mb10">
+                            注：您目前奖金积分为：<font color="#FF0000">{$rg_user.amount}</font>&nbsp;电子积分余额为：<font color="#FF0000">{$rg_user.shop_amount}</font>，&nbsp;转换时有<font color="#FF0000">{$fee_s}%</font>进入电子积分，<font color="#FF0000">{$fee_g}%</font>进入商城积分，
+                        </div>
+                    </div>
+                    
+                    <form class="form-horizontal form-material J_ajaxForm" action="{:U('User/Finance/convert_money_post')}" method="post">
+                        <div class="form-group">
+                                <label class="col-md-12">由</label>
+                                <div class="col-md-12">
+                                <select id="types" name="types" class="form-control form-control-line"><option value="amount" selected="selected">奖金积分</option></select></div>
+                                <label class="col-md-12">转至</label>
+                                <div class="col-md-12">
+                                <select  id="totypes" name="totypes" class="form-control form-control-line"><option value="shop_amount" selected="selected">电子积分</option></select></div>
+                        </div>
+                        
+                        <div class="form-group">
+                                <label class="col-md-12">转入</label>
+                                <div class="col-md-12">
+                                <input type="text" id="input_amount" name="amount" required placeholder="请输入金额" class="form-control form-control-line"></div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success J_ajax_submit_btn" type="submit" data-wait="1500">确定</button>
+                            </div>
+                        </div>
+                    </form>
+    			</div>
+    		</div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+</body>
+</html>

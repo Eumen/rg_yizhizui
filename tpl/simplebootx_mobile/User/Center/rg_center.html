@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.rg_title{ font-size:16px; font-weight:700; border-bottom: #CC0000 solid 2px; padding:5px 10px 15px 10px; margin-bottom:20px;}
+</style>
+</head>
+
+<body class="body-white" id="top">
+	<tc_include file="Public:nav" />
+
+    <div class="container tc-main">
+        <div class="row">
+            <div class="span2">
+                <tc_include file="Public:usernav"/>
+            </div>
+			<div class="span10">
+            	<div class="rg_border rg_padding" style="min-height:600px;">
+                	<div class="rg_title">中心申请</div>
+                    <div class="well">
+                        <div class="mb10">
+							<p>注意事项： 推荐{$center_limit}人，可申请报单中心；公司的充值账号：{$band_num}</p>
+                        </div>
+                    </div>
+                    
+                     <form class="form-light J_ajaxForm mt-20" role="form" method="post" action="{:u('User/Center/rg_center_post')}">
+                     	<div class="control-group">
+                            <div class="controls">
+                                <if condition="$center eq '' ">
+                                    <button class="btn btn-primary J_ajax_submit_btn" style=" width:150px;" type="submit" data-wait="1500">申请</button>
+                               <elseif condition="$center.status eq 1"/>恭喜您！审核已通过...
+                               <else />审核中 ...
+                                </if>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
+    
+	<tc_include file="Public:footer" />
+	<tc_include file="Public:scripts" />
+</body>
+</html>

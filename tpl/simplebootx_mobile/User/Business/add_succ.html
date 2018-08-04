@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.rg_content{ text-align:center; line-height:30px; color:#FFF; margin: 10px;}
+.rg_result{ font-size:40px; text-align:center; padding:90px 0px; color:#FFF; line-height: 50px;}
+</style>
+</head>
+
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">注册结果</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="rg_content">
+    		<p class="rg_result">成功注册，激活后方可使用</p>
+        	<p>注册账号：<font style="font-size:20px;">{$add_user.user_login}</font></p>
+        </div>
+	</div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{$site_name}</title>
+    <tc_include file="Public:head" />
+
+    <style type="text/css">
+        .edit_info dd{background-color:#fff;width:100%;height:50px;line-height:50px;border-bottom:1px solid #eee;margin:auto;}
+        .edit_info dd.fs_voteimg{ width:auto;height:auto;line-height:inherit;margin-left:0px;}
+        .fs_voteimg{ padding:10px 0px;overflow:hidden;}
+        .fs_side{ border:dashed 1px #ccc;background-color:#eee; height:150px;line-height:150px; width:46%; min-width:100px; text-align: center; float: left; margin:0 1.5% 10px 1.5%; position: relative;}
+        .fs_side span{position: absolute;top: 0px;right: 0px; padding: 5px; color: #333; background: rgba(255,255,255,.8); display: block;line-height: initial;}
+        .fs_txtinfo span{ color: #F00; text-align: center;display: block; }
+
+        .mz_idhand{width: 100%; margin-top: 32px; float: left;}
+        .mz_idhand p{width: 100%;}
+        .mz_idhand p img{width: 88%; height: auto; display: block; margin: 0 auto;}
+
+        .header_mz{ width: 100%; height: 60px; background: #2F323E;}
+        .header_mz a{ display: block; width: 100%; height: 60px; line-height: 60px; font-size: 16px; font-weight: 500; color: #FFF; text-align: center;}
+    </style>
+</head>
+<body>
+<header class="header_mz">
+    <a href="{:leuu('user/index/logout')}">退出登录</a>
+</header>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+<section id="wrapper" class="login-register" style="background: url({$spic}) center center/cover no-repeat!important;">
+    <div class="login-box login-sidebar" style="position:static">
+        <div class="white-box" style="overflow: hidden;">
+            <div class="form-group">
+                <div class="col-xs-12 edit_info">
+                    <dd class="fs_voteimg">
+                        <input type="file" onchange="previewImage(this)" style="display:none;" id="previewImg_vote" name="previewImg_vote" accept="image/*">
+                        <div id="voteUploadBtn" class="fs_side" onclick="$('#previewImg_vote').click();">+上传照片</div>
+                        <div class="fs_side voteside">+</div>
+                    </dd>
+                    <dd class="fs_txtinfo">
+                        <span>您还没有核验身份，请先上传手持身份证的照片！</span>
+                    </dd>
+                </div>
+            </div>
+            <div class="form-group text-center m-t-20">
+                <div class="col-xs-12">
+                    <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light J_ajax_submit_btn" onclick="save();" type="submit">提交</button>
+                </div>
+            </div>
+            <div class="mz_idhand">
+                <p><img src="__TMPL__Public/images/id-hand-s.jpg?2018"></p>
+            </div>
+        </div>
+    </div>
+</section>
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+
+<script type="text/javascript" src="__ROOT__/statics/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="http://my.e7wei.com/Public/static/js/swiper.vote.js"></script>
+<script type="text/javascript">
+    function previewImage(file){
+        var imgPath = $("#previewImg_vote").val();
+
+        var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        if (strExtension != 'jpg' && strExtension != 'gif'  && strExtension != 'png' && strExtension != 'bmp' && strExtension != 'jpeg') {
+            layer.msg("请选择图片文件");
+            return false;
+        }
+
+        var photos = new Array();
+        $(".fs_voteimg .photo").each(function(i){
+            photos.push($(this).find("img").attr("src"));
+        });
+        if(photos.length>1){
+            layer.msg("照片文件最多上传一个");
+            return false;
+        }
+
+        $.ajaxFileUpload({
+            url:"{:leuu('user/login/uploadify')}",   //处理图片的脚本路径
+            type: 'post',       //提交的方式
+            secureuri :false,   //是否启用安全提交
+            fileElementId :"previewImg_vote",     //file控件ID
+            dataType : 'json',  //服务器返回的数据类型
+            success : function (data, status){  //提交成功后自动执行的处理函数
+                if(data.error=='0'){
+                    $('.fs_voteimg .voteside').remove();
+                    $('.fs_voteimg').append('<div class="fs_side photo"><img src="'+data.pic+'" style="width:100%;max-width:133;height:150px" ><span onclick="$(this).parent().remove();">X</span></div>');
+                }else{
+                    layer.msg(data.error);
+                    return false;
+                }
+            },
+            error: function(data, status, e){   //提交失败自动执行的处理函数
+                layer.msg("上传失败，请检查网络后重试");
+                return false;
+            }
+        });
+    }
+
+    function save(){
+        var photos = new Array();
+        $(".fs_voteimg .photo").each(function(i){
+            photos.push($(this).find("img").attr("src"));
+        });
+        if(!photos.length){
+            layer.msg("请上传照片");
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{:U('user/login/docode')}",
+            data: {"photos":photos},
+            error: function (request) {
+                layer.msg("网络连接失败，稍后重试");
+            },
+            success: function (data) {
+                if (data.status) {
+                    layer.msg(data.info);
+                    setTimeout(function () {
+                        window.location.href="{:leuu('user/index/logout')}";
+                    }, 3000);
+                    return false;
+                }else{
+                    layer.msg(data.info);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

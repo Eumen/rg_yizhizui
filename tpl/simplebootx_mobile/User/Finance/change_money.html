@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.controls input{width: 94%;background: #888; border: none; color: #fff;}
+.controls select{width: 94%;background: #888; border: none; color: #fff;}
+.controls textarea{width: 90%;background: #888; border: none; color: #fff;}
+.form-horizontal{display: block;margin: 10px;}
+</style>
+</head>
+
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">添加转账</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb10">
+			注：您目前的诚信豆为：<font color="#FF0000">{$users.e_amount}</font> 
+        </div>
+    </div>
+    <div class="row">
+        <form class="form-horizontal J_ajaxForm" action="{:U('User/Finance/change_money_post')}" method="post">
+            <div class="control-group">
+                <label class="control-label">转出类型</label>
+                <div class="controls">
+                    <select name="types">
+                         <option value="e_amount">诚信豆</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input_login_name">转入用户编号</label>
+                <div class="controls">
+                    <input type="text" id="input_login_name" name="login_name" required placeholder="请输入账号" class="span3">
+        			<span class="must_red">*</span>
+        			<a href="javascript:checkConfirm1( $('#input_login_name').val() )" style="color:#fff;">检查用户是否存在</a>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="input_amount">转账金额</label>
+                <div class="controls">
+                    <input type="text" id="input_amount" name="amount" required placeholder="请输入金额" class="span3">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="input_reason">备注</label>
+                <div class="controls">
+                    <textarea id="input_reason" name="reason" cols="50" rows="5" placeholder="请输入备注说明"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_repassword"></label>
+                <div class="controls">
+                    <button class="btn btn-primary J_ajax_submit_btn" style=" width:150px;" type="submit" data-wait="1500">确定</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+    
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+<script type="text/javascript">
+function checkConfirm1( username ){
+	if( username != ''){
+		$.post("{:U('User/Finance/rg_isexit')}", {username:username}, function(data){
+			if (data.state === 'fail') {
+				Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+			}else{
+				Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+			}
+		});
+	}else{
+		Wind.use('noty', function () { noty({text: "请输入用户名", type:'error', layout:'center'}); });
+	}
+}
+</script>
+</body>
+</html>

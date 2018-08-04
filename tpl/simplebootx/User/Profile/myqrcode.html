@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">推广二维码</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">推广二维码</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <img width="100%" alt="user" src="{$qrcode}">
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="white-box">
+                        <h3 class="box-title m-b-0">推广会员</h3>
+                        <p class="text-muted m-b-30 font-13"> {$ico_link} </p>
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="award1">推广链接</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="ti-sharethis"></i></div>
+                                        <input type="text" class="form-control" id="award1" value="{$site_host}index.php?recId={$rg_user.user_login}" /> </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button class="btn btn-success CopyBtn1">点击复制推广链接</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+
+<script src="__TMPL__/Public/js/jasny-bootstrap.js"></script>
+<script type="text/javascript">
+$(function(){
+    $(".CopyBtn1").on('click',function(){
+        var e=document.getElementById("award1");//对象是content
+        e.select(); //选择对象
+        document.execCommand("Copy"); //执行浏览器复制命令
+        layer.msg("复制成功");
+    });
+})
+</script>
+</body>
+</html>

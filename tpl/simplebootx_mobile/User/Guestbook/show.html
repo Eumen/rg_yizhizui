@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.STYLE1 { color: #FF66FF; float: left; }
+.STYLE2 { color: #00FF33; float: left; }
+</style>
+</head>
+
+<body class="body-white" id="top">
+	<tc_include file="Public:nav" />
+
+    <div class="container tc-main">
+        <div class="row">
+            <div class="span2">
+                <tc_include file="Public:usernav"/>
+            </div>
+			<div class="span10">
+            	<div class="rg_border rg_padding" style="min-height:700px;">
+                    <ul class="nav nav-tabs">
+                        <li><a href="{:U('User/Guestbook/messages')}">我的留言</a></li>
+                        <li class="active"><a href="{:U('User/Guestbook/index')}">我要留言</a></li>
+                    </ul>
+                    
+                    <table class="t1" border="0" cellspacing="0" cellpadding="0" style="background:none;">
+                        <tr>
+                             <td><span class="STYLE2">*&nbsp;留言时间:</span>&nbsp;&nbsp;{$createtime}</td>
+                        </tr>
+                        <tr>
+                             <td><span class="STYLE2">*&nbsp;标题</span>&nbsp;&nbsp;{$title}</td>
+                        </tr>
+                        <tr>
+                             <td><span class="STYLE1">*&nbsp;{$rg_user.user_login}用户留言内容:</span></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;{$msg}</td>
+                        </tr>
+						<php>if( $reply_time > 0 ){ </php>
+                        <tr>
+                            <td><span class="STYLE2">*&nbsp;回复时间:</span>&nbsp;&nbsp;{$reply_time}</td>
+                        </tr>
+						<php>}</php>
+						<if condition="$content neq  null">
+                        <tr>
+                             <td><span class="STYLE1">*&nbsp;公司回复:</span></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;{$content}</td>
+                        </tr>
+						</if>
+					</table>
+                </div>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
+    
+	<tc_include file="Public:footer" />
+	<tc_include file="Public:scripts" />
+</body>
+</html>

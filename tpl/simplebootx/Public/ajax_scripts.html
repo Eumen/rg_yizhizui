@@ -1,0 +1,79 @@
+<!-- by cxy -->
+<script type="text/javascript">var GV = { DIMAUB: "__ROOT__/", JS_ROOT: "statics/js/", TOKEN: "" };</script>
+<script src="__ROOT__/statics/js/jquery-migrate-1.2.1.js"></script>
+<script src="__ROOT__/statics/js/wind.js"></script>
+<script src="__ROOT__/statics/js/frontend.js"></script>
+
+<script src="http://my.e7wei.com/Public/static/layer/layer.js"></script>
+
+
+<script type="text/javascript">
+$(function(){
+
+    //微信浏览图片
+    show_wximg();
+})
+
+/*微信浏览图片 // 这个使用了微信浏览器提供的JsAPI 调用微信图片浏览器  */
+function show_wximg(){
+    var wximg_arr=[], src_img=[];  
+    wximg_arr = $(".show_wximg").find("img");  
+    for (var i=0; i<wximg_arr.length; i++){  
+        src_img[i]=wximg_arr[i].src;  
+    }
+    $(".show_wximg").find("img").click(function(){  
+        var index = $(".show_wximg").find("img").index(this);  
+
+        if(!src_img[index] || !src_img || src_img.length == 0) return;
+        WeixinJSBridge.invoke('imagePreview', { 'current' : src_img[index], 'urls' : src_img });
+    });
+    $(".show_wximg").find("img").each(function(){
+        $(this).parents("p").css('text-indent', '');
+    });
+}
+
+/*微信分享*/
+wx.config({ debug: false, appId: '{$wx_share.appId}', timestamp: '{$wx_share.timestamp}', nonceStr: '{$wx_share.nonceStr}', signature: '{$wx_share.signature}', jsApiList: [ 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone' ] });
+wx.ready(function () {
+    wx.onMenuShareTimeline({
+        title: '{$wx_share.share_title}', link: '{$wx_share.share_link}', imgUrl: '{$wx_share.share_imgUrl}', 
+        success: function () { 
+            fs_share_post();
+			Wind.use('noty', function () { noty({text: "亲，朋友圈分享成功", type:'success', layout:'center', modal: true, timeout:2000}); });
+		},
+        cancel: function () { }
+    });
+    wx.onMenuShareAppMessage({
+        title: '{$wx_share.share_title}', desc: '{$wx_share.share_desc}', link: '{$wx_share.share_link}', imgUrl: '{$wx_share.share_imgUrl}',
+        success: function () {
+            fs_share_post();
+			Wind.use('noty', function () { noty({text: "亲，分享成功", type:'success', layout:'center', modal: true, timeout:2000}); });
+		},
+        cancel: function () { }
+    });
+    wx.onMenuShareQQ({
+        title: '{$wx_share.share_title}', desc: '{$wx_share.share_desc}', link: '{$wx_share.share_link}', imgUrl: '{$wx_share.share_imgUrl}',
+        success: function () {
+            fs_share_post();
+			Wind.use('noty', function () { noty({text: "亲，分享成功", type:'success', layout:'center', modal: true, timeout:2000}); });
+		},
+        cancel: function () { }
+    });
+    wx.onMenuShareQZone({
+        title: '{$wx_share.share_title}', desc: '{$wx_share.share_desc}', link: '{$wx_share.share_link}', imgUrl: '{$wx_share.share_imgUrl}',
+        success: function () {
+            fs_share_post();
+			Wind.use('noty', function () { noty({text: "亲，分享成功", type:'success', layout:'center', modal: true, timeout:2000}); });
+		},
+        cancel: function () { }
+    });
+    wx.onMenuShareWeibo({
+        title: '{$wx_share.share_title}', desc: '{$wx_share.share_desc}', link: '{$wx_share.share_link}', imgUrl: '{$wx_share.share_imgUrl}',
+        success: function () {
+            fs_share_post();
+			Wind.use('noty', function () { noty({text: "亲，分享成功", type:'success', layout:'center', modal: true, timeout:2000}); });
+		},
+        cancel: function () { }
+    });
+});
+</script>

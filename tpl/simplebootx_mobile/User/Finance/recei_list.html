@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 800px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">收款确认</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb10">
+			收款总合计：<font color="red">{$all_sum|default='0.00'}</font>，&nbsp;&nbsp;&nbsp;今天合计：<font color="red">{$today_sum|default='0.00'}</font>
+        </div>
+    </div>
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+               <tr>
+                    <th>付款人昵称</th>  
+                    <th>付款人手机号</th>
+                    <th>付款人微信号</th>
+                    <th>申请时间</th>
+                    <th>确认时间</th>
+                    <th>金额</th>
+                    <th>操作</th>
+                </tr>
+                <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.user_nicename}</td>
+                    <td>{$vo.tel|default='无'}</td>
+                    <td>{$vo.weixin|default='无'}</td>
+                    <td>{$vo.addtime} {$vo.createtime}</td>
+                    <td><php>if($vo['comptime']<'2017-11-01'){</php>--<php>}else{</php>{$vo.comptime|default='--'}<php>}</php></td>
+                    <td>{$vo.amount|default='0.00'}</td>
+                    
+                    <td>
+                        <if condition="($vo.status eq 0)">
+                            <a href="{:U('User/Finance/comp_act',array('id'=>$vo['id']))}" class="J_ajax_del" data-msg ="真的要确认这条信息吗？？？">确认</a>
+                        <else/>--</if>
+                    </td>
+                 </tr>
+                 </foreach>
+            
+                <if condition="$list eq null">
+                <tr>
+                    <td colspan="20"><div align="center">您当前没有明细</div></td>
+                </tr>
+                </if>
+    		</table>
+            <div class="pagination">{$Page}</div>
+        </div>
+    </div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

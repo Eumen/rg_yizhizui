@@ -1,0 +1,164 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<tc_include file="Public:head" />
+</head>
+<body>
+<!-- Preloader -->
+<div class="preloader">
+  <div class="cssload-speeding-wheel"></div>
+</div>
+<section id="wrapper" class="login-register" style="background: url({$spic}) center center/cover no-repeat!important;">
+  <div class="login-box login-sidebar">
+    <div class="white-box" style="overflow-y: auto;">
+      <form class="form-material form-horizontal J_ajaxForm" id="loginform" action="{:U('User/Register/doregister')}" method="post">
+        <a href="__ROOT__/" class="text-center db"><img src="__TMPL__Public/images/logo.png" height="50" /></a>
+
+        <div class="form-group m-t-20">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="username" placeholder="*请输入订单登录名">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="password" required="" name="password" placeholder="*请输入一级密码">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="password" required="" name="password2" placeholder="*请输入二级密码">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+                <select name="rand" id="rand" class="form-control">
+                    <option value="0">会员【600】</option>
+                </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="number" required="" name="tz_num" placeholder="*请输入认购单数(1-50)">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="rname" placeholder="*请输入推荐人编号">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="biz_username" placeholder="*请输入报单中心编号">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <select name="audit_type" class="form-control">
+              <option value="1">电子积分50%+注册积分50%</option>
+              <option value="2">现金</option>
+              <option value="3">电子积分</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="true_name" id="true_name" placeholder="*请输入您的真实姓名">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="tel" id="user_tel" placeholder="*请输入常用手机号码">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="identity_id" id="identity_id" placeholder="*请输入身份证号">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <select name="account_type" id="account_type" class="form-control">
+                <option value="中国工商银行">中国工商银行</option>
+                <option value="中国农业银行">中国农业银行</option>
+                <option value="中国银行">中国银行</option>
+                <option value="中国建设银行">中国建设银行</option>
+                <option value="中国邮政银行">中国邮政银行</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" name="account_no" id="account_no" placeholder="请输入账户号码">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" name="account_info" id="account_info" placeholder="请输入开户地址">
+          </div>
+        </div>
+        <php>if($rname){</php>
+        <div class="form-group m-t-20">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" value="{$rname}" name="rname" readonly />
+          </div>
+        </div>
+        <php>}</php>
+        
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="checkbox checkbox-primary p-t-0">
+              <input id="checkbox-signup" type="checkbox" name="terms" value="1">
+              <label for="checkbox-signup"> 我同意  <a href="{:U('Portal/article/agreement')}" target="_blank">网站内容服务条款</a></label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group text-center m-t-20">
+          <div class="col-xs-12">
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light J_ajax_submit_btn" type="submit">确定注册</button>
+          </div>
+        </div>
+        <div class="form-group m-b-0">
+          <div class="col-sm-12 text-center">
+            <p>已经有账号? <a href="{:U('User/Login/index')}" class="text-primary m-l-5"><b>立即登录</b></a></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+<script type="text/javascript">
+var wait = 100;
+function get_sms_code(){
+  if (wait !== 100) return;
+  var get_user_phone = $("#user_tel").val();
+  if(get_user_phone =="" && get_user_phone.length != 11){  layer.msg('手机号码错误'); return false; }
+  $.ajax({
+     type : "POST",
+     url  : "{:U('Api/Sms/ajax_send_msg')}",
+     data : { tel : get_user_phone },
+     success: function(msg){
+        if(msg.status == 1){
+          verification_countdown();
+        }else{
+          layer.msg(msg.info);
+        }
+     }
+  });
+}
+/**倒计60秒 */
+function verification_countdown() {
+  if (wait == 0) {
+    $("#action-code").html('获取验证码');
+    wait = 100;
+  } else {
+    $("#action-code").html("重新发送(" + wait + ")");
+    wait--;
+    setTimeout(function(){ verification_countdown() }, 1000)
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+<body class="fix-header">
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <div class="page-title" style="margin: 10px 20px 0 0;"><h4><a href="{:U('User/Business/readd_list')}">前往复投明细</a></h4></div> 
+                </div>
+                
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">我要复投</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <form class="J_ajaxForm" action="{:U('User/Business/readd')}" method="post">
+                                   <div class="form-group">
+                                        <label>复投类型</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="ti-lock"></i></div>
+                                            <select name="types" class="form-control">
+                                                 <option value="e_amount">种子积分</option>
+                                                 <option value="shop_amount">电子积分</option>
+                                            </select> </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>认购单数(1-50)</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></div>
+                                            <input class="form-control" type="number" required name="tz_num" placeholder="*请输入认购单数(1-50)" value="1"> </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>验证码</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                                                <input class="form-control" type="text" required name="verify" placeholder="请输入验证码" style="width: 120px;">
+                                                {:sp_verifycode_img('length=4&font_size=15&width=130&height=38&charset=1234567890&use_noise=0&use_curve=0')}
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 J_ajax_submit_btn">立即复投</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+<script src="__TMPL__Public/js/jasny-bootstrap.js"></script>
+<script type="text/javascript">
+	
+</script>
+</body>
+</html>

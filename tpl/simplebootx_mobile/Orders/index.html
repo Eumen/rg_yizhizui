@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 500px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+<body class="body-white">
+<tc_include file="Public:nav" />
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">订单列表</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+               <tr>
+                    <th>名称</th>	
+                    <th>价格</th>
+                    <th>购买时间</th>
+                    <th>收货人</th>
+                    <th>收货地址</th>
+                    <th>联系方式</th>
+                    <th>状态</th>
+                </tr>
+                 <foreach name="orders" item="vo">
+                    <tr>
+                        <td>{$vo.order_name}</td>
+                        <td>{$vo.price}</td>
+                        <td>{$vo.add_time|date='Y-m-d',###}</td>
+                         <td>{$vo.username}</td>
+                         <td>{$vo.addre}</td>
+                         <td>{$vo.tel}</td>
+                         <td>{$vo['status']|fs_order_status}</td>
+                    </tr>
+                </foreach>
+                
+                <if condition="orders eq null">
+                    <tr><td colspan="20"><div align="center">您当前没有订单</div></td> </tr>
+                </if>
+    		</table>
+            <div class="pagination">{$Page}</div>
+        </div>
+    </div>
+</div>
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

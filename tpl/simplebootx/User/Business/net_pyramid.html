@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style>
+	table.t_info{ width:180px; background:#333;}
+	table.t_info th{ padding:2px 5px; background:#46B8D9; text-align:center; border:#CCCCCC solid 1px; color:#FFFFFF;}
+	table.t_info td{ padding:2px 5px; background:#F0F0F0; text-align:center; border:#CCCCCC solid 1px; color:#333;}
+</style>
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    <tc_include file="Public:usernav"/>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">网络图谱</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">网络图谱</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="white-box">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <form method="post" action="{:U('User/Business/net_tree')}">
+                                    <div class="form-group">
+                                        <label for="keyword">用户名</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="ti-search"></i></div>
+                                            <input type="text" class="form-control" id="keyword" name="keyword" value="{$_POST.keyword}" placeholder="请输入用户名..."> </div>
+                                    </div>
+                                    <button class="btn btn-block btn-danger btn-lg btn-rounded">搜索</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="white-box">
+                        <div class="table-responsive" style="border: none;">
+     							<!-- table begin -->
+     								<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px auto 20px auto;">
+						  <tr>
+						    <td colspan="4" align="center">
+						    	<!--第一层用户-->
+						        <table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_1.user_login|default='无'}<br/>({$objUser_1.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_1['user_status'] eq 1">
+										<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_1['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						           	<elseif condition="$objUser_1['user_status'] eq 0 and $objUser_1['user_login'] eq ''" />
+						           		<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_1['user_status'] eq 3"/>
+										<span class="cRed">出局</span>
+						            <else/>
+						           	 	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						           <tr>
+						            <td>{$subcounts_1.count_left_total|default='0'}</td>
+						            <td>{$subcounts_1.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_1.count_left_remain|default='0'}</td>
+						            <td>{$subcounts_1.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+							            <if condition="$objUser_1['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">添加</a>
+							            	<else/>
+							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_1['id']))}">置顶</a>
+							            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    </tr>
+						  <tr>
+						    <td colspan="4" align="center"><img src="__TMPL__Public/images/line_1.gif" width="500" height="23" /></td>
+						    </tr>
+						  <tr>
+						    <td colspan="2" align="center">
+						    	<!--第二层第一个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_2_1.user_login|default='无'}<br/>({$objUser_2_1.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_2_1['user_status'] eq 1">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_2_1['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_2_1['user_status'] eq 0 and $objUser_2_1['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_2_1['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_2_1.count_left_total|default='0'}</td>
+						            <td>{$subcounts_2_1.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						            	<td>{$subcounts_2_1.count_left_remain|default='0'}</td>
+						            <td>{$subcounts_2_1.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_2_1.id eq ''">
+						            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">添加</a>
+						            	<else/>
+						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_1['id']))}">置顶</a>
+						            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    <td colspan="2" align="center">
+						    	<!--第二层第二个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_2_2.user_login|default='无'}<br/>({$objUser_2_2.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_2_2['user_status'] eq 1">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_2_2['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_2_2['user_status'] eq 0 and $objUser_2_2['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_2_2['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_2_2.count_left_total|default='0'}</td>
+						            <td>{$subcounts_2_2.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_2_2.count_left_remain|default='0'}</td>
+						            <td>{$subcounts_2_2.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+							            <if condition="$objUser_2_2['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>2))}">添加</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_2['id']))}">置顶</a>
+							            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    </tr>
+						  <tr>
+						    <td colspan="2" align="center"><img src="__TMPL__Public/images/line_2.gif" width="200" height="23" /></td>
+						    <td colspan="2" align="center"><img src="__TMPL__Public/images/line_2.gif" width="200" height="23" /></td>
+						    </tr>
+						  <tr>
+						    <td width="25%" align="center">
+						    	<!--第三层第一个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_3_1.user_login|default='无'}<br/>({$objUser_3_1.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_3_1['user_status'] eq 1">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_3_1['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_3_1['user_status'] eq 0 and $objUser_3_1['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_3_1['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_3_1.count_left_total|default='0'}</td>
+						            <td>{$subcounts_3_1.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_3_1.count_left_remain|default='0'}</td>
+						            <td>{$subcounts_3_1.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_3_1['id'] eq ''">
+						            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>1))}">添加</a>
+						            	<else/>
+						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_1['id']))}">置顶</a>
+						            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    <td width="25%" align="center">
+						    	<!--第三层第二个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_3_2.user_login|default='无'}<br/>({$objUser_3_2.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_3_2['user_status'] eq 1">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_3_2['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_3_2['user_status'] eq 0 and $objUser_3_2['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_3_2['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_3_2.count_left_total|default='0'}</td>
+						            <td>{$subcounts_3_2.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						             <td>{$subcounts_3_2.count_left_remain|default='0'}</td>
+						             <td>{$subcounts_3_2.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+							            <if condition="$objUser_3_2['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>2))}">添加</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_2['id']))}">置顶</a>
+							            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    <td width="25%" align="center">
+						    	<!--第三层第三个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_3_3.user_login|default='无'}<br/>({$objUser_3_3.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_3_3['user_status'] eq 1">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_3_3['user_status'] eq 2" />
+						           		<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_3_3['user_status'] eq 0 and $objUser_3_3['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+									<elseif condition="$objUser_3_3['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_3_3.count_left_total|default='0'}</td>
+						            <td>{$subcounts_3_3.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						             <td>{$subcounts_3_3.count_left_remain|default='0'}</td>
+						             <td>{$subcounts_3_3.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+							            <if condition="$objUser_3_3['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>1))}">添加</a>
+							            	<else/>
+							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_3['id']))}">置顶</a>
+							            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						    <td width="25%" align="center">
+						    	<!--第三层第四个用户-->
+								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+						          <tr>
+						            <th colspan="3">{$objUser_3_4.user_login|default='无'}<br/>({$objUser_3_4.rand|user_rand})</th>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+						            <if condition="$objUser_3_4['user_status'] eq 1 ">
+						            	<span class="cGreen">已激活</span>
+						            <elseif condition="$objUser_3_4['user_status'] eq 2" />
+						            	<span><font color="blue">锁定</font></span>
+						            <elseif condition="$objUser_3_4['user_status'] eq 0 and $objUser_3_4['user_login'] eq ''" />
+						            	<span><font color="blue">未注册</font></span>
+						            <elseif condition="$objUser_3_4['user_status'] eq 3"/>
+						            	<span class="cRed">出局</span>
+						            <else/>
+						            	<span class="cRed">未激活</span>
+						            </if>
+						            </td>
+						          </tr>
+						          <tr>
+						            <td>{$subcounts_3_4.count_left_total|default='0'}</td>
+						            <td>{$subcounts_3_4.count_right_total|default='0'}</td>
+						          </tr>
+						          <tr>
+						             <td>{$subcounts_3_4.count_left_remain|default='0'}</td>
+						             <td>{$subcounts_3_4.count_right_remain|default='0'}</td>
+						          </tr>
+						          <tr>
+						            <td colspan="3">
+							            <if condition="$objUser_3_4['id'] eq ''">
+							            	<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>2))}">添加</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_4['id']))}">置顶</a>
+							            </if>
+						            </td>
+						            </tr>
+						        </table>
+						        </td>
+						  </tr>
+						</table>
+     							<!-- table end -->
+     							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+
+<!-- jQuery peity -->
+<script src="__TMPL__/Public/../plugins/bower_components/peity/jquery.peity.min.js"></script>
+<script src="__TMPL__/Public/../plugins/bower_components/peity/jquery.peity.init.js"></script>
+</body>
+
+</html>

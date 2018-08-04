@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.controls input{width: 94%;background: #888; border: none; color: #fff;}
+.controls select{width: 98%;background: #888; border: none; color: #fff;}
+.form-horizontal{display: block;margin: 10px;}
+.up_desc{ margin: 10px; }
+.font_g{ color: #f00 }
+
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 430px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+  <div class="row">
+      <div class="ico_name">
+          <div class="name_tit">申请升级</div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="up_desc">
+      <p>金源科技温馨提醒，您的升级需要于24小时内完成如下操作：</p>
+      <foreach name="up_data" item="v"><if condition="$v[user][user_nicename] != ''">
+      <p>向诚信大使【<font class="font_g">{$v.user.user_nicename}</font>】支付人民币<font class="font_g">{$v.fee|default='0.00'}</font>元升级款</p>
+      <else/>
+      <p><font class="font_g">无</font></p>
+      </if></foreach>
+      <if condition="$up_data eq null"><p><font class="font_g">您当前属于{$layer}级，暂不符合升级条件。</font></p></if>
+    </div>
+    <div class="name_btn"><form class="J_ajaxForm" action="{:U('User/Business/upgrade_post')}" method="post">
+        <a class="btn btn-primary J_ajax_submit_btn" id="look_rec">查看收款人</a>
+        <button class="btn btn-primary J_ajax_submit_btn" type="submit">立即升级</button>
+    </form></div>
+  </div>
+  <if condition="$up_data eq null">
+  <div class="row" id="show_rec" style="display: none;">
+    <div class="up_desc" style="color: #f00;">没有存在上级会员</div>
+  </div>
+  <else/>
+  <div class="row" id="show_rec" style="display: none;">
+    <div class="user_table">
+        <table class="table table-hover table-bordered table-list">
+           <tr>
+                <th>层数</th> 
+                <th>会员昵称</th>
+                <th>电话</th>
+                <th>微信</th>
+                <th>付款金额</th>
+            </tr>
+            <foreach name="up_data" item="v" key="k">
+            <tr>
+                <td>上{$k}层</td>
+                <td>{$v.user.user_nicename|default='无'}</td>
+                <td>{$v.user.tel|default='无'}</td>
+                <td>{$v.user.weixin|default='无'}</td>
+                <td>{$v.fee|default='0.00'}</td>
+            </tr>
+            </foreach>
+        </table>
+    </div>
+  </div>
+  </if>
+
+  <div class="row">
+    <div class="user_table">
+        <table class="table table-hover table-bordered table-list">
+           <tr>
+                <th>层数</th> 
+                <th>会员昵称</th>
+                <th>电话</th>
+                <th>微信</th>
+            </tr>
+            <foreach name="user_arr" item="v" key="k"><php>$k++;</php>
+            <tr>
+                <td>上{$k}层</td>
+                <td>{$v.user_nicename}</td>
+                <td>{$v.tel}</td>
+                <td>{$v.weixin}</td>
+            </tr>
+            </foreach>
+        </table>
+    </div>
+  </div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+<script type="text/javascript">
+$(function(){
+  $("#look_rec").click(function(){
+    $("#show_rec").show();
+  })
+})
+</script>
+</body>
+</html>

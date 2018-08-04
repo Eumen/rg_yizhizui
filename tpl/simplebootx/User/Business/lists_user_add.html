@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">我的会员</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">我的会员</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <foreach name="posts" item="vo"><php>$i++;</php>
+       			<!-- .col -->
+                <div class="col-md-4 col-sm-4">
+                    <div class="white-box">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 text-center">
+                                <a href="javascript:;"><img src="{$vo.avatar}" class="img-circle img-responsive"></a>
+                            </div>
+                            <div class="col-md-8 col-sm-8">
+                                <h3 class="box-title m-b-0">{$vo.user_login|default='无'}</h3> 
+                                <small>{$vo.id|fs_user_info="true_name"}</small>
+                                <p>
+                                    <address>
+                                        推荐人：{$vo.rip_name}，
+                                        激活时间：{$vo.audit_time}，
+                                        状态：{$vo.user_status|fs_user_status}
+                                        <br/>
+                                        <br/>
+                                        <abbr title="Phone">电话:</abbr> {$vo.id|fs_user_info="tel"} 
+                                    </address>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <php>if($i%3==0 || count($posts)==$i){</php></div><div class="row"><php>}</php>
+                </foreach>
+            </div>
+            <!-- /.row -->
+            <div class="row"><ul class="pagination">{$page}</ul></div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.user_info{background: #666; margin: 10px; padding: 10px;}
+.user_info li{ overflow:hidden; padding: 5px 0px; border-bottom: solid #777 1px;}
+.user_info li .user_li{width: 50%;}
+.user_info li .user_li b{ padding-right: 5px; }
+.user_info li .user_li i{ font-size: 12px;font-style:normal; }
+
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 500px; background: none; margin: 0px; padding: 0px; }
+
+.font_num{color: #f00; font-size: 16px; padding: 0px 5px;}
+.font_g{ color: #f00 }
+</style>
+</head>
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">{$site_name}欢迎您</div>
+            <div class="name_dis">{$mobile_description}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="user_info">
+            <ul>
+                <li>
+                    <div class="fl user_li"><b>编号</b><i>{$rg_user.id}</i></div>
+                    <div class="fr user_li"><b>昵称</b><i>{$rg_user.user_nicename}</i></div>
+                </li>
+                <li>
+                    <div class="fl user_li"><b>状态</b><i><php>if($rg_user['user_status']==1){</php>已激活<php>}elseif($rg_user['user_status']==2){</php>锁定<php>}elseif($rg_user['user_status']==3){</php>出局<php>}</php></i></div>
+                    <div class="fr user_li"><b>级别</b><i>
+                    	{$rg_user.rand|fs_user_rand}
+                    	<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php>
+			        <if condition="$rg_user['agent'] gt 0">	-{$sexs[$rg_user['agent']]} </if>
+			        	<if condition="$rg_user['partner'] gt 0">-合伙人</if>
+                    </i></div>
+                </li>
+                <li>
+                    <div class="fl user_li"><b>现金币</b><i>{$rg_user.amount|default='0.00'}</i></div>
+                    <div class="fl user_li"><b>上一级</b><i>{$ruser.user_nicename|default='无'}</i></div>
+                </li>
+                <li>
+                    <div class="fl user_li"><b>激活时间</b><i>{$rg_user.audit_time}</i></div>
+                    <div class="fr user_li"><b>登录IP</b><i>{$rg_user.last_login_ip}</i></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+               <tr>
+                    <th>日期</th> 
+                    <th>推荐奖金</th>
+                    <th>总监分红</th>
+                    <th>董事分红</th>
+                    <th>合伙人分红</th>
+                    <th>代理奖</th>
+                    <th>合计</th>
+                </tr>
+                <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.addtime}</td>
+                     <td>{$vo.sum_rid|default='0.00'}</td>
+                    <td>{$vo.sum_zfenhong|default='0.00'}</td>
+                    <td>{$vo.sum_dfenhong|default='0.00'}</td>
+                    <td>{$vo.sum_partner|default='0.00'}</td>
+                    <td>{$vo.sum_agent|default='0.00'}</td>
+                    <td>{$vo.sum|default='0.00'}</td>
+                 </tr>
+                 </foreach>
+            
+                <if condition="$list eq null">
+                <tr>
+                    <td colspan="20"><div align="center">您当前没有明细</div></td>
+                </tr>
+                </if>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">激活提醒</div>
+            <div class="name_dis">您有<font class="font_num">{$rcount}</font>会员未激活</div>
+            <if condition="$rcount neq 0">
+	            <div class="name_btn">
+	                <a href="{:U('User/Business/lists_user_rid')}" class="btn btn-primary" style=" width:100px;">立即处理</a>
+	            </div>
+	         <else/>
+	         	<div class="name_btn">
+	                <a href="{:U('User/Business/add')}" class="btn btn-primary" style=" width:100px;">立即注册</a>
+	            </div>
+            </if>
+        </div>
+    </div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+<script type="text/javascript">
+$(function(){
+    
+})
+</script>
+</body>
+</html>

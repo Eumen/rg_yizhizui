@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.user_table{border: #666 solid 1px; margin: 10px; overflow-x: auto;}
+.user_table table{ width: 500px; background: none; margin: 0px; padding: 0px; }
+</style>
+</head>
+<body class="body-white">
+<tc_include file="Public:nav" />
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">奖金明细</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb10">
+			奖金总合计：<font color="red">{$rg_sum|default='0.00'}</font>，&nbsp;&nbsp;&nbsp;今天合计：<font color="red">{$rg_today_sum|default='0.00'}</font>
+        </div>
+    </div>
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+               <tr>
+                    <th>日期</th>	
+                    <th>消费返还</th>
+                    <th>推荐奖金</th>
+                    <th>总监分红</th>
+                    <th>董事分红</th>
+                    <th>合伙人分红</th>
+                    <th>代理奖</th>
+                    <th>合计</th>
+                </tr>
+                <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.addtime}</td>
+                    <td>{$vo.sum_shop|default='0.00'}</td>
+                    <td>{$vo.sum_rid|default='0.00'}</td>
+	                <td>{$vo.sum_zfenhong|default='0.00'}</td>
+	                <td>{$vo.sum_dfenhong|default='0.00'}</td>
+	                <td>{$vo.sum_partner|default='0.00'}</td>
+	                <td>{$vo.sum_agent|default='0.00'}</td>
+                    <td>{$vo.sum|default='0.00'}</td>
+                 </tr>
+                 </foreach>
+                <if condition="$list eq null">
+	                <tr>
+	                    <td colspan="20"><div align="center">您当前没有明细</div></td>
+	                </tr>
+                </if>
+    		</table>
+            <div class="pagination">{$Page}</div>
+        </div>
+    </div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

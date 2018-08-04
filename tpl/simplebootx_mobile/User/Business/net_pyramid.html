@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.cRed{ color:#FF0000;}
+.cGreen{ color:#00FF00;}
+
+.well{background:none; border: #777 1px solid; margin:0px 10px;padding: 10px;}
+
+.user_table{border: #666 solid 1px; margin: 10px; padding: 10px; overflow-x: auto;}
+.user_table>table{width: 500px; background: none; margin: auto; padding: 0px; border: none;}
+
+.table th, .table td{margin: 0px; padding: 0px;}
+.table td img{display: block;margin: auto;height:17px;}
+.table-bordered{ border:  #777 solid 1px; }
+.table-bordered th, .table-bordered td{border: none;}
+.t_info{background:none; margin: auto;}
+.t_info th,.t_info td,.table-bordered tbody:first-child tr:first-child th{border: #777 solid 1px; text-align: center; padding: 5px;}
+</style>
+</head>
+<body class="body-white">
+
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">推荐会员管理</div>
+        </div>
+    </div>
+
+    <div class="row">
+    	<form class="well form-search" method="post" action="{:U('User/Business/net_pyramid')}">
+            <div class="search_type cc mb10">
+                <div class="mb10">
+                    <span class="mr20">
+                        <input type="text" name="keyword" style="width:150px;" value="{$_POST.keyword}" placeholder="请输入用户名..."> 
+                        <input type="submit" class="btn btn-primary" value="搜索" /><br />
+                        <a href="{:U('User/Business/net_pyramid')}">返回顶部</a>
+                        <a href="{:U('User/Business/net_pyramid', array('id'=>$top_pid))}">上一层</a>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div class="row">
+        <div class="user_table">
+            <table class="table table-hover table-bordered table-list">
+			  <tr>
+			    <td colspan="4" align="center">
+			    	<!--第一层用户-->
+			        <table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_1.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_1['user_status'] eq 1">
+							<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_1['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			           	<elseif condition="$objUser_1['user_status'] eq 0 and $objUser_1['user_login'] eq ''" />
+			           		<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_1['user_status'] eq 3"/>
+							<span class="cRed">出局</span>
+			            <else/>
+			           	 	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_1.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_1.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_1['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_1['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    </tr>
+			  <tr>
+			    <td colspan="4" align="center"><img src="__TMPL__Public/images/line_1.gif" height="10" /></td>
+			    </tr>
+			  <tr>
+			    <td colspan="2" align="center">
+			    	<!--第二层第一个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_2_1.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_2_1['user_status'] eq 1">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_2_1['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_2_1['user_status'] eq 0 and $objUser_2_1['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_2_1['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_2_1.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_2_1.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_2_1.id eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_1['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    <td colspan="2" align="center">
+			    	<!--第二层第二个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_2_2.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_2_2['user_status'] eq 1">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_2_2['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_2_2['user_status'] eq 0 and $objUser_2_2['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_2_2['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_2_2.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_2_2.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_2_2['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_2['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    </tr>
+			  <tr>
+			    <td colspan="2" align="center"><img src="__TMPL__Public/images/line_2.gif" height="10" /></td>
+			    <td colspan="2" align="center"><img src="__TMPL__Public/images/line_2.gif" height="10" /></td>
+			    </tr>
+			  <tr>
+			    <td width="25%" align="center">
+			    	<!--第三层第一个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_3_1.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_1['user_status'] eq 1">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_3_1['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_3_1['user_status'] eq 0 and $objUser_3_1['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_3_1['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_3_1.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_3_1.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_1['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_1['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    <td width="25%" align="center">
+			    	<!--第三层第二个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_3_2.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_2['user_status'] eq 1">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_3_2['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_3_2['user_status'] eq 0 and $objUser_3_2['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_3_2['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_3_2.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_3_2.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_2['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_2['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    <td width="25%" align="center">
+			    	<!--第三层第三个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_3_3.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_3['user_status'] eq 1">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_3_3['user_status'] eq 2" />
+			           		<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_3_3['user_status'] eq 0 and $objUser_3_3['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+						<elseif condition="$objUser_3_3['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_3_3.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_3_3.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_3['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_3['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			    <td width="25%" align="center">
+			    	<!--第三层第四个用户-->
+					<table class="t_info" border="0" cellspacing="1" cellpadding="0">
+			          <tr>
+			            <th colspan="3">{$objUser_3_4.user_login|default='无'}</th>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_4['user_status'] eq 1 ">
+			            	<span class="cGreen">已激活</span>
+			            <elseif condition="$objUser_3_4['user_status'] eq 2" />
+			            	<span><font color="blue">锁定</font></span>
+			            <elseif condition="$objUser_3_4['user_status'] eq 0 and $objUser_3_4['user_login'] eq ''" />
+			            	<span><font color="blue">未注册</font></span>
+			            <elseif condition="$objUser_3_4['user_status'] eq 3"/>
+			            	<span class="cRed">出局</span>
+			            <else/>
+			            	<span class="cRed">未激活</span>
+			            </if>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td colspan="3"><font color="red">{$objUser_3_4.layer|default='0'}</font>级</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">爱心豆(<font color="red">{$objUser_3_4.amount|default='0.00'}</font>)</td>
+			          </tr>
+			          <tr>
+			            <td colspan="3">
+			            <if condition="$objUser_3_4['id'] eq ''">--<else/><a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_4['id']))}">置顶</a></if>
+			            </td>
+			            </tr>
+			        </table>
+			        </td>
+			  </tr>
+			</table>
+		</div>
+	</div>
+</div>
+    
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

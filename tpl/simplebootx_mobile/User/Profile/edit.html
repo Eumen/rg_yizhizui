@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+<style type="text/css">
+.controls input{width: 94%;background: #888; border: none; color: #fff;}
+.controls select{width: 98%;background: #888; border: none; color: #fff;}
+.form-horizontal{display: block;margin: 10px;}
+</style>
+</head>
+
+<body class="body-white" id="top">
+<tc_include file="Public:nav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="ico_name">
+            <div class="name_tit">修改资料</div>
+        </div>
+    </div>
+    <div class="row">
+        <form class="form-horizontal J_ajaxForm" action="{:U('User/Profile/edit_post')}" method="post">
+            <div class="control-group">
+                <label class="control-label" for="input-user_nicename">会员号</label>
+                <div class="controls">
+                    <input type="text" id="input-user_nicename" disabled="disabled" placeholder="请输入会员号" name="user_login" value="{$user_login}">
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label" for="input_accounttype">账户类型</label>
+                <div class="controls">
+                    <select id="input_accounttype" name="account_type">
+						<option value="中国工商银行"<php>if($info[account_type]=='中国工商银行'){</php> selected<php>}</php>>中国工商银行</option>
+						<option value="中国农业银行"<php>if($info[account_type]=='中国农业银行'){</php> selected<php>}</php>>中国农业银行</option>
+                        <option value="中国银行"<php>if($info[account_type]=='中国银行'){</php> selected<php>}</php>>中国银行</option>
+                        <option value="中国建设银行"<php>if($info[account_type]=='中国建设银行'){</php> selected<php>}</php>>中国建设银行</option>
+                        <option value="中国邮政银行"<php>if($info[account_type]=='中国邮政银行'){</php> selected<php>}</php>>中国邮政银行</option>
+					</select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_accountinfo">开户行名称</label>
+                <div class="controls">
+                    <input type="text" id="input_accountinfo" name="account_info" value="{$info.account_info}" placeholder="请输入开户行名称">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_accountno">账户号码</label>
+                <div class="controls">
+                    <input type="text" id="input_accountno" name="account_no" value="{$info.account_no}" placeholder="请输入账户号码">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_accountname">账户名</label>
+                <div class="controls">
+                    <input type="text" id="input_accountname" name="account_name" value="{$info.account_name}"  placeholder="请输入账户名">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="input_tel">联系电话</label>
+                <div class="controls">
+                    <input type="text" id="input_tel" name="tel" required placeholder="请输入联系号" value="{$info.tel}">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary J_ajax_submit_btn" style="width:150px;">保存</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+
+<tc_include file="Public:footer" />
+<tc_include file="Public:scripts" />
+</body>
+</html>

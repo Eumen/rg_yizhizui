@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+<if condition="$rg_user neq ''"> 
+    <tc_include file="Public:usernav"/>
+</if>
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper"<if condition="$rg_user eq ''"> style="margin:0px;"</if>>
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">购买商品</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">购买商品</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+				<div class="white-box">
+            		<div class="row">
+	                	<div class="col-lg-3 col-md-3 col-sm-6">
+							<div class="white-box text-center"><a href="{$goods.smeta}" target="_blank"><img src="{$goods.smeta}" width="100%" /></a></div>
+						</div>
+	                	<div class="col-lg-9 col-md-9 col-sm-6">
+							<h4 class="box-title m-t-40">{$goods.name}</h4>
+							<p>{$goods.info}</p>
+							<h2 class="m-t-40">¥ {$goods.price} </h2>
+	                        <ul class="list-icons">
+                        		<li><i class="fa fa-check text-success"></i> 说明：{$goods.explains} </li>
+	                        </ul>
+			            </div>
+		            </div>
+				</div>
+			</div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="white-box">
+					<form class="form-horizontal form-material J_ajaxForm" action="{:U('Goods/Index/good_info')}" method="post">
+                        <div class="form-group">
+                                <label class="col-md-12">联系人</label>
+                                <div class="col-md-12">
+	                                <input type="text" value="{$info.true_name}" id="username"  name="username" required placeholder="请输入姓名" class="form-control form-control-line">
+                            		<input type="hidden" name="gid" value="{$goods.id}">
+                            		<input type="hidden" name="pay_type" value="<php>if($iswei){echo 2;}else{echo 1;}</php>">
+	                            </div>
+	                        </div>
+	    
+                        <div class="form-group">
+                                <label class="col-md-12">联系方式</label>
+                                <div class="col-md-12">
+	                                <input type="text" id="tel" name="tel" value="{$info.tel}" required placeholder="请输入联系方式" class="form-control form-control-line">
+	                            </div>
+	                        </div>
+	    					
+    					<div class="form-group">
+                            <label class="col-md-12">配送区域</label>
+                            <div class="col-md-12">
+                                <select id="province" name="province" class="form-control form-control-line" onchange="select_city(this.value,'city')">
+                                		<option value="0">请选省</option>
+                                		<volist name="citys" id="vo">
+										<option value="{$vo.region_id}">{$vo.region_name}</option>
+									</volist>
+                                </select>
+                                
+                                <select id="city" name="city" class="form-control form-control-line" onchange="select_city(this.value,'district')">
+                                		<option value="0">请选市</option>
+                                </select>
+                                
+                                 <select id="district" name="district" class="form-control form-control-line">
+                                		<option value="0">请选区</option>
+                                </select>
+                            </div>
+                        </div>
+	    					
+                        <div class="form-group">
+                            <label class="col-md-12">详细地址</label>
+                            <div class="col-md-12">
+                                <input type="text" id="addre" name="addre" value="{$info.addre}" required placeholder="请输入详细地址" class="form-control form-control-line">
+                            </div>
+                        </div>
+	    
+                        <div class="form-group">
+                                <label class="col-md-12">发货备注</label>
+                                <div class="col-md-12">
+	                               <textarea class="form-control form-control-line" style="height: 90px;" name="info"></textarea>
+	                               <p style="font-weight: bold;color: #67ff00;margin-top: 10px;">
+	                               		温馨提示:下单前请完善好个人信息资料，下单后按照默认信息提交到公司&nbsp;
+	                               		<a href="{:U('User/Profile/edit')}" style="color: red;">完善资料</a>
+	                               </p>
+	                            </div>
+	                        </div>
+	    					
+    					<div class="form-group" style="display:none">
+                            <label class="col-md-12">支付方式</label>
+                            <div class="col-md-12">
+                                <select id="pay_id" name="pay_id" class="form-control form-control-line">
+                                	<option value="3" selected>余额支付</option>
+									<option value="2">线上支付</option>
+									<option value="1">扫码支付</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success J_ajax_submit_btn">立即购买</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+
+<div id="pay_btn" style="display: none;"></div>
+<!-- /#wrapper -->
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+<script>
+		var _store_type = "{$post[store_type]}";
+		function select_city(_id,_dom){
+			$.ajax({
+			   type : "POST",
+			   url  : "{:U('Goods/Index/ajax_city')}",
+			   data : { id : _id },
+			   success: function(msg){
+			       if(msg.status == 1){
+			       		_dom =='city' ? _name = "所在市" : _name = "所在区" ;
+			       		var _html = '<option value="0">'+_name+'</option>';
+						$.each(msg.lists,function(index,val){
+							_html += '<option value="'+val.region_id+'">'+val.region_name+'</option>';
+						});
+						$("#"+_dom).html(_html);
+			       }else{
+				   		alert('获取失败');
+			       }
+			   }
+			});
+		}
+</script>
+</body>
+</html>
