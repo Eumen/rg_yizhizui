@@ -165,7 +165,9 @@ class IndexadminController extends AdminbaseController {
         $this->error("处理成功");
 	}
 	
-	public function add(){ $this->display(":add"); }
+	public function add(){ 
+		$this->display(":add"); 
+	}
 	public function add_post(){
 		if(IS_POST){
 		    $username	= I('post.username');
