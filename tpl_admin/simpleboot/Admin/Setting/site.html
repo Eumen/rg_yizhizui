@@ -1,0 +1,453 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#A" data-toggle="tab">系统信息</a></li>
+			<li><a href="#B" data-toggle="tab">SEO设置</a></li>
+			<li><a href="#C" data-toggle="tab">URL设置</a></li>
+			<li><a href="{:U('route/index')}">URL美化</a></li>
+			<li><a href="#E" data-toggle="tab">用户名过滤</a></li>
+			<li><a href="#F" data-toggle="tab">业务设置1</a></li>
+			<li><a href="#I" data-toggle="tab">红包/奖励设置</a></li>
+		</ul>
+
+		<form class="form-horizontal J_ajaxForms" name="myform" id="myform"
+			action="{:u('setting/site_post')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="A">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">系统名称：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_name]" value="{$site_name}"><span class="must_red">*</span>
+										<php>if($option_id):</php>
+										<input type="hidden" class="input" name="option_id" value="{$option_id}">
+										<php>endif;</php>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">系统域名：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_host]" value="{$site_host}"><span class="must_red">*</span>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">模版方案：</label>
+									<div class="controls">
+										<select name="options[site_tpl]" class="normal_select">
+											<foreach name="templates" item="vo">
+											<php>$tpl_selected=$site_tpl==$vo?"selected":"";</php>
+											<option value="{$vo}" {$tpl_selected}>{$vo}</option>
+											</foreach>
+										</select>
+									</div>
+								</div>
+								<div class="control-group" style="display: none;">
+									<label class="control-label">开启手机模板：</label>
+									<div class="controls">
+										<php>$mobile_tpl_enabled_checked=empty($mobile_tpl_enabled)?'':'checked';</php>
+										<label class="checkbox inline"><input type="checkbox" name="options[mobile_tpl_enabled]" value="1" {$mobile_tpl_enabled_checked}></label>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">后台风格：</label>
+									<div class="controls">
+										<select name="options[site_adminstyle]" class="normal_select">
+											<foreach name="adminstyles" item="vo">
+											<php>$adminstyle_selected=$site_adminstyle==$vo?"selected":"";</php>
+											<option value="{$vo}" {$adminstyle_selected}>{$vo}</option>
+											</foreach>
+										</select>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">开启静态缓存：</label>
+									<div class="controls">
+										<php>$html_cache_on_checked=empty($html_cache_on)?'':'checked';</php>
+										<label class="checkbox inline"><input type="checkbox" name="options[html_cache_on]" value="1" {$html_cache_on_checked}></label>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">备案信息：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_icp]" value="{$site_icp}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">站长邮箱：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_admin_email]" value="{$site_admin_email}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">签到获得积分：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[sign_in_score]" value="{$sign_in_score}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">公司账号:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[band_num]" value="{$band_num}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">关闭前台：</label>
+									<div class="controls">
+										<php>$open_win_checked=empty($open_win)?'':'checked';</php>
+										<label class="checkbox inline"><input type="checkbox" name="options[open_win]" value="1" {$open_win_checked}></label>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">关闭原因：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[open_win_con]" value="{$open_win_con}">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="tab-pane" id="B">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">SEO标题:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_seo_title]" value="{$site_seo_title}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">SEO关键字:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[site_seo_keywords]" value="{$site_seo_keywords}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">SEO描述:</label>
+									<div class="controls">
+										<textarea name="options[site_seo_description]" rows="5" cols="57">{$site_seo_description}</textarea>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">手机端介绍:</label>
+									<div class="controls">
+										<textarea name="options[mobile_description]" rows="5" cols="57">{$mobile_description}</textarea>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="tab-pane" id="C">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">url模式：</label>
+									<div class="controls">
+										<php>$urlmodes=array( "0"=>"普通模式", "1"=>"PATHINFO模式", "2"=>"REWRITE模式" );</php>
+										<select name="options[urlmode]" class="normal_select">
+											<foreach name="urlmodes" item="vo">
+											<php>$urlmode_selected=$key==$urlmode?"selected":"";</php>
+											<option value="{$key}" {$urlmode_selected}>{$vo}</option>
+											</foreach>
+										</select>
+										<span class="must_red">* 如果你开启的是REWRITE模式，请确保服务器支持REWRITE；</span>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">URL伪静态后缀：</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[html_suffix]" value="{$html_suffix}">
+										<span class="must_red">普通模式不支持</span>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="tab-pane" id="D">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">开启Ucenter:</label>
+									<div class="controls">
+										<php>$ucenter_enabled_checked=empty($ucenter_enabled)?"":"checked";</php>
+										<input type="checkbox" class="J_check" name="options[ucenter_enabled]" value="1" {$ucenter_enabled_checked}>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="tab-pane" id="E">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">特殊用户名:</label>
+									<div class="controls">
+										<textarea name="cmf_settings[banned_usernames]" rows="5" cols="57">{$cmf_settings.banned_usernames}</textarea>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="tab-pane" id="F">
+							<fieldset>								
+								<div class="control-group">
+									<label class="control-label">提现手续费:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[GETMONEYFEE]" value="{$GETMONEYFEE}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">提现最小额度:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[GETMONEYMIN]" value="{$GETMONEYMIN}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">提现最小倍数:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[MULTIPLE]" value="{$MULTIPLE}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">每日提现次数:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[GETMONENUMBER]" value="{$GETMONENUMBER}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">奖金转电子:</label>
+									<div class="controls">
+										<input type="text" class="input" name="options[CHANGE_FEE_S]" value="{$CHANGE_FEE_S}">%电子红包 + 
+										<input type="text" class="input" name="options[CHANGE_FEE_G]" value="{$CHANGE_FEE_G}">%消费红包
+									</div>
+								</div>
+								
+							</fieldset>
+						</div>
+						
+                        <div class="tab-pane" id="I">
+							<fieldset>
+                            	<div class="control-group">
+									<label class="control-label">各项金额到账比例：</label>
+									<div class="controls">
+                                    	奖金余额<input type="text" class="input" name="options[bl_amount]" value="{$bl_amount}">%
+                                        种子余额<input type="text" class="input" name="options[bl_e_amount]" value="{$bl_e_amount}">%
+                                        电子余额<input type="text" class="input" name="options[bl_shop_amount]" value="{$bl_shop_amount}">%
+									</div>
+								</div>
+                                
+								<div class="control-group">
+									<label class="control-label">推荐奖励：一代</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[tj1]" value="{$tj1}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">推荐奖励：二代</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[tj2]" value="{$tj2}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">推荐奖励：三代</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[tj3]" value="{$tj3}">%
+									</div>
+								</div>
+                                
+								<div class="control-group">
+									<label class="control-label">见点奖</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[POINT]" value="{$POINT}">元
+									</div>
+								</div>
+                                
+								<div class="control-group">
+									<label class="control-label">报单中心报单奖励</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[bdjl]" value="{$bdjl}">%
+									</div>
+								</div>
+                                
+								<div class="control-group">
+									<label class="control-label">领导级差奖：一星</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[jl_2]" value="{$jl_2}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">领导级差奖：二星</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[jl_3]" value="{$jl_3}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">领导级差奖：三星</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[jl_4]" value="{$jl_4}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">领导级差奖：四星</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[jl_5]" value="{$jl_5}">%
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">领导级差奖：五星</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[jl_6]" value="{$jl_6}">% + 全国营业额<input type="text" class="input" name="options[qgyye]" value="{$qgyye}">%
+									</div>
+								</div>
+                                
+								<div class="control-group">
+									<label class="control-label">公司管理费</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[gsglf]" value="{$gsglf}">%
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label class="control-label">复投扣除</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[readd]" value="{$readd}">
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label class="control-label">红包单价</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[hongbao]" value="{$hongbao}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">每天派送红包单个金额</label>
+									<div class="controls">
+                                    	<input type="text" class="input" name="options[hongbao_day]" value="{$hongbao_day}">元（5-10元）
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn_submit  J_ajax_submit_btn">提交</button>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
+	<script>
+		/////---------------------
+		Wind.use('validate', 'ajaxForm', 'artDialog', function() {
+			//javascript
+			var form = $('form.J_ajaxForms');
+			//ie处理placeholder提交问题
+			if ($.browser.msie) {
+				form.find('[placeholder]').each(function() {
+					var input = $(this);
+					if (input.val() == input.attr('placeholder')) {
+						input.val('');
+					}
+				});
+			}
+			//表单验证开始
+			form.validate({
+				//是否在获取焦点时验证
+				onfocusout : false,
+				//是否在敲击键盘时验证
+				onkeyup : false,
+				//当鼠标掉级时验证
+				onclick : false,
+				//验证错误
+				showErrors : function(errorMap, errorArr) {
+					//errorMap {'name':'错误信息'}
+					//errorArr [{'message':'错误信息',element:({})}]
+					try {
+						$(errorArr[0].element).focus();
+						art.dialog({
+							id : 'error',
+							icon : 'error',
+							lock : true,
+							fixed : true,
+							background : "#CCCCCC",
+							opacity : 0,
+							content : errorArr[0].message,
+							cancelVal : '确定',
+							cancel : function() {
+								$(errorArr[0].element).focus();
+							}
+						});
+					} catch (err) {
+					}
+				},
+				//验证规则
+				rules : {
+					'options[site_name]' : {
+						required : 1
+					},
+					'options[site_host]' : {
+						required : 1
+					},
+					'options[site_root]' : {
+						required : 1
+					}
+				},
+				//验证未通过提示消息
+				messages : {
+					'options[site_name]' : {
+						required : '请输入系统名称！'
+					},
+					'options[site_host]' : {
+						required : '请输入系统域名！'
+					},
+					'options[site_root]' : {
+						required : '请输入安装路径！'
+					}
+				},
+				//给未通过验证的元素加效果,闪烁等
+				highlight : false,
+				//是否在获取焦点时验证
+				onfocusout : false,
+				//验证通过，提交表单
+				submitHandler : function(forms) {
+					$(forms).ajaxSubmit({
+						url : form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
+						dataType : 'json',
+						beforeSubmit : function(arr, $form, options) {
+
+						},
+						success : function(data, statusText, xhr, $form) {
+							if (data.status) {
+								setCookie("refersh_time", 1);
+								//添加成功
+								Wind.use("artDialog", function() {
+									art.dialog({
+										id : "succeed",
+										icon : "succeed",
+										fixed : true,
+										lock : true,
+										background : "#CCCCCC",
+										opacity : 0,
+										content : data.info,
+										button : [ {
+											name : '确定',
+											callback : function() {
+												return true;
+											},
+											focus : true
+										}, {
+											name : '关闭',
+											callback : function() {
+												return true;
+											}
+										} ]
+									});
+								});
+							} else {
+								alert(data.info);
+							}
+						}
+					});
+				}
+			});
+		});
+		////-------------------------
+	</script>
+</body>
+</html>

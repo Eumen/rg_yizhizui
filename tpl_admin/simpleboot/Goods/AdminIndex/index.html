@@ -1,0 +1,104 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="javascript:;">所有产品</a></li>
+			<li><a href="{:U('AdminIndex/add')}" target="_self">添加产品</a></li>
+		</ul>
+		
+		<form class="J_ajaxForm" action="" method="post">
+
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th width="50">商品名称</th>
+						<th width="50">价格</th>
+						<th width="50">等级</th>
+						<th width="50">状态</th>
+						<th width="80">发布时间</th>
+						<th width="60">操作</th>
+					</tr>
+				</thead>
+				<php> $status = array("1"=>"已审核","0"=>"未审核"); </php>
+				<foreach name="posts" item="vo">
+				<tr>
+					<td><a> <span>{$vo.name}</span></a></td>
+					<td><a> <span>{$vo.price}</span></a></td>
+					<td><a> <span>{$vo.rand|fs_user_rand}</span></a></td>
+					<td>{$status[$vo['status']]}</td>
+					<td>{$vo.add_times|date="Y-m-d H:i:s",###}</td>
+					<td>
+						<a href="{:U('AdminIndex/edit',array('id'=>$vo['id']))}">修改</a> | 
+						<a href="{:U('AdminIndex/delete',array('id'=>$vo['id']))}" class="J_ajax_del">删除</a>
+					</td>
+				</tr>
+				</foreach>
+				<tfoot>
+					<tr>
+						<th>商品名称</th>
+						<th>价格</th>
+						<th>等级</th>
+						<th width="50">状态</th>
+						<th width="50">发布时间</th>
+						<th width="60">操作</th>
+					</tr>
+				</tfoot>
+			</table>
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('AdminIndex/listorders')}">排序</button>
+				<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('AdminIndex/check',array('check'=>1))}" data-subcheck="true">审核</button>
+				<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('AdminIndex/check',array('uncheck'=>1))}" data-subcheck="true">取消审核</button>
+				<button class="btn btn-primary btn-small J_ajax_submit_btn" type="submit" data-action="{:U('AdminIndex/delete')}" data-subcheck="true" data-msg="你确定删除吗？">删除</button>
+			</div>
+			<div class="pagination">{$Page}</div>
+		</form>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+	<script>
+		function refersh_window() {
+			var refersh_time = getCookie('refersh_time');
+			if (refersh_time == 1) {
+				window.location = "{:U('AdminIndex/index',$formget)}";
+			}
+		}
+		setInterval(function() {
+			refersh_window();
+		}, 2000);
+		$(function() {
+			setCookie("refersh_time", 0);
+			Wind.use('ajaxForm', 'artDialog', 'iframeTools', function() {
+				//批量移动
+				$('.J_articles_move').click(
+						function(e) {
+							var str = 0;
+							var id = tag = '';
+							$("input[name='ids[]']").each(function() {
+								if ($(this).attr('checked')) {
+									str = 1;
+									id += tag + $(this).val();
+									tag = ',';
+								}
+							});
+							if (str == 0) {
+								art.dialog.through({
+									id : 'error',
+									icon : 'error',
+									content : '您没有勾选信息，无法进行操作！',
+									cancelVal : '关闭',
+									cancel : true
+								});
+								return false;
+							}
+							var $this = $(this);
+							art.dialog.open(
+									"__ROOT__/index.php?g=portal&m=AdminIndex&a=move&ids="
+											+ id, {
+										title : "批量移动",
+										width : "80%"
+									});
+						});
+			});
+		});
+	</script>
+</body>
+</html>

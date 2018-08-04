@@ -1,0 +1,21 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs">
+				<li class="active"><a href="">每天分红包</a></li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Awardtable/hongbao')}">
+			<div class="search_type cc mb10">
+				<div class="mb10">
+					<span class="mr20">
+						<input type="text" name="money" style="width: 200px;" value="" placeholder="发放一个分红包的金额">
+						<input type="submit" class="btn btn-primary J_ajax_submit_btn" value="发放" />
+					</span>
+				</div>
+			</div>
+		</form>
+	</div>
+		
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

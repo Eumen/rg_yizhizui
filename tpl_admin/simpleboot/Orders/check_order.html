@@ -1,0 +1,117 @@
+<admintpl file="header" />
+<style type="text/css">
+textarea,input[type="text"]{ margin:0px; width:150px;}
+</style>
+<body class="J_scroll_fixed">
+<div style="width:600px; overflow:hidden">
+<div style="margin:10px 10px 0px 10px; overflow:hidden;">
+    <table class="table table-hover table-bordered">
+    	<tbody>
+        <tr><td colspan="4"><img width="80" height="80" src="{:U('User/Public/avatar',array('id'=>$id))}" style="display:block; margin:auto;" /></td></tr>
+        <tr>
+            <td width="80">用户名：</td>
+            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+            <td width="80">推荐人：</td>
+            <td>{$rec_name|default='无'}</td>
+        </tr>
+        <tr> <td  colspan="4">外衣上装</td></tr>
+        <tr>
+            <td>领围：</td>
+            <td class="font_color" style="font-size:22px;">{$up_lingwei|default='0.00'}</td>
+            
+            <td>前衣长：</td>
+            <td class="font_color" style="font-size:22px;">{$up_qianyichang|default='0'}</td>
+        </tr>
+        
+        <tr>
+            <td>胸围：</td>
+            <td class="font_color" style="font-size:22px;">{$up_xiongwei|default='0.00'}</td>
+            
+            <td>肚围：</td>
+            <td class="font_color" style="font-size:22px;">{$up_duwei|default='0'}</td>
+        </tr>
+        
+         <tr>
+            <td>肩宽：</td>
+            <td class="font_color" style="font-size:22px;">{$up_jiankuan|default='0.00'}</td>
+            
+            <td>袖长：</td>
+            <td class="font_color" style="font-size:22px;">{$up_xiuchang|default='0'}</td>
+        </tr>
+        
+        <tr>
+            <td>手臂围：</td>
+            <td class="font_color" style="font-size:22px;">{$up_shoubiwei|default='0.00'}</td>
+            
+            <td>袖口：</td>
+            <td class="font_color" style="font-size:22px;">{$up_xiukou|default='0'}</td>
+        </tr>
+        
+        <tr>
+            <td>坐围：</td>
+            <td class="font_color" style="font-size:22px;">{$up_zuowei|default='0.00'}</td>
+            
+            <td></td>
+            <td class="font_color" style="font-size:22px;"></td>
+        </tr>
+        <!--<tr>
+            <td>订单详情：</td>
+            <td colspan="3">
+            		<input type="text" id="input-user_url" placeholder="输入详细住址" name="user_url" value="{$user_url}" style="width:300px;">
+            </td>
+        </tr>-->
+		</tbody>
+		<!--下身-->
+		<tbody>
+			<tr> <td  colspan="4">外衣下装</td></tr>
+			<tr>
+	            <td>裤长/裙长：</td>
+	            <td class="font_color" style="font-size:22px;">{$down_kuchang|default='0.00'}</td>
+	            <td>腰围</td>
+	            <td class="font_color" style="font-size:22px;">{$down_yaowei|default='0.00'}</td>
+	        </tr>
+	        <tr>
+	            <td>坐围：</td>
+	            <td class="font_color" style="font-size:22px;">{$down_zuowei|default='0.00'}</td>
+	            <td>大腿围</td>
+	            <td class="font_color" style="font-size:22px;">{$down_datuiwei|default='0.00'}</td>
+	        </tr>
+	         <tr>
+	            <td>前后浪：</td>
+	            <td class="font_color" style="font-size:22px;">{$down_qianhouwei|default='0.00'}</td>
+	            <td></td>
+	            <td class="font_color" style="font-size:22px;"></td>
+	        </tr>
+		</tbody>
+		
+		<!--旗袍-->
+		<tbody>
+			<tr> <td  colspan="4">旗袍制单</td></tr>
+			<tr>
+	            <td>中腰围：</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_zhongyaowei|default='0.00'}</td>
+	            <td>胸高</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_xionggao|default='0.00'}</td>
+	        </tr>
+	        
+	        <tr>
+	            <td>肚高：</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_dugao|default='0.00'}</td>
+	            <td>前腰高</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_qianyaogao|default='0.00'}</td>
+	        </tr>
+	        
+	         <tr>
+	            <td>胸距：</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_xiongju|default='0.00'}</td>
+	            <td>开叉高</td>
+	            <td class="font_color" style="font-size:22px;">{$woman_kaichagao|default='0.00'}</td>
+	        </tr>
+	        
+	</table>
+</div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript"> $(function () { setCookie("refersh_time",0); });</script>
+</body>
+</html>

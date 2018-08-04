@@ -1,0 +1,113 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap jj">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Indexadmin/index')}">所有会员</a></li>
+			<li class="active"><a href="{:U('Indexadmin/add')}">会员注册</a></li>
+		</ul>
+		<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Indexadmin/add_post')}">
+        <div class="col-auto">
+        <div class="table_full">
+          <table class="table table-bordered">
+                <tr>
+                  <th width="80">会员账号 </th>
+                  <td>
+                    <input type="text" style="width:160px;" name="username" id="username"  required class="input input_hd J_title_color" placeholder="请输入会员账号" />
+                    <span class="must_red">*</span>
+                    <a href="javascript:checkConfirm1( $('#username').val() )">检查用户是否存在</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th>引介人 </th>
+                  <td>
+                    <input type="text" style="width:160px;" name="recname" id="recname"  required class="input input_hd J_title_color" placeholder="请输入引介人账号" />
+                    <span class="must_red">*</span>
+                    <a href="javascript:checkConfirm1( $('#recname').val() )">检查引介人是否存在</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th>报单中心</th>
+                  <td>
+           			<input class="form-control" type="text" required class='input' name="biz_username" placeholder="*请输入报单中心编号">
+                  </td>
+                </tr>
+                <tr>
+                  <th>认购单数</th>
+                  <td>
+           			<input class="form-control" type="number" required="" name="tz_num" placeholder="*请输入认购单数(1-50)">
+                  </td>
+                </tr>
+                
+                <tr>
+                  <th>姓名</th>
+                  <td><input type='text' name='realname' id='realname' required class='input' placeholder='请输入姓名'></td>
+                </tr>
+                <tr>
+                  <th>身份证号</th>
+                  <td><input class="form-control" type="text" required="" name="identity_id" id="identity_id" placeholder="*请输入身份证号"></td>
+                </tr>
+                
+                <tr>
+                  <th>联系手机</th>
+                  <td><input type="text" id="input_tel" name="tel" required placeholder="请输入联系手机号" class="span3"></td>
+                </tr>
+                <tr>
+                  <th>联系邮箱</th>
+                  <td><input type="text" id="input_email" name="email" required placeholder="请输入联系邮箱" class="span3"></td>
+                </tr>
+                <tr>
+                  <th>一级密码</th>
+                  <td><input type="text" id="input_password" name="password" required placeholder="请输入一级密码" class="span3"></td>
+                </tr>
+                <tr>
+                  <th>二级密码</th>
+                  <td><input type="text" id="input_password" name="password2" required placeholder="请输入二级密码" class="span3"></td>
+                </tr>
+                <tr>
+                  <th>账户类型</th>
+                  <td>
+                  	<select name="account_type">
+                        <option value="中国农业银行">中国农业银行</option>
+                        <option value="中国工商银行">中国工商银行</option>
+                        <option value="中国银行">中国银行</option>
+                        <option value="中国建设银行">中国建设银行</option>
+                        <option value="中国招商银行">中国招商银行</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>银行卡号</th>
+                  <td><input type="text" id="input_accountno" name="accountno" placeholder="请输入银行卡号" class="span3"></td>
+                </tr>
+                <tr>
+                  <th>开户地址</th>
+                  <td><input type="text" id="input_accountinfo" name="accountinfo" placeholder="请输入开户地址" class="span3"></td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">提交</button>
+            <a class="btn" href="{:U('Financial/recharge_list')}">返回</a>
+        </div>
+        </form>
+	</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+function checkConfirm1( username ){
+	if( username != ''){
+		$.post("{:U('Indexadmin/rg_isexit')}", {username:username}, function(data){
+			if (data.state === 'fail') {
+				Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+			}else{
+				Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center', timeout:false}); });
+			}
+		});
+	}else{
+		Wind.use('noty', function () { noty({text: "请输入用户名", type:'error', layout:'center'}); });
+	}
+}
+</script>
+</body>
+</html>

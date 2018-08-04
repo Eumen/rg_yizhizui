@@ -1,0 +1,51 @@
+<admintpl file="header" />
+<style type="text/css">
+textarea,input[type="text"]{ margin:0px; width:150px;}
+</style>
+<body class="J_scroll_fixed">
+<div style="width:666px; overflow:hidden">
+<div style="margin:10px 10px 0px 10px; overflow:hidden;">
+    <table class="table table-hover table-bordered" border="1">
+		  <tbody>
+		    <tr>
+		      <td width="80" rowspan="6" style="height:auto;text-align:center;line-height:18;">会员基本信息</td>
+		      <td width="80">会员ID</td>
+		      <td width="80">{$user_login|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>姓名</td>
+		      <td>{$info.true_name|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>身份证</td>
+		      <td>{$info.identity_id|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>手机</td>
+		      <td>{$info.tel|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>微信</td>
+		      <td>{$info.weixin|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>QQ</td>
+		      <td>{$info.qq|default="无"}</td>
+		    </tr>
+		    <!-- 第san行-->
+		    <tr>
+		      <td width="80" rowspan="2" style="height:auto;text-align:center;line-height:4;">推荐人信息</td>
+		      <td width="80">会员ID</td>
+		      <td width="80">{$rec_name|default="无"}</td>
+		    </tr>
+		    <tr>
+		      <td>姓名</td>
+		      <td>{$rec_tname|default="无"}</td>
+		    </tr>
+		  </tbody>
+	</table>
+</div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

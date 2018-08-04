@@ -1,0 +1,47 @@
+<admintpl file="header"/>
+<style>
+.home_info li em {
+float: left;
+width: 100px;
+font-style: normal;
+}
+li {
+list-style: none;
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div id="home_toptip"></div>
+  <h4 class="well">系统信息</h4>
+  <div class="home_info">
+    <ul>
+      <volist name="server_info" id="vo">
+        <li> <em>{$key}</em> <span>{$vo}</span> </li>
+      </volist>
+    </ul>
+  </div>
+  <h4 class="well">发起团队</h4>
+  <div class="home_info" id="home_devteam">
+    <ul>
+      <li> <em>荣冠团队</em> <span>www.rg808.com</span> </li>
+      <li> <em>团队成员</em> <span>loyal lee、骨子里、pony、09CX</span> </li>
+      <li> <em>联系邮箱</em> <span>rg808@foxmail.com</span> </li>
+    </ul>
+  </div>
+  <h4 class="well">贡献者</h4>
+  <div class="" >
+    <ul class="inline" style="margin-left: 25px;">
+      <li>loyal lee</li>
+      <li>骨子里</li>
+      <li>pony</li>
+      <li>09CX</li>
+    </ul>
+  </div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script> 
+
+</body>
+</html>

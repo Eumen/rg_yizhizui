@@ -1,0 +1,54 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+    		<li><a href="{:U('Randprice/index')}">价格列表</a></li>
+        <li class="active"><a href="javascript:;">编辑价格</a></li>
+    </ul>
+    <form method="post" class="form-horizontal J_ajaxForm" action="{:U('Randprice/edit_post')}">
+	<div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+            <tr>
+              <th width="120">显示店铺/个人 名称</th>
+              <td>
+              	<input type="text" style="width:200px;" name="name" id="name" value="{$name}"  required class="input" placeholder="请输入店铺价格显示名称" />
+              	<input type="hidden" name="id" value="{$id}"/>
+              </td>
+            </tr>
+           	
+           	<tr>
+              <th width="120">等级名称</th>
+              <td>
+              	<input type="text" style="width:200px;" name="rand_name" id="rand_name" value="{$rand_name}"  required class="input" placeholder="请输入店铺价格显示名称" />
+              	<input type="hidden" name="id" value="{$id}"/>
+              </td>
+            </tr>
+            
+            <tr>
+              <th width="120">等级标识</th>
+              <td>
+              	<input type="text" style="width:200px;" name="rank_mark" id="rank_mark" readonly="readonly"  value="{$rank_mark}" required class="input" placeholder="请输入店铺等级名称" />
+              	<input type="hidden" name="id" value="{$id}"/>
+              </td>
+            </tr>
+            
+            <tr>
+              <th width="120">店铺价格</th>
+              <td>
+				<input type="text" style="width:200px;" name="price" id="price" value="{$price}"  required class="input" placeholder="请输入店铺价格" />
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+	</div>
+    <div class="form-actions">
+        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">提交</button>
+        <a class="btn" href="{:U('Randprice/index')}">返回</a>
+	</div>
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

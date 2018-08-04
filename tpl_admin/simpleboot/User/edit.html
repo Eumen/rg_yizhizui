@@ -1,0 +1,47 @@
+<admintpl file="header" />
+<style type="text/css">
+textarea,input[type="text"]{ margin:0px; width:150px;}
+</style>
+<body class="J_scroll_fixed">
+<div style="width:666px; overflow:hidden">
+<div style="margin:10px 10px 0px 10px; overflow:hidden;">
+    <table class="table table-hover table-bordered">
+    	<tbody>
+        <tr>
+            <td width="80">用户名：</td>
+            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+            <td width="80">推荐人：</td>
+            <td><input type="text" id="input-rid" placeholder="推荐人" name="input-rid" value="{$rec_name}"></td>
+        </tr>
+        <tr>
+            <td>奖金：</td>
+            <td class="font_color" style="font-size:22px;">{$amount|default='0.00'}</td>
+            <td>昵称：</td>
+            <td><input type="text" id="input-user_nicename" placeholder="昵称" name="user_nicename" value="{$user_nicename}"></td>
+        </tr>
+        <tr>
+            <td>会员等级:</td>
+            <td>
+                <select id="input-rand" name="rand">
+                    <foreach name="rand_price" item="vo">
+                    <php>$sexselected=$rand==$vo['rank_mark']?"selected":"";</php>
+                    <option value="{$vo.rank_mark}" {$sexselected}>{$vo.name}</option>
+                    </foreach>
+                </select>
+            </td>
+            
+            <td>姓名：</td>
+            <td><input type="text" id="input-true_name" placeholder="姓名" name="true_name" value="{$userinfo.true_name}"></td>
+        </tr>
+		</tbody>
+	</table>
+</div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+$(function () {
+	setCookie("refersh_time",0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:U('Randprice/index')}">价格列表</a></li>
+            <li><a href="{:U('Randprice/add')}">价格添加</a></li>
+        </ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th>名称</th>
+					<th>价格</th>
+					<!--	<th>赠送冻结积分</th>-->			
+					<th>等级名称</th>
+					<th>等级标识</th>
+                    <!--<th>类型</th>-->
+                    <th>添加时间</th>
+                    <th>添加人</th>
+                    <th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<php> $price_type = array('personal'=>'个人','store'=>'店铺')</php>
+				<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+	                    <td>{$vo['name']}</td>
+	                    <td>{$vo['price']}</td>
+	                    <!--<td>{$vo['frozen']}</td>-->
+	                    <td>{$vo['rand_name']}</td>
+	                    <td>{$vo['rank_mark']}</td>
+	                    <!--<td>{$price_type[$vo['stype']]}</td>-->
+	                    <td>{$vo.add_time|date="Y-m-d",###}</td>
+	                    <td>{$vo.admin_id|fs_table_field='users','user_login'}</td>
+	                    <td>
+	                    		<a href="{:U('Randprice/edit',array('id'=>$vo['id']))}" >编辑</a> 
+	                    		<!--|<a href="{:U('Randprice/delete',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="您确定删除此项吗？">删除</a>-->
+	                    </td>
+					</tr>
+				</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$Page}</div>
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>

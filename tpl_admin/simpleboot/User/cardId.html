@@ -1,0 +1,176 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Indexadmin/cardId')}">所有核验</a></li>
+		</ul>
+		<form method="post" class="J_ajaxForm" action="#">
+			<div class="table_list">
+				<table class="table table-hover table-bordered table-list">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>用户名</th>
+							<th>手机</th>
+							<th>身份证号</th>
+                            <th>照片</th>
+                            <th>验证状态</th>
+                            <th>结果</th>
+							<th align='center'>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<php>$user_code=array("0"=>"未验证","1"=>"已验证");</php>
+						<foreach name="lists" item="vo">
+						<php> $smeta = json_decode($vo['identity_img'],true); $photo = $smeta['photo']; $thumb = sp_get_asset_upload_path($photo[0][url]);</php>
+						<tr>
+							<td>{$vo.id}</td>
+							<td>
+								<a href="javascript:;" class="btn-show_user" data-id="{$vo.id}">{$vo.user_login|default='无'}</a><br />
+								{$vo.true_name}
+							</td>
+							<td>{$vo.tel|default='无'}</td>
+							<td>{$vo.identity_id|default='无'}</td>
+							<td><a href="{$thumb}" target="_blank">查看图片</a></td>
+							<td>{$user_code[$vo['is_code']]}</td>
+							<td><php>if($vo['code_num']){</php><font color=red>改身份证已经验证过{$vo.code_num}个账号</font><php>}else{</php>无<php>}</php></td>
+							<td align='center'>
+                            <if condition="$vo['is_code'] eq 1">
+                            <a href="{:U('indexadmin/do_cardId',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要未通过此用户的身份验证吗？">未通过</a>
+                            <else />
+                            <a href="{:U('indexadmin/do_cardId',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要通过此用户的身份验证吗？">通过</a>
+                            </if>
+                             <a href="{:U('indexadmin/user_login',array('id'=>$vo['id']))}" target="_blank">进入前台</a>
+							</td>
+						</tr>
+						</foreach>
+					</tbody>
+				</table>
+				<div class="pagination">{$Page}</div>
+			</div>
+		</form>
+	</div>
+	
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(function() {
+			$(".btn-lists_user").click(function(){
+				var timestamp = new Date().getTime();
+				var id = $(this).attr("data-id");
+				
+				Wind.use("artDialog","iframeTools",function(){
+					art.dialog.open("{:U('Admin/Financial/rank_users')}&rank="+id, { title: "会员列表：", fixed: true,
+						 height : "450px",  width : "1000px", 
+					});
+				});
+			});
+		});
+		
+	$(".table-list .btn-show_user").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/show_user')}&id="+id+"&timestamp="+timestamp, { title: "基本信息：", fixed: true,
+				height : "500px",  width : "680px"});
+		});
+	});
+	
+	$(".table-list .btn-edit_user").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/edit_user')}&id="+id+"&timestamp="+timestamp, { title: "信息编辑：", fixed: true,
+				height : "300px",  width : "680px", 
+				button: [
+					{ name: '提交', callback: function () { btn_edit_user(this, id); }, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	});
+	
+	$(".table-list .btn-edit_psw").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/password')}&id="+id+"&timestamp="+timestamp, { title: "修改密码：", fixed: true,
+				button: [
+					{ name: '提交', callback: function () { btn_edit_psw(this, id); }, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	});
+});
+function btn_edit_user(uploadid, id){
+    var d = uploadid.iframe.contentWindow;
+	
+	var user_nicename 	= d.$("#input-user_nicename").val();
+	var rand 			= d.$("#input-rand").val();
+	var rid 			= d.$("#input-rid").val();
+
+	$.post("{:U('User/Indexadmin/edit_post')}&id="+id,{user_nicename : user_nicename,rid:rid,rand : rand }, function(data){
+		if (data.state === 'fail') {
+			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+		}else{
+			Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+		}
+	});
+}
+function btn_edit_psw(uploadid, id){
+    var d = uploadid.iframe.contentWindow;
+	
+	var password 	= d.$("#input-password").val();
+	var repassword	= d.$("#input-repassword").val();
+
+	$.post("{:U('User/Indexadmin/password_post')}&id="+id, {password:password, repassword:repassword}, function(data){
+		if (data.state === 'fail') {
+			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+		}else{
+			Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+		}
+	});
+}
+
+	function input_data(){
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/input_data')}", { title: "数据导入",fixed: true,
+				button: [
+					{ name: '立即导入', callback: function () { insert_data(this); return false;}, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	}
+	function insert_data(_obj){
+		var d = _obj.iframe.contentWindow;
+	    var get_file_name  = d.$("#file_name").val();
+	    if(get_file_name == 0 ){ alert('您没有上传execl文件吧');return false;}
+	    _obj.close();
+	    var get_obj =  art.dialog({
+		    padding: 0,
+		    title: '导入提示',
+		    content: '&nbsp;<img src="__ROOT__/statics/fileupload/img/loading.gif" style="height: 40px;"/>&nbsp;请不要关闭窗口,数据正在导入中... ！！<br><br>',
+		    lock: true,
+		    background: '#600', 
+    			opacity: 0.87
+		});
+	    var param = {'get_file_name': get_file_name }
+		$.post("{:U('Execl/insert_into_data')}", param, function(data){
+			if(data.status == 1){
+				get_obj.title("导入完成");
+				get_obj.content("<br>&nbsp;&nbsp;数据导入成功... ！！窗口 3 秒后关闭 &nbsp;&nbsp; <br><br> ");
+			}else{
+				get_obj.title("导入失败");
+				get_obj.content("导入失败,窗口2秒后关闭");
+			}
+			setTimeout(function(){ reloadPage(window); }, 5000);
+		});
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap">
+		<ul class="nav nav-tabs"><li class="active"><a href="">所有订单</a></li></ul>
+    	<table class="table table-hover table-bordered">
+            <tr>
+                <td>今天总单数：{$t_all}</td>
+                <td>今天未处理：{$t_uncheck}</td>
+            </tr>
+            <tr>
+                <td>总单数：{$a_all}</td>
+                <td>未处理：{$a_uncheck}</td>
+            </tr>
+        </table>
+		<form class="well form-search" method="post" action="{$post_url}">
+			<div class="search_type cc mb10">
+				<div class="mb10">
+					<span class="mr20">
+						时间：
+						<input type="text" name="start_time" class="J_date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
+						<input type="text" class="J_date" name="end_time" value="{$formget.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+						用户名： 
+						<input type="text" name="login_name" style="width: 100px;" value="{$formget.login_name}" placeholder="请输入用户名..."> &nbsp; &nbsp;
+						姓名： 
+						<input type="text" name="true_name" style="width: 100px;" value="{$formget.true_name}" placeholder="请输入姓名...">
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+				</div>
+			</div>
+		</form>
+		<form method="post" class="J_ajaxForm" action="#">
+			<div class="table_list">
+				<table class="table table-hover table-bordered table-list">
+					<thead>
+						<tr>
+							<th align='center'>ID</th>
+							<th>用户名</th>
+							<th>姓名</th>
+							<th>产品名</th>
+							<th>金额</th>
+							
+							<th>收货人</th>
+							<th>收货地址</th>
+							<th>联系方式</th>
+							
+							<th>备注</th>
+                            <th>购买时间</th>
+                            <th>订单号</th>
+                            <th>是否支付</th>
+                            <th>是否处理</th>
+							<th align='center'>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<php>$pay_type = array("offline"=>"转账公司","wx"=>"微信支付");</php>
+						<php>$pay_stat = array("0"=>"<font style='color: red;'>未付款</font>","1"=>"已付款","2"=>"取消");</php>
+						
+						<foreach name="lists" item="vo">
+						<tr>
+							<td align='center'>{$vo.id}</td>
+							<td>{$vo.user_login|default='无'}</td>
+							<td>{$vo.true_name|default='无'}</td>
+							<td class="font_color">{$vo.order_name}</td>
+							<td class="font_color">{$vo.price}</td>
+							
+							<td class="font_color">{$vo.username}</td>
+							<td class="font_color">{$vo.addre}</td>
+							<td class="font_color">{$vo.tel}</td>
+							<td class="font_color">{$vo.info}</td>
+							
+							<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+							<td>{$vo.order_number}</td>
+							<td align="center">
+								{$pay_stat[$vo['pay_status']]}<br>
+								<if condition="$vo['pay_status'] eq 0">
+									 <a  href="{:U('Orders/AdminIndex/change_pay_status',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要设置{$vo.order_number}订单为已支付吗？">【线下支付】</a>
+								</if>
+							</td>
+							<td id="status_{$vo['id']}">{$vo['status']|fs_order_status}</td>
+							
+							<td align='center'>
+                                <a  class="btn_change_order_status" data-id="{$vo.id}" >修改订单状态</a>
+							</td>
+						</tr>
+						</foreach>
+					</tbody>
+				</table>
+				<div class="pagination">{$Page}</div>
+			</div>
+		</form>
+	</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(".btn_check_order").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('Orders/AdminIndex/check_order')}/id/"+id+"/timestamp/"+timestamp, { title: "用户量体信息：", fixed: true});
+		});
+	});
+	
+	
+	$(".btn_change_order_status").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('Orders/AdminIndex/change_order_status')}&id="+id, { title: "修改订单状态：", fixed: true,
+				button: [
+					{ name: '提交', callback: function(){ btn_edit_user(this, id); }, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	});
+	
+})	
+
+function btn_edit_user(uploadid, id){
+    var d = uploadid.iframe.contentWindow;
+	var status  = d.$("#input-stauts").val();
+	var status_text 	= d.$("#input-stauts").find("option:selected").text();
+	$.post("{:U('Orders/AdminIndex/change_order_status')}", {status : status ,order_id : id}, function(data){
+		if (data.state === 'fail') {
+			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+		}else{
+			$("#status_"+id).html(status_text);
+			Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+		}
+	});
+}
+
+</script>
+</body>
+</html>

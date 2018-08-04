@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>文件导入</title>
+<style>
+ .text{ background:rgba(208,238,255,.7); text-indent:20px;
+	box-shadow:5px 5px 3px rgba(0,0,0,.15); border-radius:6px; line-height:24px; padding:12px;  } 
+.btn_box{ position:relative; }
+.btn_box:after, .btn_box:before { clear: both; display: table; content: ""; overflow: hidden;}
+.file { float:left; height:26px; width:70px; text-align:center; margin-right:10px;
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 26px;
+}
+.file input {
+	height:100%; width:100%;
+    position: absolute;
+    font-size: 16px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.text2{ float:left; line-height:36px; }
+.speed{line-height:36px; }
+</style>
+</head>
+<body>
+<p class="text">请上传xls、xlsx 文件进行导入,不存在的用户系统将会自动生成帐号，密码与账号一致，已经存在的用户车位系统将会自动过滤!导入文件不可太大，大于500条数据，请分次上传！！</p>
+<div class="btn_box">
+
+   <div class="file">选择文件<input id="fileupload" type="file" name="files"  multiple> </div>
+   <span class="text2" id="text2">未选择任何文件!</span>
+</div>
+<!--<div class="speed" id="speed" style="display: none;">上传进度:<label id="progress" >80%</label> </div>--> 
+<input id="file_name" value="0" type="hidden">
+<script src="__ROOT__/statics/js/jquery.js"></script>
+<script src="__ROOT__/statics/fileupload/js/vendor/jquery.ui.widget.js"></script>
+<script src="__ROOT__/statics/fileupload/js/jquery.iframe-transport.js"></script>
+<script src="__ROOT__/statics/fileupload/js/jquery.fileupload.js"></script>
+<script>
+$(function () {  
+    $('#fileupload').fileupload({  
+        autoUpload: true, 
+        url: "{:U('Execl/upload_execl')}", 
+        dataType: 'json',  
+        done: function (e, data) { 
+        		if(data._response.result.status == 1){
+        			$("#file_name").val(data._response.result.file_name);
+        			$("#text2").text(data._response.result.name);
+        		}else{
+        			$("#text2").text("您确定传的是execl ??");
+        		}
+        },  
+        progressall: function (e, data) {
+        		$('#file_name').val(0);
+            var progress = parseInt(data.loaded / data.total * 5, 10);  
+            $('#text2').text(progress + '%' );
+        } 
+    });  
+}); 
+</script>
+</body> 
+</html>

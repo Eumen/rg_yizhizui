@@ -1,0 +1,122 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap J_check_wrap">
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">总激活统计</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>总激活单数</th>
+					<th>未激活总数</th>
+					<th>今日激活总数</th>
+					<th>总会员数</th>
+				</tr>
+			</thead>
+			<tr>
+                <td>{$act_count_user}</td>
+                <td>{$count_untivi_user|default="0"}</td>
+                <td>{$today_act_count_user|default="0"}</td>
+                <td>{$tatol_user}</td>
+            </tr>
+		</table>
+		<!--begin-->
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">会员等级统计(已激活)</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<php>$rands = M('rand_price')->select(); </php>
+				<tr>
+					<volist name="rands" id="vo"> <th>{$vo.name}</th> </volist> 
+				</tr>
+			</thead>
+			<tr>
+				<volist name="rands" id="vo">
+					<php>
+						$condition['user_status'] = 1;
+				     	$condition['user_type'] = 2;
+				     	$condition['rand'] = $vo['rank_mark'];
+				     	$nunber = M('users')->where($condition)->count();
+					</php>
+                		<td class="btn-edit_user" data-id="{$vo.rank_mark}">
+                			<a href="javascript:;">{$nunber|default="0"}</a>
+                		</td>
+				</volist>
+            </tr>
+		</table>
+		<!-- end -->
+		
+		<!--奖金统计-->
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">总奖金统计</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>消费返还</th>  <th>推荐奖金</th>  <th>总监分红</th>
+                    <th>董事分红</th>  <th>总计</th>
+				</tr>
+			</thead>
+            <tr>
+            		<volist name="award_type" id="vo" key="k"> <td>{$$vo|default="0"}</td> </volist>
+            		<td>{$sum_toal}</td>
+            </tr>
+		</table>
+		
+		<!--奖金统计-->
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">各种币统计</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>奖金积分</th>  <th>种子积分</th>  <th>电子积分</th>
+                    <th>商城积分</th>  <th>注册积分</th>
+				</tr>
+			</thead>
+            <tr>
+            		<td>{$amount|default="0"}</td><td>{$e_amount|default="0"}</td><td>{$shop_amount|default="0"}</td><td>{$good_amount|default="0"}</td><td>{$r_amount|default="0"}</td>
+            </tr>
+		</table>
+		
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">今日奖金统计</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+				   <th>消费返还</th>  <th>推荐奖金</th>  <th>总监分红</th>
+                    <th>董事分红</th>   <th>总计</th>
+				</tr>
+			</thead>
+            <tr>
+            		<td>{$TSHOPPING|default="0"}</td>
+            		<td>{$TRID|default="0"}</td>
+            		<td>{$TZFENHONG|default="0"}</td>
+            		<td>{$TDFENHONG|default="0"}</td>
+            		<td>{$today_sum_toal|default="0"}</td>
+            </tr>
+		</table>
+		
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">分包总计</a></li></ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+				   <th>分包总计</th>
+				</tr>
+			</thead>
+            <tr>
+            		<td>{$tz_nums|default="0"}</td>
+            </tr>
+		</table>
+		
+		
+	</div>
+	<script src="__ROOT__/statics/js/common.js"></script>
+	<script>
+		$(function() {
+			$(".btn-edit_user").click(function(){
+				var timestamp = new Date().getTime();
+				var id = $(this).attr("data-id");
+				
+				Wind.use("artDialog","iframeTools",function(){
+					art.dialog.open("{:U('Admin/Financial/rank_users')}&rank="+id, { title: "会员列表：", fixed: true,
+						 height : "450px",  width : "1000px", 
+					});
+				});
+			});
+		});
+	</script>
+</body>
+</html>

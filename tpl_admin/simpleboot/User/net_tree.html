@@ -1,0 +1,80 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">组织结构</a></li>
+    </ul>
+    <form class="well form-search" method="post" action="{:U('Indexadmin/net_tree')}">
+        <div class="search_type cc mb10">
+            <div class="mb10">
+                <span class="mr20">
+                    用户名： 
+                    <input type="text" name="keyword" style="width: 200px;" value="{$_POST.keyword}" placeholder="请输入用户名..."> 
+                    <input type="submit" class="btn btn-primary" value="搜索" />
+                    <a href="{:U('Indexadmin/net_tree')}">返回顶部</a>
+                </span>
+            </div>
+        </div>
+    </form>
+	<script type="text/javascript" src="__ROOT__/statics/Vendor/tree/dtree.js"></script>
+    <link type="text/css" href="__ROOT__/statics/Vendor/tree/dtree.css" />
+    <table class="table table-bordered table-list">
+      <tr>
+        <td>
+        <div class="dtree">
+            <script type="text/javascript">
+            d = new dTree('d');
+            <php>
+            $User = M('Users');
+			$id_byp = $User->where( array('user_login'=>$_POST['keyword'], 'id'=>array('EGT', 1)) )->getField('id');
+			$id = $id_byp ? $id_byp  : 1;
+			$id = !empty($_GET['id']) ? $_GET['id'] : $id;
+            $objUser = $User->where( array('id'=>$id, 'user_type'=>2) )->find();
+		    $add_time = date('Y-m-d',strtotime($objUser['create_time']));
+		    $user_rand = fs_user_rand($objUser['rand']);
+		    $user_name = M('user_infos')->where( array('user_id'=>$id) )->getField('true_name');
+    
+            echo "d.add(" . $id . ",-1,'" ."[1]". $objUser["user_login"] ." ". $user_name." ".$add_time." ".$user_rand. "');";
+			
+            bind_tree($id, 1);
+            
+            function bind_tree($id, $layer) {
+                if($layer > 10){return ; }else{ $layer ++;}
+                $User = M('Users');
+                $objUserList = $User->where( array('rid'=>$id, 'user_type'=>2) )->select();
+                $temp_html="";
+                foreach($objUserList as $_k=>$_v){
+                    $count_rid 			= $User->where( array('rid'=>$_v['id'], 'user_type'=>2) )->count();
+                    $count_rid_acted  	= $User->where( array('rid'=>$_v['id'], 'user_status'=>1, 'user_type'=>2) )->count();
+                    $count_rid_acting  	= $User->where( array('rid'=>$_v['id'], 'user_status'=>0, 'user_type'=>2) )->count();
+                    
+                    $add_time = date('Y-m-d',strtotime($_v['create_time']));
+				    $user_rand = fs_user_rand($_v['rand']);
+				    $user_name = M('user_infos')->where( array('user_id'=>$_v['id']) )->getField('true_name');
+			    
+                    if($_v["user_status"] == 1){
+                        $status = '<span class="cGreen">已激活</span>' ;
+                    }else if($_v["user_status"] == 2){
+                        $status = '<span class="cGreen">锁定</span>' ;
+                    }else if($_v["user_status"] == 3){
+                        $status = '<span class="cGreen">出局</span>' ;
+                    }else{
+                        $status = '<span class="cRed">未激活</span>';
+                    }
+                    echo  "d.add(" . $_v["id"] . "," . $_v["rid"] . ",'<a href=".U('Indexadmin/net_tree', array('id'=>$_v['id'])).">" . "[".$layer."]".$_v["user_login"]. " ".$user_name." ".$user_rand ." ".$add_time.  "(推荐:<span class=\"cRed\" >" . $count_rid . "</span>人)</a>');";
+                    bind_tree($_v['id'], $layer);
+                }
+            }
+            </php>
+            
+            document.write(d);
+            d.closeAll();
+            </script>
+            </div>
+        </td>
+      </tr>
+    </table>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script> 
+</body>
+</html>

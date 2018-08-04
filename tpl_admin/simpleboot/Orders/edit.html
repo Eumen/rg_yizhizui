@@ -1,0 +1,58 @@
+<admintpl file="header" />
+<style type="text/css">
+textarea,input[type="text"]{ margin:0px; width:150px;}
+</style>
+<body class="J_scroll_fixed">
+<div style="width:600px; overflow:hidden">
+<div style="margin:10px 10px 0px 10px; overflow:hidden;">
+    <table class="table table-hover table-bordered">
+    	<tbody>
+        <tr><td colspan="4"><img width="80" height="80" src="{:U('User/Public/avatar',array('id'=>$id))}" style="display:block; margin:auto;" /></td></tr>
+        <tr>
+            <td width="80">用户名：</td>
+            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+            <td width="80">推荐人：</td>
+            <td>{$rec_name|default='无'}</td>
+        </tr>
+        <tr>
+            <td>钱包：</td>
+            <td class="font_color" style="font-size:22px;">{$amount|default='0.00'}</td>
+            <td>注册积分：</td>
+            <td class="font_color" style="font-size:22px;">{$e_amount|default='0'}</td>
+        </tr>
+        <tr>
+            <td>昵称：</td>
+            <td><input type="text" id="input-user_nicename" placeholder="昵称" name="user_nicename" value="{$user_nicename}"></td>
+            <td>QQ：</td>
+            <td><input type="text" id="input-user_qq" placeholder="QQ" name="user_qq" value="{$user_qq}"></td>
+        </tr>
+        <tr>
+            <td>性别：</td>
+            <td>
+            <php>$sexs=array("0"=>"保密","1"=>"男","2"=>"女");</php>
+            <select id="input-sex" name="sex">
+                <foreach name="sexs" item="vo">
+                <php>$sexselected=$key==$sex?"selected":"";</php>
+                    <option value="{$key}" {$sexselected}>{$vo}</option>
+                </foreach>
+            </select>
+            </td>
+            <td>生日：</td>
+            <td><input class="J_date" type="text" id="input-birthday" placeholder="2013-01-04" name="birthday" value="{$birthday}"></td>
+        </tr>
+        <tr>
+            <td>详细住址：</td>
+            <td colspan="3"><input type="text" id="input-user_url" placeholder="输入详细住址" name="user_url" value="{$user_url}" style="width:300px;"></td>
+        </tr>
+		</tbody>
+	</table>
+</div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+$(function () {
+	setCookie("refersh_time",0);
+});
+</script>
+</body>
+</html>

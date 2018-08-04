@@ -1,0 +1,407 @@
+<admintpl file="header" />
+<style>
+	html {background: #fff; }
+	body.body-white {background: #fff; text-align: center;}
+    table{border-collapse :collapse ; width: 900px;text-align: left; }
+    th,td{width:100px;height:40px;border :1px solid black;font-size:12px;}
+    .text_center{text-align: center;}
+    .border_top{border-top: 0px;}
+    .border_bottom{border-bottom: 0px;}
+</style>
+<body class="body-white" id="top">
+  <form class="form-horizontal J_ajaxForm" action="{:U('profile/woman')}" method="post">
+    <div class="container tc-main" style="margin-bottom: 50px;">
+    		<table>
+    			<tr>
+    				<td colspan="17">
+    					<img src="__ROOT__/statics/images/yh_logo.png" style="height: 30px;" />
+    				</td>
+    			</tr>
+    			<tr>
+    				<td>客户名称</td>
+    				<td colspan="3">&nbsp;{$user_login}</td>
+    				<td colspan="3">款号:{$orders['order_name']}</td>
+    				<td colspan="3">款式:</td>
+    				<td colspan="3">设计师:</td>
+    				<td colspan="4">联系电话:<input type="text" value="{$info.tel}" placeholder="定制人电话" style="width: 120px;"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>部位<br/>(<font style="color: red;">女装</font>)</td>
+    				<td colspan="2">量身尺寸CM(净样)</td>
+    				<td colspan="2">成品尺寸CM</td>
+    				<td colspan="2">外套<br>(面料厂商)</td>
+    				<td colspan="2">外套<br>(面料编号)</td>
+    				<td colspan="2">衬衫<br>(面料厂商)</td>
+    				<td colspan="2">衬衫<br>(面料编号)</td>
+    				<td colspan="2">裤/裙<br>(面料厂商)</td>
+    				<td colspan="2">裤/裙<br>(面料编号)</td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>上装</td>
+    				<td>外套</td>
+    				<td>衬衫</td>
+    				<td>外套</td>
+    				<td>衬衫</td>
+    				<td colspan="2"></td>
+    				<td colspan="2"></td>
+    				<td colspan="2"></td>
+    				<td colspan="2"></td>
+    				<td colspan="2"></td>
+    				<td colspan="2"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>前衣长</td>
+    				<td><input type="text" style="width: 30px;" name="qianyi_1" value="{$qianyi_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianyi_2" value="{$qianyi_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianyi_3" value="{$qianyi_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianyi_4" value="{$qianyi_4}"></td>
+    				<td colspan="12" class="border_bottom">
+    					<a href="{:sp_get_asset_upload_path($smeta['thumb'])}" target="_blank">
+    						<img src="{:sp_get_asset_upload_path($smeta['thumb'])}" style="height: 100px;" alt="产品图片"  />
+    					</a>
+    				</td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>领围</td>
+    				<td><input type="text" style="width: 30px;" name="lingwei_1" value="{$lingwei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="lingwei_2" value="{$lingwei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="lingwei_3" value="{$lingwei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="lingwei_4" value="{$lingwei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>胸围</td>
+    				<td><input type="text" style="width: 30px;" name="xiongwei_1" value="{$xiongwei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiongwei_2" value="{$xiongwei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiongwei_3" value="{$xiongwei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiongwei_4" value="{$xiongwei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>胸高</td>
+    				<td><input type="text" style="width: 30px;" name="xionggao_1" value="{$xionggao_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="xionggao_2" value="{$xionggao_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="xionggao_3" value="{$xionggao_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="xionggao_4" value="{$xionggao_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>中腰围</td>
+    				<td><input type="text" style="width: 30px;" name="zhongyaowei_1" value="{$zhongyaowei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="zhongyaowei_2" value="{$zhongyaowei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="zhongyaowei_3" value="{$zhongyaowei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="zhongyaowei_4" value="{$zhongyaowei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>肩宽</td>
+    				<td><input type="text" style="width: 30px;" name="jiankuan_1" value="{$jiankuan_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="jiankuan_2" value="{$jiankuan_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="jiankuan_3" value="{$jiankuan_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="jiankuan_4" value="{$jiankuan_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>袖长<br>(虎口上2.5CM)</td>
+    				<td><input type="text" style="width: 30px;" name="xiuchang_1" value="{$xiuchang_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiuchang_2" value="{$xiuchang_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiuchang_3" value="{$xiuchang_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="xiuchang_4" value="{$xiuchang_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>手臂围</td>
+    				<td><input type="text" style="width: 30px;" name="shoubiwei_1" value="{$shoubiwei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="shoubiwei_2" value="{$shoubiwei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="shoubiwei_3" value="{$shoubiwei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="shoubiwei_4" value="{$shoubiwei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>下装</td>
+    				<td>裤</td>
+    				<td>裙</td>
+    				<td>裤</td>
+    				<td>裙</td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>裤长/裙长</td>
+    				<td><input type="text" style="width: 30px;" name="kuchang_1" value="{$kuchang_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuchang_2" value="{$kuchang_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuchang_3" value="{$kuchang_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuchang_4" value="{$kuchang_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>裤腰</td>
+    				<td><input type="text" style="width: 30px;" name="kuyao_1" value="{$kuyao_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuyao_2" value="{$kuyao_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuyao_3" value="{$kuyao_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="kuyao_4" value="{$kuyao_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>坐围</td>
+    				<td><input type="text" style="width: 30px;" name="zuowei_1" value="{$zuowei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="zuowei_2" value="{$zuowei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="zuowei_3" value="{$zuowei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="zuowei_4" value="{$zuowei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>腿围</td>
+    				<td><input type="text" style="width: 30px;" name="tuiwei_1" value="{$tuiwei_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="tuiwei_2" value="{$tuiwei_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="tuiwei_3" value="{$tuiwei_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="tuiwei_4" value="{$tuiwei_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td>前后浪<br>(连腰)</td>
+    				<td><input type="text" style="width: 30px;" name="qianhoulang_1" value="{$qianhoulang_1}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianhoulang_2" value="{$qianhoulang_2}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianhoulang_3" value="{$qianhoulang_3}"></td>
+    				<td><input type="text" style="width: 30px;" name="qianhoulang_4" value="{$qianhoulang_4}"></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12"class="border_bottom">
+    					备注<textarea style="width: 340px; height: 60px;" name="beizhu">{$beizhu}</textarea>
+    				</td>
+    			</tr>
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			<tr class="text_center">
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td colspan="12" class="border_top border_bottom"></td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td><font style="font-size: 14px;">客户特征</font></td>
+    				<td>瘦身型</td>
+    				<td><input type="text" style="width: 30px;" name="shoushenxing" value="{$shoushenxing}"></td>
+    				<td>标准型</td>
+    				<td><input type="text" style="width: 30px;" name="biaozhunxing" value="{$biaozhunxing}"></td>
+    				<td>胖满型</td>
+    				<td><input type="text" style="width: 30px;" name="panmanxing" value="{$panmanxing}"></td>
+    				<td>
+    					<p>平肩</p>
+    					<p>斜肩</p>
+    				</td>
+    				<td>
+    					<p><input type="text" style="width: 30px;" name="pingjian" value="{$pingjian}"></p>
+    					<p><input type="text" style="width: 30px;" name="xiejian"  value="{$xiejian}"></p>
+    				</td>
+    				
+    				<td>
+    					<p>平胸</p>
+    					<p>挺胸</p>
+    				</td>
+    				<td>
+    					<p><input type="text" style="width: 30px;" name="pingxiong" value="{$pingxiong}"></p>
+    					<p><input type="text" style="width: 30px;" name="tingxiong" value="{$tingxiong}"></p>
+    				</td>
+    				
+    				<td>
+    					<p>寒背</p>
+    					<p>肚腩</p>
+    				</td>
+    				<td>
+    					<p><input type="text" style="width: 30px;" name="hanbei" value="{$hanbei}"></p>
+    					<p><input type="text" style="width: 30px;" name="dunan" value="{$dunan}"></p>
+    				</td>
+    				
+    				<td>
+    					<p>长脖子</p>
+    					<p>短脖子</p>
+    				</td>
+    				<td>
+    					<p><input type="text" style="width: 30px;" name="changbozi" value="{$changbozi}"></p>
+    					<p><input type="text" style="width: 30px;" name="duanbozi" value="{$duanbozi}"></p>
+    				</td>
+    				
+    				<td>
+    					<p>身高</p>
+    					<p>体重</p>
+    				</td>
+    				<td>
+    					<p><input type="text" style="width: 30px;" name="shengao" value="{$shengao}"></p>
+    					<p><input type="text" style="width: 30px;" name="tizhong" value="{$tizhong}"></p>
+    				</td>
+    			</tr>
+    			
+    			<tr class="text_center">
+    				<td><font style="font-size: 14px;">客户爱好</font></td>
+    				<td>修身</td>
+    				<td><input type="text" style="width: 30px;" name="xiushen" value="{$xiushen}"></td>
+    				<td>标准</td>
+    				<td><input type="text" style="width: 30px;" name="biaozhun" value="{$biaozhun}"></td>
+    				<td>宽松</td>
+    				<td><input type="text" style="width: 30px;" name="kuansong" value="{$kuansong}"></td>
+    				<td>裤浅档</td>
+    				<td><input type="text" style="width: 30px;" name="kuqiandan" value="{$kuqiandan}"></td>
+    				<td>裤中档</td>
+    				<td><input type="text" style="width: 30px;" name="kuzhongdan" value="{$kuzhongdan}"></td>
+    				<td>裤深档</td>
+    				<td><input type="text" style="width: 30px;" name="kushendan" value="{$kushendan}"></td>
+    				
+    				<td>后中开叉</td>
+    				<td colspan="2">后两侧开叉</td>
+    				<td>后不开叉</td>
+    			</tr>
+    			<tr class="">
+    				<td colspan="5">
+    					<div>
+	    					<div style="float: left;margin: 30px 10px;">
+	    						<font style="font-size: 18px;">面料</font>
+	    					</div>
+	    					<div style="float: right;margin-right: 10px;">
+	    						<p>布行：<input type="text" style="width: 100px;" name="buhang" value="{$buhang}"></p>
+	    						<p>货号：<input type="text" style="width: 100px;" name="huohao" value="{$huohao}"></p>
+	    						<p>成分：<input type="text" style="width: 100px;" name="chengfen" value="{$chengfen}"></p>
+	    					</div>
+    					</div>
+    					<div style="clear: both;"></div>
+    					<div>
+    						布宽：<input type="text" style="width: 40px;" name="buhang_1" value="{$buhang_1}">米
+    						用量：<input type="text" style="width: 40px;" name="yongliang_1" value="{$yongliang_1}">米
+    					</div>
+    				</td>
+    				<td colspan="4">
+    					<div>
+	    					<div style="float: left;margin: 20px 10px;">
+	    						<font style="font-size: 18px;">辅料</font>
+	    					</div>
+	    					<div style="float: right;margin-right: 10px;">
+	    						<p>商行：<input type="text" style="width: 60px;" name="shanghang" value="{$shanghang}"></p>
+	    						<p>货号：<input type="text" style="width: 60px;" name="huohao_2" value="{$huohao_2}"></p>
+	    						<p>成分：<input type="text" style="width: 60px;" name="chengfen_2" value="{$chengfen_2}"></p>
+	    					</div>
+    					</div>
+    					<div style="clear: both;"></div>
+    					<div style="width: 210px;">
+    						布宽：<input type="text" style="width: 40px;" name="buhang_2" value="{$buhang_2}">米
+    						用量：<input type="text" style="width: 40px;" name="yongliang_2" value="{$yongliang_2}">米
+    					</div>
+    				</td>
+    				<td colspan="4">
+    					<div>
+	    					<div style="float: left;margin: 20px 10px;">
+	    						<font style="font-size: 18px;">裡料</font>
+	    					</div>
+	    					<div style="float: right;margin-right: 10px;">
+	    						<p>商行：<input type="text" style="width: 60px;" name="shanghang_1" value="{$shanghang_1}"></p>
+	    						<p>货号：<input type="text" style="width: 60px;" name="huohao_3" value="{$huohao_3}"></p>
+	    						<p>成分：<input type="text" style="width: 60px;" name="chengfen_3" value="{$chengfen_3}"></p>
+	    					</div>
+    					</div>
+    					<div style="clear: both;"></div>
+    					<div style="width: 210px;">
+    						布宽：<input type="text" style="width: 40px;"  name="buhang_3" value="{$buhang_3}">米
+    						用量：<input type="text" style="width: 40px;"  name="yongliang_3" value="{$yongliang_3}">米
+    					</div>
+    				</td>
+    				<td colspan="4">
+    					<div style="text-align: center;margin: 10px;"> <font style="font-size: 18px;">生产</font> </div>
+    					<div>
+    						下单时间：<input type="text" style="width: 70px;" name="xiadanshij" value="{$xiadanshij}"><br><br>
+    						交货时间：<input type="text" style="width: 70px;" name="jiaohushij" value="{$jiaohushij}">
+    					</div>
+    				</td>
+    			</tr>
+    		</table>
+		<div style="float: left;margin: 20px 0px;">制单时间：</div>
+		<div style="float:right;margin: 20px 98px; 0px 0px">量体师：<input type="text" style="width: 100px;" name="liangtishij" value="{$liangtishij}"></div>
+		<div style="clear: both;"></div>
+	</div>
+	</form>
+	<!-- /container -->
+<tc_include file="Public:scripts" />
+</body>
+</html>

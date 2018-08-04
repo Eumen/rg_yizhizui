@@ -1,0 +1,45 @@
+<admintpl file="header" />
+<style type="text/css">
+textarea,input[type="text"]{ margin:0px; width:150px;}
+</style>
+<body class="J_scroll_fixed">
+<div style="width:600px; overflow:hidden">
+<div style="margin:10px 10px 0px 10px; overflow:hidden;">
+    <table class="table table-hover table-bordered">
+    	<tbody>
+        <!--<tr><td colspan="4"><img width="80" height="80" src="{:U('User/Public/avatar',array('id'=>$id))}" style="display:block; margin:auto;" /></td></tr>-->
+        <tr>
+            <td width="80">用户名：</td>
+            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+            <td width="80">推荐人：</td>
+            <td>{$rec_name|default='无'}</td>
+        </tr>
+        <tr> <td  colspan="4">订单信息</td></tr>
+        <tr>
+            <td>定制服装：</td>
+            <td class="font_color" style="font-size:22px;">{$orders.order_name}</td>
+            
+            <td>订单号：</td>
+            <td class="font_color" style="font-size:22px;">{$orders.order_number}</td>
+        </tr>
+        
+        <tr>
+            <td>订单状态：</td>
+           <td colspan="3">
+	            <select id="input-stauts" name="sex">
+	                <foreach name="order_status" item="vo">
+	                		<php>$sexselected = $orders['status'] == $vo['status_number'] ? "selected" : "";</php>
+	                     <option value="{$vo.status_number}" {$sexselected}>{$vo.status_name}</option>
+	                </foreach>
+	            </select>
+            </td>
+        </tr>
+        
+		</tbody>
+	</table>
+</div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript"> $(function () { setCookie("refersh_time",0); });</script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Indexadmin/index')}">所有会员</a></li>
+			<!--<li><a href="{:U('Indexadmin/add')}">会员注册</a></li>-->
+			<!--<a href="#" onclick="input_data();"  class="btn btn-danger" style="float: right; margin:0px 5px;">导入execl数据</a>&nbsp;&nbsp;-->
+		</ul>
+	    	<table class="table table-hover table-bordered">
+            <tr>
+                <td>今天激活人数：{$today_rsnum}</td>
+                <td>今天激活金额：{$today_jqnum}</td>
+            </tr>
+            <tr>
+                <td>激活总人数：{$rg_rsnum}</td>
+                <td>激活总金额：{$rg_jqnum}</td>
+            </tr>
+         </table>
+        <table class="table table-hover table-bordered">
+			<thead>
+				<php>$rands = M('rand_price')->select(); </php>
+				<tr><volist name="rands" id="vo"> <th>{$vo.name}</th> </volist></tr>
+			</thead>
+			<tr>
+				<volist name="rands" id="vo">
+					<php>
+						$condition['user_status'] = 1;
+				     	$condition['user_type'] = 2;
+				     	$condition['rand'] = $vo['rank_mark'];
+				     	$nunber = M('users')->where($condition)->count();
+					</php>
+                		<td class="btn-lists_user" data-id="{$vo.rank_mark}">
+                			<a href="javascript:;">{$nunber|default="0"}</a>
+                		</td>
+				</volist>
+            </tr>
+		</table>
+		<form class="well form-search" method="post" action="{:U('Indexadmin/index')}">
+			<div class="search_type cc mb10">
+				<div class="mb10">
+					<span class="mr20">
+						用户名： 
+						<input type="text" name="keyword" style="width: 100px;" value="{$formget.keyword}" placeholder="请输入用户名..."> &nbsp; &nbsp;
+						姓名： 
+						<input type="text" name="true_name" style="width: 100px;" value="{$formget.true_name}" placeholder="请输入姓名..."> &nbsp; &nbsp;
+						推荐人： 
+						<input type="text" name="rid_name" style="width: 100px;" value="{$formget.rid_name}" placeholder="请输入推荐人...">
+						
+						等级：
+						<select class="select_2" name="rand" style="width: auto;">
+							<option value="0">会员等级</option>
+							<volist name="rands" id="vo"> 
+								<option value="{$vo.rank_mark}" <if condition="$formget['rand'] eq $vo['rank_mark']">selected="selected"</if>>{$vo.name}</option>
+							</volist> 
+						</select> &nbsp;&nbsp;
+						
+						代理：
+						<select class="select_2" name="agent" style="width: auto;">
+							<option value="0">选择代理</option>
+							<option value="1" <if condition="$formget['agent'] eq 1">selected="selected"</if>>是</option>
+						</select> &nbsp;&nbsp;
+						
+						状态： 
+						<select class="select_2" name="user_status" style="width: auto;">
+							<option value="-1">选择...</option>
+							<option value='1'<php>if($formget[user_status]==1){</php> selected<php>}</php>>已激活</option><option value='2'<php>if($formget[user_status]==2){</php> selected<php>}</php>>未激活</option>
+						</select> &nbsp;&nbsp;
+						时间：
+						<input type="text" name="start_time" class="J_date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
+						<input type="text" class="J_date" name="end_time" value="{$formget.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+						<input type="submit" class="btn btn-primary" value="搜索" />
+					</span>
+				</div>
+			</div>
+		</form>
+		<form method="post" class="J_ajaxForm" action="#">
+			<div class="table_list">
+				<table class="table table-hover table-bordered table-list">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>用户名</th>
+							<th>手机</th>
+							<th>推荐人</th>
+							<th>奖金积分</th>
+							<th>种子积分</th>
+							<th>电子积分</th>
+							<th>商城积分</th>
+							<th>注册积分</th>
+							<th>认购单数</th>
+							<th>状态</th>
+							<th>等级</th>
+							<th>代理</th>
+                            <th>登录信息</th>
+							<th align='center'>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<php>$user_statuses=array("0"=>"未激活","1"=>"已激活","2"=>"锁定");</php>
+						<foreach name="lists" item="vo">
+						<tr>
+							<td>{$vo.id}</td>
+							<td>
+								<a href="javascript:;" class="btn-show_user" data-id="{$vo.id}">{$vo.user_login|default='无'}</a><br />
+								{$vo.true_name}
+								
+							</td>
+							<td>{$vo.tel|default='无'}</td>
+							
+							<td>
+								<a href="javascript:;" class="btn-show_user" data-id="{$vo.rid}">{$vo.rid_name|default='无'}</a><br />
+								{$vo.rec_true_name}
+							</td>
+							
+							<td class="font_color">{$vo.amount|default='0.00'}</td>
+							<td class="font_color">{$vo.e_amount|default='0.00'}</td>
+							<td class="font_color">{$vo.shop_amount|default='0.00'}</td>
+							<td class="font_color">{$vo.good_amount|default='0.00'}</td>
+							<td class="font_color">{$vo.r_amount|default='0.00'}</td>
+							<td class="font_color">{$vo.tz_num|default='0'}</td>
+							<td>{$user_statuses[$vo['user_status']]}</td>
+							<td>{$vo.rand|fs_user_rand}</td>
+							<td>
+								<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php>
+								{$sexs[$vo['agent']]}
+							</td>
+							<td>{$vo.last_login_time}<br />{$vo.last_login_ip}</td>
+							<td align='center'>
+                            <if condition="$vo['user_status'] eq 0">
+                                <a href="{:U('indexadmin/delete',array('id'=>$vo['id']))}" class="J_ajax_del">删除</a>
+                            <else />
+                                <a href="javascript:;" class="btn-edit_user" data-id="{$vo.id}">编辑</a> | 
+                            		<a href="javascript:;" class="btn-edit_psw" data-id="{$vo.id}">密码</a> | 
+                               
+                                <if condition="$vo['user_status'] eq 1">
+                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要锁定此用户吗？">锁定</a>
+                                <else />
+                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要解除锁定此用户吗？">解除锁定</a>
+                                </if>
+                            </if>
+                             <a href="{:U('indexadmin/user_login',array('id'=>$vo['id']))}" target="_blank">进入前台</a>
+							</td>
+						</tr>
+						</foreach>
+					</tbody>
+				</table>
+				<div class="pagination">{$Page}</div>
+			</div>
+		</form>
+	</div>
+	
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(function() {
+			$(".btn-lists_user").click(function(){
+				var timestamp = new Date().getTime();
+				var id = $(this).attr("data-id");
+				
+				Wind.use("artDialog","iframeTools",function(){
+					art.dialog.open("{:U('Admin/Financial/rank_users')}&rank="+id, { title: "会员列表：", fixed: true,
+						 height : "450px",  width : "1000px", 
+					});
+				});
+			});
+		});
+		
+	$(".table-list .btn-show_user").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/show_user')}&id="+id+"&timestamp="+timestamp, { title: "基本信息：", fixed: true,
+				height : "500px",  width : "680px"});
+		});
+	});
+	
+	$(".table-list .btn-edit_user").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/edit_user')}&id="+id+"&timestamp="+timestamp, { title: "信息编辑：", fixed: true,
+				height : "300px",  width : "680px", 
+				button: [
+					{ name: '提交', callback: function () { btn_edit_user(this, id); }, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	});
+	
+	$(".table-list .btn-edit_psw").click(function(){
+		var timestamp = new Date().getTime();
+		var id = $(this).attr("data-id");
+		
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/password')}&id="+id+"&timestamp="+timestamp, { title: "修改密码：", fixed: true,
+				button: [
+					{ name: '提交', callback: function () { btn_edit_psw(this, id); }, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	});
+});
+function btn_edit_user(uploadid, id){
+    var d = uploadid.iframe.contentWindow;
+	
+	var user_nicename 	= d.$("#input-user_nicename").val();
+	var true_name 		= d.$("#input-true_name").val();
+	var rand 			= d.$("#input-rand").val();
+	var rid 			= d.$("#input-rid").val();
+
+	$.post("{:U('User/Indexadmin/edit_post')}&id="+id,{user_nicename:user_nicename,true_name:true_name,rid:rid,rand : rand }, function(data){
+		if (data.state === 'fail') {
+			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+		}else{
+			Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+		}
+	});
+}
+function btn_edit_psw(uploadid, id){
+    var d = uploadid.iframe.contentWindow;
+	
+	var password 	= d.$("#input-password").val();
+	var password2	= d.$("#input-password2").val();
+	var password3	= d.$("#input-password3").val();
+
+	$.post("{:U('User/Indexadmin/password_post')}&id="+id, {password:password, password2:password2, password3:password3}, function(data){
+		if (data.state === 'fail') {
+			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+		}else{
+			Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center'}); });
+		}
+	});
+}
+
+	function input_data(){
+		Wind.use("artDialog","iframeTools",function(){
+			art.dialog.open("{:U('User/Indexadmin/input_data')}", { title: "数据导入",fixed: true,
+				button: [
+					{ name: '立即导入', callback: function () { insert_data(this); return false;}, focus: true },
+					{ name: '取消' }
+				]
+			});
+		});
+	}
+	function insert_data(_obj){
+		var d = _obj.iframe.contentWindow;
+	    var get_file_name  = d.$("#file_name").val();
+	    if(get_file_name == 0 ){ alert('您没有上传execl文件吧');return false;}
+	    _obj.close();
+	    var get_obj =  art.dialog({
+		    padding: 0,
+		    title: '导入提示',
+		    content: '&nbsp;<img src="__ROOT__/statics/fileupload/img/loading.gif" style="height: 40px;"/>&nbsp;请不要关闭窗口,数据正在导入中... ！！<br><br>',
+		    lock: true,
+		    background: '#600', 
+    			opacity: 0.87
+		});
+	    var param = {'get_file_name': get_file_name }
+		$.post("{:U('Execl/insert_into_data')}", param, function(data){
+			if(data.status == 1){
+				get_obj.title("导入完成");
+				get_obj.content("<br>&nbsp;&nbsp;数据导入成功... ！！窗口 3 秒后关闭 &nbsp;&nbsp; <br><br> ");
+			}else{
+				get_obj.title("导入失败");
+				get_obj.content("导入失败,窗口2秒后关闭");
+			}
+			setTimeout(function(){ reloadPage(window); }, 5000);
+		});
+	}
+</script>
+</body>
+</html>
