@@ -203,7 +203,7 @@ class BusinessController extends MemberbaseController {
 				$data=array(
 						'user_login'		=> $username,
 						'user_email'		=> $email,
-						'user_nicename'		=> $username,
+						'user_nicename'		=> $realname,
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
 						'create_time'		=> date("Y-m-d H:i:s"),
