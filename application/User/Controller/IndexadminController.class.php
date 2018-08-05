@@ -102,6 +102,156 @@ class IndexadminController extends AdminbaseController {
      	
     		$this->display(":index");
     }
+    
+    public function export() {
+		$lists = $this->users_model->alias ( "u" )
+			->join ( C ( 'DB_PREFIX') . "user_infos ui ON ui.user_id=u.id" )
+			->where ( $where )
+			->field ( 'u.id,ui.true_name,ui.tel,u.rid,u.amount,u.e_amount,u.shop_amount,u.good_amount,u.r_amount,u.tz_num,u.user_status,u.rand,u.agent' )
+			->order ( 'u.id desc' )->select ();
+		$expTableData = $lists;
+		foreach ($expTableData as $_k => $_v) {
+			$expTableData[$_k]['rec_true_name'] = $this->userinfos_model->where( array('user_id'=>$_v['rid']) )->getField('true_name');
+			switch ($_v['user_status']) {
+				case 1 :
+					$expTableData[$_k]['user_status'] = '已经激活';
+					break;
+				case 2 :
+					$expTableData[$_k]['user_status'] = '锁定';
+					break;
+				case 3 :
+					$expTableData[$_k]['user_status'] = '出局';
+					break;
+				case 0 :
+					$expTableData[$_k]['user_status'] = '未激活';
+					break;
+			}
+			switch ($_v['rand']) {
+				case 1 :
+					$expTableData[$_k]['rand'] = '会员';
+					break;
+				case 2 :
+					$expTableData[$_k]['rand'] = '一星会员';
+					break;
+				case 3 :
+					$expTableData[$_k]['rand'] = '二星会员';
+					break;
+				case 4 :
+					$expTableData[$_k]['rand'] = '三星会员';
+					break;
+				case 5 :
+					$expTableData[$_k]['rand'] = '四星会员';
+					break;
+				case 6 :
+					$expTableData[$_k]['rand'] = '五星会员';
+					break;
+				case 7 :
+					$expTableData[$_k]['rand'] = '预借会员';
+					break;
+			}
+			switch ($_v['agent']) {
+				case 1 :
+					$expTableData[$_k]['agent'] = '县代理';
+					break;
+				case 2 :
+					$expTableData[$_k]['agent'] = '市代理';
+					break;
+				case 3 :
+					$expTableData[$_k]['agent'] = '省代理';
+					break;
+				case 0 :
+					$expTableData[$_k]['agent'] = '未是';
+					break;
+			}
+		}
+		// 导出的Excel表格的名字
+		$xlsName = "会员列表";
+			// 导出的Excel表格的表头
+		$expCellName = array (
+				array (
+						'id',
+						'序号' 
+				),
+				array (
+						'true_name',
+						'用户名' 
+				),
+				array (
+						'tel',
+						'手机' 
+				),
+				array (
+						'rec_true_name',
+						'推荐人' 
+				),
+				array (
+						'amount',
+						'奖金积分' 
+				),
+				array (
+						'e_amount',
+						'种子积分' 
+				),
+				array (
+						'shop_amount',
+						'电子积分' 
+				),
+				array (
+						'good_amount',
+						'商城积分' 
+				),
+				array (
+						'r_amount',
+						'注册积分' 
+				),
+				array (
+						'tz_num',
+						'认购单数' 
+				),
+				array (
+						'user_status',
+						'状态' 
+				),
+				array (
+						'rand',
+						'等级' 
+				),
+				array (
+						'agent',
+						'代理' 
+				) 
+		);
+		
+		$fileName = $xlsName;//or $xlsTitle 文件名称可根据自己情况设定
+		$cellNum = count($expCellName);//得到表头的长度
+		$dataNum = count($expTableData);//得到内容的长度
+		vendor("PHPExcel.PHPExcel");//引入EXCEL类包
+		$objPHPExcel = new \PHPExcel();//实例化类
+		$cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+		// 	$objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
+		// 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1',$fileName.'学生表'); //输入标题
+		$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setHorizontal ( \PHPExcel_Style_Alignment::HORIZONTAL_CENTER );  // 设置单元格水平对齐格式
+		$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setVertical ( \PHPExcel_Style_Alignment::VERTICAL_CENTER );        // 设置单元格垂直对齐格式
+  		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+		
+		//输出标题栏
+		for($i=0;$i<$cellNum;$i++){
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+		}
+		//输出内容栏
+		for($i=0;$i<$dataNum;$i++){
+			for($j=0;$j<$cellNum;$j++){
+				$objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
+			}
+		}
+		//导出
+		header('pragma:public');
+		header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$fileName.'.xls"');
+		header("Content-Disposition:attachment;filename=$fileName.xls");
+		$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+		unset($objWriter, $expTableData , $lists);
+	}
 	
 	public function readd(){
 		
