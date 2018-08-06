@@ -411,7 +411,9 @@ class IndexadminController extends AdminbaseController {
 				        "rand"			    => 1,
 						"rid"				=> $rec_user['id'],
 						"add_user_id" 		=> $this->mid,
+				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
+				        "old_fbnum"         => intval($tz_num),
 				);
 				$user_id = $users_model->add($data);
 				if($user_id){
