@@ -98,6 +98,7 @@ class BusinessController extends MemberbaseController {
 		if($area){ $this->assign('area',$area); }
 		$this->display();
 	}
+	
 	function checkUser(){
 		$this->users_model = D("Common/Users");
 		$this->userinfos_model = D("Common/UserInfos");
@@ -181,6 +182,13 @@ class BusinessController extends MemberbaseController {
 		
 			if($rg_user || $uc_checkemail<0 || $uc_checkusername<0) $this->error("用户名已经存在！");
 			if( empty($rec_user) ) $this->error('引介人不存在');
+			
+			//节点人 和区位查找
+			$pid_info = $this->get_pid_info($rec_user['id']);
+			if(empty($pid_info)) $this->error('节点区位获取失败');
+			
+			$ruser_code = M("Users")->where( array('id'=>$rec_user['id']) )->getField('rid_code');
+			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
 				
 			// 			if(!sp_check_verify_code()) $this->error("验证码错误！");
 			if ($biz_username){
@@ -207,13 +215,21 @@ class BusinessController extends MemberbaseController {
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
 						'create_time'		=> date("Y-m-d H:i:s"),
+						'last_login_ip' 	=> get_client_ip(),
+						'create_time'		=> date("Y-m-d H:i:s"),
+						'last_login_time'	=> date("Y-m-d H:i:s"),
+						'audit_time'		=> date("Y-m-d H:i:s"),
 						"tz_num"			=> intval($tz_num),
 						'user_status'		=> 0,
 						"user_type"			=> 2,
 						"rand"			    => 1,
 						"rid"				=> $rec_user['id'],
+						"rid_code"			=> $rid_code,
 						"add_user_id" 		=> $this->uid,
 				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
+						"pid"				=> $pid_info['pid'],
+						"area"				=> $pid_info['area'],
+						"pid_code"          => $pid_info['pid_code'],
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
 				        "old_fbnum"         => intval($tz_num),
 				);

@@ -102,6 +102,13 @@ class RegisterController extends HomeBaseController {
 			if($rg_user || $uc_checkemail<0 || $uc_checkusername<0) $this->error("用户名已经存在！");
 			if( empty($rec_user) ) $this->error('引介人不存在');
 			
+			//节点人 和区位查找
+			$pid_info = $this->get_pid_info($rec_user['id']);
+			if(empty($pid_info)) $this->error('节点区位获取失败');
+			
+			$ruser_code = M("Users")->where( array('id'=>$rec_user['id']) )->getField('rid_code');
+			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
+			
 // 			if(!sp_check_verify_code()) $this->error("验证码错误！");
 			if ($biz_username){
 			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
@@ -133,8 +140,12 @@ class RegisterController extends HomeBaseController {
 				        "rand"			    => 1,
 						"rid"				=> $rec_user['id'],
 						"add_user_id" 		=> $this->mid,
-				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
+						"rid_code"          => $rid_code,
+				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
+						"pid"               => $pid_info['pid'],
+						"area"              => $pid_info['area'],
+						"pid_code"          => $pid_info['pid_code'],
     				    "old_fbnum"         => intval($tz_num),
 				);
 				$user_id = $users_model->add($data);
@@ -149,7 +160,7 @@ class RegisterController extends HomeBaseController {
 					$rg_data['tel']				= $tel;
 					$this->userinfos_model->add($rg_data);
 
-					$this->success("注册成功", U("user/login/index"));
+					$this->success("注册成功！等待报单中心激活", U("User/Login/index"));
 				}else{
 					$this->error("注册失败！");
 				}

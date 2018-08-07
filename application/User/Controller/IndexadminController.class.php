@@ -380,6 +380,13 @@ class IndexadminController extends AdminbaseController {
 			if($rg_user || $uc_checkemail<0 || $uc_checkusername<0) $this->error("用户名已经存在！");
 			if( empty($rec_user) ) $this->error('引介人不存在');
 			
+			//节点人 和区位查找
+			$pid_info = $this->get_pid_info($rec_user['id']);
+			if(empty($pid_info)) $this->error('节点区位获取失败');
+			
+			$ruser_code = M("Users")->where( array('id'=>$rec_user['id']) )->getField('rid_code');
+			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
+			
 // 			if(!sp_check_verify_code()) $this->error("验证码错误！");
 			if ($biz_username){
 			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
@@ -410,8 +417,12 @@ class IndexadminController extends AdminbaseController {
 						"user_type"			=> 2,
 				        "rand"			    => 1,
 						"rid"				=> $rec_user['id'],
+						"rid_code"          => $rid_code,
 						"add_user_id" 		=> $this->mid,
 				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
+						"pid"               => $pid_info['pid'],
+						"area"              => $pid_info['area'],
+						"pid_code"          => $pid_info['pid_code'],
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
 				        "old_fbnum"         => intval($tz_num),
 				);
@@ -435,6 +446,32 @@ class IndexadminController extends AdminbaseController {
 				$this->error("注册失败！");
 			}
 		}
+	}
+	
+	function get_pid_info($rid){
+		$pid_number = $this->users_model->where(array("pid"=>$rid))->count();
+		if($pid_number < 2 ){
+			$pid_array =  array("pid"=>$rid,"area"=>$pid_number+1);
+		}else{
+			$rid_code = $this->users_model->where(array("id"=>$rid))->getField("rid_code");
+			$condition['rid_code']  = array("like", $rid_code.$rid."|%");
+			$condition['status']    = array("eq", 1);
+			$condition['user_type'] = array("eq", 2);
+			$user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
+			foreach($user_array as $val){
+				$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+				if($pid_number < 2){
+					$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+					$pid_array = array("pid"=>$val['id'], "area"=>$pid_number+1);
+					break;
+				}
+			}
+		}
+		if($pid_array){
+			$rid_code = $this->users_model->where(array("id"=>$pid_array['pid']))->getField("pid_code");
+			$pid_array['pid_code'] = $rid_code.$pid_array['pid']."|";
+		}
+		return $pid_array;
 	}
 
 	public function rg_isexit() {
