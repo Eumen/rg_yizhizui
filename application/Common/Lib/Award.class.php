@@ -92,7 +92,9 @@ class Award{
     /** 报单中心 **/
     public function agen_award($id,$money,$rg_time){
          $rg_user 	= $this->user->where(array("id"=>$id))->field('biz_id,user_status')->find();
-         if($rg_user['biz_id'] > 0 && $rg_user['user_status'] == 1){
+         $currend_id = $rg_user['biz_id'];
+         $rg_user_recommend 	= $this->user->where(array("id"=>$currend_id))->field('user_status')->find();
+         if($rg_user['biz_id'] > 0 && $rg_user_recommend['user_status'] == 1){
             $get_money = ($this->site_options['bdjl']/100) * $money;
             $this->integrate->integrates($rg_user['biz_id'],'CNETER','中心奖金',$get_money,1,$rg_time, $id);
          }
