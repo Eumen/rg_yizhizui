@@ -104,6 +104,7 @@ class IndexadminController extends AdminbaseController {
     }
     
     public function export() {
+    	set_time_limit(0);
 		$lists = $this->users_model->alias ( "u" )
 			->join ( C ( 'DB_PREFIX') . "user_infos ui ON ui.user_id=u.id" )
 			->where ( $where )
@@ -233,7 +234,6 @@ class IndexadminController extends AdminbaseController {
 		$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setHorizontal ( \PHPExcel_Style_Alignment::HORIZONTAL_CENTER );  // 设置单元格水平对齐格式
 		$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setVertical ( \PHPExcel_Style_Alignment::VERTICAL_CENTER );        // 设置单元格垂直对齐格式
   		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
-		
 		//输出标题栏
 		for($i=0;$i<$cellNum;$i++){
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);

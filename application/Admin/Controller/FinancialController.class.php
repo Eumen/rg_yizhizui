@@ -115,6 +115,122 @@ class FinancialController extends AdminbaseController {
 
         $this->display();
     }
+    
+    
+    public function export() {
+    	set_time_limit(0);
+    	$list = $this->mentions_model->alias ( "m" )
+	    	->join ( C ( 'DB_PREFIX' ) . "users u ON m.user_id=u.id" )
+	    	->join ( C ( 'DB_PREFIX' ) . "user_infos ui ON ui.user_id=u.id" )
+	    	->field ( 'm.*,ui.account_type,ui.account_no,ui.true_name,ui.account_name,ui.account_info,u.user_login' )
+	    	->order ( 'm.id desc' )->select ();
+    	
+    	$charge = $this->site_options['GETMONEYFEE'];
+    	$status=array("0"=>"未审核","1"=>"已审核","3"=>"已撤销");
+        foreach ($list as $p => $v) {
+			$act_amount =  $v['amount'] - ($v['amount'] * $charge);
+			$rg_charge = ($v['amount'] * $charge).'('.($charge*100).'%)';
+            $posts [] = array(
+                'id'			=> $v['id'],
+                'amount'		=> $v['amount'],
+                'i_amount'		=> $v['amount']*$rg_pro,
+                'act_amount'	=> $act_amount,
+                'charge'		=> $rg_charge,
+                'status'		=> $status[$v['status']],
+                'addtime'		=> $v['addtime'],
+                'account_type'	=> $v['bank_type'],
+                'account_no'	=> $v['bank_number'].' ',
+                'account_name'	=> $v['bank_user_name'],
+                'account_info'	=> $v['bank_adree'],
+                'login_name'	=> $v['user_login'],
+                'memo'			=> $v['memo']
+            );
+        }
+    	$expTableData = $posts;
+        
+    	// 导出的Excel表格的名字
+    	$xlsName = "提现列表";
+    	// 导出的Excel表格的表头
+    	$expCellName = array (
+    			array (
+    					'id',
+    					'序号'
+    			),
+    			array (
+    					'login_name',
+    					'用户名'
+    			),
+    			array (
+    					'amount',
+    					'提现金额'
+    			),
+    			array (
+    					'charge',
+    					'手续费'
+    			),
+    			array (
+    					'act_amount',
+    					'到帐金额'
+    			),
+    			array (
+    					'account_type',
+    					'银行类型'
+    			),
+    			array (
+    					'account_no',
+    					'银行账户'
+    			),
+    			array (
+    					'account_name',
+    					'账户名'
+    			),
+    			array (
+    					'account_info',
+    					'开户行址'
+    			),
+    			array (
+    					'memo',
+    					'备注'
+    			),
+    			array (
+    					'addtime',
+    					'申请时间'
+    			),
+    			array (
+    					'status',
+    					'状态'
+    			)
+    	);
+    
+    	$fileName = $xlsName;//or $xlsTitle 文件名称可根据自己情况设定
+    	$cellNum = count($expCellName);//得到表头的长度
+    	$dataNum = count($expTableData);//得到内容的长度
+    	vendor("PHPExcel.PHPExcel");//引入EXCEL类包
+    	$objPHPExcel = new \PHPExcel();//实例化类
+    	$cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+    	// 	$objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
+    	// 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1',$fileName.'学生表'); //输入标题
+    	$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setHorizontal ( \PHPExcel_Style_Alignment::HORIZONTAL_CENTER );  // 设置单元格水平对齐格式
+    	$objPHPExcel->setActiveSheetIndex(0)->getStyle ( 'A1' )->getAlignment ()->setVertical ( \PHPExcel_Style_Alignment::VERTICAL_CENTER );        // 设置单元格垂直对齐格式
+    	//输出标题栏
+    	for($i=0;$i<$cellNum;$i++){
+    		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+    	}
+    	//输出内容栏
+    	for($i=0;$i<$dataNum;$i++){
+    		for($j=0;$j<$cellNum;$j++){
+    			$objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
+    		}
+    	}
+    	//导出
+    	header('pragma:public');
+    	header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$fileName.'.xls"');
+    	header("Content-Disposition:attachment;filename=$fileName.xls");
+    	$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    	$objWriter->save('php://output');
+    	unset($objWriter, $expTableData , $lists);
+    }
+    
 
     public function change_list() {
 		$status=0;
