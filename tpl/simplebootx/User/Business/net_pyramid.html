@@ -56,7 +56,7 @@
                                             <div class="input-group-addon"><i class="ti-search"></i></div>
                                             <input type="text" class="form-control" id="keyword" name="keyword" value="{$_POST.keyword}" placeholder="请输入用户名..."> </div>
                                     </div>
-                                    <button class="btn btn-block btn-danger btn-lg btn-rounded">搜索</button>
+                                    <button class="btn btn-block btn-success btn-lg btn-rounded">搜索</button>
                                 </form>
                             </div>
                         </div>
@@ -72,7 +72,11 @@
 						    	<!--第一层用户-->
 						        <table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_1.user_login|default='无'}<br/>({$objUser_1.rand|user_rand})</th>
+						            <th colspan="3"><if condition="$objUser_1['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">{$objUser_1.user_login|default='空点位'}<br/>{$objUser_1.user_nicename}<br/>({$objUser_1.rand|user_rand})</a>
+							            	<else/>
+							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_1['id']))}">{$objUser_1.user_login|default='空点位'}<br/>{$objUser_1.user_nicename}<br/>({$objUser_1.rand|user_rand})</a>
+							            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -81,7 +85,7 @@
 						            <elseif condition="$objUser_1['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						           	<elseif condition="$objUser_1['user_status'] eq 0 and $objUser_1['user_login'] eq ''" />
-						           		<span><font color="blue">未注册</font></span>
+						           		<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_1['user_status'] eq 3"/>
 										<span class="cRed">出局</span>
 						            <else/>
@@ -89,23 +93,14 @@
 						            </if>
 						            </td>
 						          </tr>
-						           <tr>
-						            <td>{$subcounts_1.count_left_total|default='0'}</td>
-						            <td>{$subcounts_1.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td>{$subcounts_1.count_left_remain|default='0'}</td>
-						            <td>{$subcounts_1.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-							            <if condition="$objUser_1['id'] eq ''">
-							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">添加</a>
-							            	<else/>
-							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_1['id']))}">置顶</a>
-							            </if>
-						            </td>
-						            </tr>
+<!-- 						           <tr> -->
+<!-- 						            <td>{$subcounts_1.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_1.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_1.count_left_remain|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_1.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    </tr>
@@ -117,7 +112,11 @@
 						    	<!--第二层第一个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_2_1.user_login|default='无'}<br/>({$objUser_2_1.rand|user_rand})</th>
+						            <th colspan="3"><if condition="$objUser_2_1.id eq ''">
+						            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">{$objUser_2_1.user_login|default='空点位'}<br/>{$objUser_2_1.user_nicename}<br/>({$objUser_2_1.rand|user_rand})</a>
+						            	<else/>
+						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_1['id']))}">{$objUser_2_1.user_login|default='空点位'}<br/>{$objUser_2_1.user_nicename}<br/>({$objUser_2_1.rand|user_rand})</a>
+						            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -126,7 +125,7 @@
 						            <elseif condition="$objUser_2_1['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_2_1['user_status'] eq 0 and $objUser_2_1['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_2_1['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -134,30 +133,25 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_2_1.count_left_total|default='0'}</td>
-						            <td>{$subcounts_2_1.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						            	<td>{$subcounts_2_1.count_left_remain|default='0'}</td>
-						            <td>{$subcounts_2_1.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-						            <if condition="$objUser_2_1.id eq ''">
-						            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>1))}">添加</a>
-						            	<else/>
-						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_1['id']))}">置顶</a>
-						            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_2_1.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_2_1.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						            	<td>{$subcounts_2_1.count_left_remain|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_2_1.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    <td colspan="2" align="center">
 						    	<!--第二层第二个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_2_2.user_login|default='无'}<br/>({$objUser_2_2.rand|user_rand})</th>
+						            <th colspan="3"><if condition="$objUser_2_2['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>2))}">{$objUser_2_2.user_login|default='空点位'}<br/>{$objUser_2_2.user_nicename}<br/>({$objUser_2_2.rand|user_rand})</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_2['id']))}">{$objUser_2_2.user_login|default='空点位'}<br/>{$objUser_2_2.user_nicename}<br/>({$objUser_2_2.rand|user_rand})</a>
+							            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -166,7 +160,7 @@
 						            <elseif condition="$objUser_2_2['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_2_2['user_status'] eq 0 and $objUser_2_2['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_2_2['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -174,23 +168,14 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_2_2.count_left_total|default='0'}</td>
-						            <td>{$subcounts_2_2.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td>{$subcounts_2_2.count_left_remain|default='0'}</td>
-						            <td>{$subcounts_2_2.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-							            <if condition="$objUser_2_2['id'] eq ''">
-							            		<a href="{:U('Business/add',array('id'=>$objUser_1['id'],'area'=>2))}">添加</a>
-							            	<else/>
-							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_2_2['id']))}">置顶</a>
-							            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_2_2.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_2_2.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_2_2.count_left_remain|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_2_2.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    </tr>
@@ -203,7 +188,12 @@
 						    	<!--第三层第一个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_3_1.user_login|default='无'}<br/>({$objUser_3_1.rand|user_rand})</th>
+						            <th colspan="3">
+						            <if condition="$objUser_3_1['id'] eq ''">
+						            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>1))}">{$objUser_3_1.user_login|default='空点位'}<br/>{$objUser_3_1.user_nicename}<br/>({$objUser_3_1.rand|user_rand})</a>
+						            	<else/>
+						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_1['id']))}">{$objUser_3_1.user_login|default='空点位'}<br/>{$objUser_3_1.user_nicename}<br/>({$objUser_3_1.rand|user_rand})</a>
+						            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -212,7 +202,7 @@
 						            <elseif condition="$objUser_3_1['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_3_1['user_status'] eq 0 and $objUser_3_1['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_3_1['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -220,30 +210,26 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_3_1.count_left_total|default='0'}</td>
-						            <td>{$subcounts_3_1.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td>{$subcounts_3_1.count_left_remain|default='0'}</td>
-						            <td>{$subcounts_3_1.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-						            <if condition="$objUser_3_1['id'] eq ''">
-						            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>1))}">添加</a>
-						            	<else/>
-						            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_1['id']))}">置顶</a>
-						            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_3_1.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_3_1.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_3_1.count_left_remain|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_3_1.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    <td width="25%" align="center">
 						    	<!--第三层第二个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_3_2.user_login|default='无'}<br/>({$objUser_3_2.rand|user_rand})</th>
+						            <th colspan="3">
+						            <if condition="$objUser_3_2['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>2))}">{$objUser_3_2.user_login|default='空点位'}<br/>{$objUser_3_2.user_nicename}<br/>({$objUser_3_2.rand|user_rand})</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_2['id']))}">{$objUser_3_2.user_login|default='空点位'}<br/>{$objUser_3_2.user_nicename}<br/>({$objUser_3_2.rand|user_rand})</a>
+							            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -252,7 +238,7 @@
 						            <elseif condition="$objUser_3_2['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_3_2['user_status'] eq 0 and $objUser_3_2['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_3_2['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -260,30 +246,25 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_3_2.count_left_total|default='0'}</td>
-						            <td>{$subcounts_3_2.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						             <td>{$subcounts_3_2.count_left_remain|default='0'}</td>
-						             <td>{$subcounts_3_2.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-							            <if condition="$objUser_3_2['id'] eq ''">
-							            		<a href="{:U('Business/add',array('id'=>$objUser_2_1['id'],'area'=>2))}">添加</a>
-							            	<else/>
-							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_2['id']))}">置顶</a>
-							            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_3_2.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_3_2.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						             <td>{$subcounts_3_2.count_left_remain|default=' '}</td> -->
+<!-- 						             <td>{$subcounts_3_2.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    <td width="25%" align="center">
 						    	<!--第三层第三个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_3_3.user_login|default='无'}<br/>({$objUser_3_3.rand|user_rand})</th>
+						            <th colspan="3"><if condition="$objUser_3_3['id'] eq ''">
+							            		<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>1))}">{$objUser_3_3.user_login|default='空点位'}<br/>{$objUser_3_3.user_nicename}<br/>({$objUser_3_3.rand|user_rand})</a>
+							            	<else/>
+							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_3['id']))}">{$objUser_3_3.user_login|default='空点位'}<br/>{$objUser_3_3.user_nicename}<br/>({$objUser_3_3.rand|user_rand})</a>
+							            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -292,7 +273,7 @@
 						            <elseif condition="$objUser_3_3['user_status'] eq 2" />
 						           		<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_3_3['user_status'] eq 0 and $objUser_3_3['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 									<elseif condition="$objUser_3_3['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -300,30 +281,25 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_3_3.count_left_total|default='0'}</td>
-						            <td>{$subcounts_3_3.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						             <td>{$subcounts_3_3.count_left_remain|default='0'}</td>
-						             <td>{$subcounts_3_3.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-							            <if condition="$objUser_3_3['id'] eq ''">
-							            		<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>1))}">添加</a>
-							            	<else/>
-							            		<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_3['id']))}">置顶</a>
-							            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_3_3.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_3_3.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						             <td>{$subcounts_3_3.count_left_remain|default=' '}</td> -->
+<!-- 						             <td>{$subcounts_3_3.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						    <td width="25%" align="center">
 						    	<!--第三层第四个用户-->
 								<table class="t_info" border="0" cellspacing="1" cellpadding="0">
 						          <tr>
-						            <th colspan="3">{$objUser_3_4.user_login|default='无'}<br/>({$objUser_3_4.rand|user_rand})</th>
+						            <th colspan="3"><if condition="$objUser_3_4['id'] eq ''">
+							            	<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>2))}">{$objUser_3_4.user_login|default='空点位'}<br/>{$objUser_3_4.user_nicename}<br/>({$objUser_3_4.rand|user_rand})</a>
+							            	<else/>
+							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_4['id']))}">{$objUser_3_4.user_login|default='空点位'}<br/>{$objUser_3_4.user_nicename}<br/>({$objUser_3_4.rand|user_rand})</a>
+							            </if></th>
 						          </tr>
 						          <tr>
 						            <td colspan="3">
@@ -332,7 +308,7 @@
 						            <elseif condition="$objUser_3_4['user_status'] eq 2" />
 						            	<span><font color="blue">锁定</font></span>
 						            <elseif condition="$objUser_3_4['user_status'] eq 0 and $objUser_3_4['user_login'] eq ''" />
-						            	<span><font color="blue">未注册</font></span>
+						            	<span><font color="blue">点击注册</font></span>
 						            <elseif condition="$objUser_3_4['user_status'] eq 3"/>
 						            	<span class="cRed">出局</span>
 						            <else/>
@@ -340,23 +316,14 @@
 						            </if>
 						            </td>
 						          </tr>
-						          <tr>
-						            <td>{$subcounts_3_4.count_left_total|default='0'}</td>
-						            <td>{$subcounts_3_4.count_right_total|default='0'}</td>
-						          </tr>
-						          <tr>
-						             <td>{$subcounts_3_4.count_left_remain|default='0'}</td>
-						             <td>{$subcounts_3_4.count_right_remain|default='0'}</td>
-						          </tr>
-						          <tr>
-						            <td colspan="3">
-							            <if condition="$objUser_3_4['id'] eq ''">
-							            	<a href="{:U('Business/add',array('id'=>$objUser_2_2['id'],'area'=>2))}">添加</a>
-							            	<else/>
-							            	<a href="{:U('User/Business/net_pyramid',array('id'=>$objUser_3_4['id']))}">置顶</a>
-							            </if>
-						            </td>
-						            </tr>
+<!-- 						          <tr> -->
+<!-- 						            <td>{$subcounts_3_4.count_left_total|default=' '}</td> -->
+<!-- 						            <td>{$subcounts_3_4.count_right_total|default=' '}</td> -->
+<!-- 						          </tr> -->
+<!-- 						          <tr> -->
+<!-- 						             <td>{$subcounts_3_4.count_left_remain|default=' '}</td> -->
+<!-- 						             <td>{$subcounts_3_4.count_right_remain|default=' '}</td> -->
+<!-- 						          </tr> -->
 						        </table>
 						        </td>
 						  </tr>
