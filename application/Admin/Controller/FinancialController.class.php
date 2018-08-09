@@ -3,7 +3,7 @@
 namespace Admin\Controller;
 use Common\Controller\AdminbaseController;
 class FinancialController extends AdminbaseController {
-	protected $users_model, $userinfos_model, $mentions_model, $charges_model, $incomes_model;
+	protected $users_model, $userinfos_model, $mentions_model, $charges_model, $incomes_model, $options_model;
 
 	function _initialize() {
 		parent::_initialize();
@@ -12,6 +12,7 @@ class FinancialController extends AdminbaseController {
 		$this->mentions_model = D("Common/Mentions");
 		$this->charges_model = D("Common/Charges");
 		$this->incomes_model = D("Common/Incomes");
+		$this->options_model = D("Common/Options");
 	}
 
     public function index() {
@@ -607,6 +608,18 @@ class FinancialController extends AdminbaseController {
      	$parent_id = I('pid') ? I('pid') : 1;
 		$get_citys = M('ecs_region')->where(array('parent_id'=>$parent_id))->field('region_id,region_name')->select();
 		$this->assign("citys",$get_citys);
+		
+		unset($condition);
+		$condition['addtime'] = "DATE_FORMAT(addtime,'%Y-%m-%d')= '$date'";
+		$total_amount = $this->incomes_model->alias("i")->join(C ( 'DB_PREFIX' )."users u ON i.user_id=u.id")
+			->where( 'u.user_type = 2 and i.types = "hongbao" and i.addtime ="'.$date.'"' )->field('IFNULL(sum(i.amount),0) as packageAmount')->order('i.id desc')->select();
+		$this->assign("packageAmount",$total_amount[0][packageamount]);
+		
+		$option=$this->options_model->where("option_name='site_options'")->getField("option_value");
+		$jsonoption = json_decode($option,true);
+		$hongbao_day = $jsonoption['hongbao_day'];
+		$this->assign("packageNumber",$total_amount[0][packageamount] / $hongbao_day);
+		
      	$this->display();
      }
      
