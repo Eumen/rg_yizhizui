@@ -25,7 +25,7 @@ class Award{
 	}
 	
 	/**
-	 * @see 推荐奖 ，总3层
+	 * @see 推荐奖 ，总2层
 	 * @param $id 用户id，$money 购物的钱
 	 */
 	 private function rid_award($id,$money,$rg_time=null){
@@ -46,7 +46,7 @@ class Award{
 			 		$count ++;//次数记录
 			 	}
 		 	}
-		} while($rid > 0 && $count <= 3);
+		} while($rid > 0 && $count <= 2);
 	 }
 	 
     /**
