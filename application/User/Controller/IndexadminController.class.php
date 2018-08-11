@@ -321,7 +321,6 @@ class IndexadminController extends AdminbaseController {
 	public function add_post(){
 		if(IS_POST){
 		    $username	= I('post.username');
-		    $email	= I('post.email');
 		    $password	= I('post.password');
 		    $password2	= I('post.password2');
 		    $tz_num	= I('post.tz_num');
@@ -342,11 +341,9 @@ class IndexadminController extends AdminbaseController {
 					array('recname', 'require', '引介人不能为空！', 1 ),
 					array('realname', 'require', '姓名不能为空！', 1 ),
 					array('tel', 'require', '联系手机号不能为空！', 1 ),
-					array('email', 'require', '邮箱不能为空！', 1 ),
 					array('password', 'require', '密码设置不能为空！', 1 ),
 			        array('identity_id',    'require', '身份证不能为空！', 1 ),
 					array('tel','/1[34578]{1}\d{9}$/','联系手机号格式不正确！',1, 'regex'),
-					array('email','email','邮箱格式不正确！',1),
 			);
 			if($users_model->validate($rules)->create()===false){
 				$this->error($users_model->getError());
@@ -364,11 +361,9 @@ class IndexadminController extends AdminbaseController {
 			}
 			if(strlen($password)<6) $this->error("密码设置不够安全");
 			$ucenter_syn=C("UCENTER_ENABLED");
-			$uc_checkemail=1;
 			$uc_checkusername=1;
 			if($ucenter_syn){
 				include UC_CLIENT_ROOT."client.php";
-				$uc_checkemail = uc_user_checkemail($email);
 				$uc_checkusername = uc_user_checkname($username);
 			}
 
@@ -377,7 +372,7 @@ class IndexadminController extends AdminbaseController {
 			$rec_user	= $this->users_model->where("user_login='".$recname."'")->find();
 			$biz_user	= $this->users_model->where( array('user_login'=>$biz_username, 'user_type'=>2, 'is_agent'=>1) )->find();
 
-			if($rg_user || $uc_checkemail<0 || $uc_checkusername<0) $this->error("用户名已经存在！");
+			if($rg_user || $uc_checkusername<0) $this->error("用户名已经存在！");
 			if( empty($rec_user) ) $this->error('引介人不存在');
 			
 			//节点人 和区位查找
@@ -401,13 +396,12 @@ class IndexadminController extends AdminbaseController {
 
 			$uc_register = true;
 			if($ucenter_syn){
-				$uc_uid = uc_user_register($username,$password,$email);
+				$uc_uid = uc_user_register($username,$password,null);
 				if($uc_uid<0) $uc_register=false;
 			}
 			if($uc_register){
 				$data=array(
 						'user_login'		=> $username,
-						'user_email'		=> $email,
 						'user_nicename'		=> $realname,
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
