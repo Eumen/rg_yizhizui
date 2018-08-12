@@ -403,6 +403,7 @@ class IndexadminController extends AdminbaseController {
 				$data=array(
 						'user_login'		=> $username,
 						'user_nicename'		=> $realname,
+						'user_email'			=> 'a@a.com',
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
 						'create_time'		=> date("Y-m-d H:i:s"),

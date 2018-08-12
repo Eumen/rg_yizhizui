@@ -480,7 +480,7 @@ class FinancialController extends AdminbaseController {
 			$this->error($this->charges_model->getError());
 		}
 
-		$user_obj = $this->users_model->where(array('user_login'=>trim(I('login_name')),'user_type'=>2))->field('e_amount,amount,id')->find();
+		$user_obj = $this->users_model->where(array('user_login'=>trim(I('login_name')),'user_type'=>2))->field('e_amount,amount,r_amount,id')->find();
 		$user_id = $user_obj['id'];
 		if( empty($user_id) ) $this->error('您输入的用户名不存在');
 		//begin

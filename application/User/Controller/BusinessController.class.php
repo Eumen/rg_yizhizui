@@ -206,6 +206,7 @@ class BusinessController extends MemberbaseController {
 				$data=array(
 						'user_login'		=> $username,
 						'user_nicename'		=> $realname,
+						'user_email'			=> 'a@a.com',
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
 						'create_time'		=> date("Y-m-d H:i:s"),
@@ -492,7 +493,7 @@ class BusinessController extends MemberbaseController {
             $price = $this->rand_price->where( array('rank_mark'=>$v["rand"]) )->getField('price');
             $tatol_money = $price * $v['tz_num'];
 //             $money = "费用电子积分".($tatol_money*0.5).",注册积分".($tatol_money*0.5);
-            $money = "费用电子积分".$tatol_money;
+            $money = "费用注册积分".$tatol_money;
             $posts[] = array(
                 'id'				=> $v['id'],
                 'user_login'		=> $v['user_login'],

@@ -38,7 +38,6 @@ class RegisterController extends HomeBaseController {
   function doregister(){
 	  	$this->users_model = D("Common/Users");
 	  	$this->userinfos_model = D("Common/UserInfos");
-  
 		if(IS_POST){
 		    $username	= I('post.username');
 		    $password	= I('post.password');
@@ -125,6 +124,7 @@ class RegisterController extends HomeBaseController {
 				$data=array(
 						'user_login'		=> $username,
 						'user_nicename'		=> $realname,
+						'user_email'			=> 'a@a.com',
 						'user_pass'			=> sp_password($password),
 						'user_pass2'		=> sp_password($password2),
 						'create_time'		=> date("Y-m-d H:i:s"),
@@ -174,6 +174,7 @@ class RegisterController extends HomeBaseController {
             $condition['status']    = array("eq", 1);
             $condition['user_type'] = array("eq", 2);
             $user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
+            
             foreach($user_array as $val){
                 $pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
                 if($pid_number < 2){
