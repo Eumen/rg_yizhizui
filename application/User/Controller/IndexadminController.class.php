@@ -443,30 +443,56 @@ class IndexadminController extends AdminbaseController {
 		}
 	}
 	
+// 	function get_pid_info($rid){
+// 		$pid_number = $this->users_model->where(array("pid"=>$rid))->count();
+// 		if($pid_number < 2 ){
+// 			$pid_array =  array("pid"=>$rid,"area"=>$pid_number+1);
+// 		}else{
+// 			$rid_code = $this->users_model->where(array("id"=>$rid))->getField("rid_code");
+// 			$condition['rid_code']  = array("like", $rid_code.$rid."|%");
+// 			$condition['status']    = array("eq", 1);
+// 			$condition['user_type'] = array("eq", 2);
+// 			$user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
+// 			foreach($user_array as $val){
+// 				$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+// 				if($pid_number < 2){
+// 					$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+// 					$pid_array = array("pid"=>$val['id'], "area"=>$pid_number+1);
+// 					break;
+// 				}
+// 			}
+// 		}
+// 		if($pid_array){
+// 			$rid_code = $this->users_model->where(array("id"=>$pid_array['pid']))->getField("pid_code");
+// 			$pid_array['pid_code'] = $rid_code.$pid_array['pid']."|";
+// 		}
+// 		return $pid_array;
+// 	}
+
 	function get_pid_info($rid){
-		$pid_number = $this->users_model->where(array("pid"=>$rid))->count();
-		if($pid_number < 2 ){
-			$pid_array =  array("pid"=>$rid,"area"=>$pid_number+1);
-		}else{
-			$rid_code = $this->users_model->where(array("id"=>$rid))->getField("rid_code");
-			$condition['rid_code']  = array("like", $rid_code.$rid."|%");
-			$condition['status']    = array("eq", 1);
-			$condition['user_type'] = array("eq", 2);
-			$user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
-			foreach($user_array as $val){
-				$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
-				if($pid_number < 2){
-					$pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
-					$pid_array = array("pid"=>$val['id'], "area"=>$pid_number+1);
-					break;
-				}
-			}
-		}
-		if($pid_array){
-			$rid_code = $this->users_model->where(array("id"=>$pid_array['pid']))->getField("pid_code");
-			$pid_array['pid_code'] = $rid_code.$pid_array['pid']."|";
-		}
-		return $pid_array;
+	    $pid_number = $this->users_model->where(array("pid"=>$rid))->count();
+	    if($pid_number < 2 ){
+	        $pid_array =  array("pid"=>$rid,"area"=>$pid_number+1);
+	    }else{
+	        $pid_code = $this->users_model->where(array("id"=>$rid))->getField("pid_code");
+	        $condition['pid_code']  = array("like", $pid_code.$rid."|%");
+	        $condition['status']    = array("eq", 1);
+	        $condition['user_type'] = array("eq", 2);
+	        $user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
+	        foreach($user_array as $val){
+	            $pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+	            if($pid_number < 2){
+	                $pid_number = $this->users_model->where(array("pid"=>$val['id']))->count();
+	                $pid_array = array("pid"=>$val['id'], "area"=>$pid_number+1);
+	                break;
+	            }
+	        }
+	    }
+	    if($pid_array){
+	        $rid_code = $this->users_model->where(array("id"=>$pid_array['pid']))->getField("pid_code");
+	        $pid_array['pid_code'] = $rid_code.$pid_array['pid']."|";
+	    }
+	    return $pid_array;
 	}
 
 	public function rg_isexit() {

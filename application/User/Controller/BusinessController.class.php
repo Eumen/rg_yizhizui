@@ -286,8 +286,8 @@ class BusinessController extends MemberbaseController {
 		if($pid_number < 2 ){
 			$pid_array =  array("pid"=>$rid,"area"=>$pid_number+1);
 		}else{
-			$rid_code = $this->users_model->where(array("id"=>$rid))->getField("rid_code");
-			$condition['rid_code']  = array("like", $rid_code.$rid."|%");
+			$pid_code = $this->users_model->where(array("id"=>$rid))->getField("pid_code");
+			$condition['pid_code']  = array("like", $pid_code.$rid."|%");
 			$condition['status']    = array("eq", 1);
 			$condition['user_type'] = array("eq", 2);
 			$user_array = $this->users_model->where($condition)->order("id asc")->field('id')->select();
