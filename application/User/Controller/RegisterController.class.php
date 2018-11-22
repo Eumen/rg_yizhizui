@@ -137,6 +137,7 @@ class RegisterController extends HomeBaseController {
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
 						"rid_code"          => $rid_code,
 				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
+				        "r_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
 						"pid"               => $pid_info['pid'],
 						"area"              => $pid_info['area'],
 						"pid_code"          => $pid_info['pid_code'],

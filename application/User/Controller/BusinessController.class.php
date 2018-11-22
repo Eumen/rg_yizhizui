@@ -222,6 +222,7 @@ class BusinessController extends MemberbaseController {
 						"rid_code"			=> $rid_code,
 						"add_user_id" 		=> $this->uid,
 				        "hb_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
+				        "r_amount"			=> $this->site_options['hongbao'] * intval($tz_num),
 						"pid"				=> $pid_info['pid'],
 						"area"				=> $pid_info['area'],
 						"pid_code"          => $pid_info['pid_code'],

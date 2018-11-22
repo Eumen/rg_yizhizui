@@ -48,7 +48,7 @@ class ProfileController extends MemberbaseController {
         $yes_num = 0;
         $old_fbamount = $user_data['old_fbnum']*$this->site_options['hongbao'];
         $award_amount = M('award_table')->where( array( 'types'=>'DayHongBao', 'addtime'=>array('gt', $user_data['audit_time']) ) )->sum('amount');
-        if($award_amount>$old_fbamount){
+        if($award_amount>=$old_fbamount){
             $yes_num += $user_data['old_fbnum'];
         }
         $lists = M('readd')->where( array("user_id"=>$userid) )->order("id asc")->select();
@@ -57,7 +57,7 @@ class ProfileController extends MemberbaseController {
 
             $old_fbamount = $readd_dznum*$this->site_options['hongbao'];
             $award_amount = M('award_table')->where( array( 'types'=>'DayHongBao', 'addtime'=>array('gt', date('Y-m-d',$_v['add_times'])) ) )->sum('amount');
-            if($award_amount>$old_fbamount){
+            if($award_amount>=$old_fbamount){
                 $yes_num += $readd_dznum;
             }
         }
