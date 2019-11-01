@@ -5,7 +5,7 @@ return array (
   'action' => 'default',
   'data' => '',
   'type' => '1',
-  'status' => '1',
+  'status' => '0',
   'name' => '订单管理',
   'icon' => 'shopping-cart',
   'remark' => '',

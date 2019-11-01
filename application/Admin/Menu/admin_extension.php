@@ -5,7 +5,7 @@ return array (
   'action' => 'default',
   'data' => '',
   'type' => '0',
-  'status' => '1',
+  'status' => '0',
   'name' => '扩展工具',
   'icon' => 'cloud',
   'remark' => '',

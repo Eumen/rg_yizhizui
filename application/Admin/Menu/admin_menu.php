@@ -18,7 +18,7 @@ return array (
       'action' => 'default1',
       'data' => '',
       'type' => '1',
-      'status' => '0',
+      'status' => '1',
       'name' => '前台菜单',
       'icon' => '',
       'remark' => '',
