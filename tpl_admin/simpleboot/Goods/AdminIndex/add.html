@@ -195,7 +195,7 @@ $(function () {
             //验证规则
             rules: {'post[name]':{required:1},'post[price]':{editorcontent:true},'post[post_content]':{editorcontent:true}},
             //验证未通过提示消息
-            messages: {'post[name]':{required:'请输入商品名称'},'post[price]':{editorcontent:'商品价格不能为空'},'post[post_content]':{editorcontent:'内容不能为空'}},
+            messages: {'post[name]':{required:'请输入商品名称'},'post[price]':{required:'商品价格不能为空'},'post[post_content]':{editorcontent:'内容不能为空'}},
             //给未通过验证的元素加效果,闪烁等
             highlight: false,
             //是否在获取焦点时验证

@@ -1,0 +1,40 @@
+<?php
+return array (
+  'app' => 'Admin',
+  'model' => 'Code',
+  'action' => 'index',
+  'data' => '',
+  'type' => '1',
+  'status' => '1',
+  'name' => '激活码管理',
+  'icon' => '',
+  'remark' => '',
+  'listorder' => '0',
+  'children' => 
+  array (
+    array (
+      'app' => 'Admin',
+      'model' => 'Code',
+      'action' => 'createCode',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '生成激活码',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+    array (
+      'app' => 'Admin',
+      'model' => 'Code',
+      'action' => 'transferCode',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '转激活码给会员',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+  ),
+);

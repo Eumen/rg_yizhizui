@@ -32,11 +32,11 @@
             </div>
             
             <div class="control-group">
-                <label class="control-label" for="input_recname">引介人</label>
+                <label class="control-label" for="input_recname">推荐人</label>
                 <div class="controls">
-                    <input type="text" id="input_recname" name="recname" value="{$rg_user.user_login}" required placeholder="请输入引介人" class="span3">
+                    <input type="text" id="input_recname" name="recname" value="{$rg_user.user_login}" required placeholder="请输入推荐人" class="span3">
                     <span class="must_red">*</span>
-                    <a href="javascript:checkConfirm2( $('#input_recname').val() )" style="color:#fff;">检查引介人是否存在</a>
+                    <a href="javascript:checkConfirm2( $('#input_recname').val() )" style="color:#fff;">检查推荐人是否存在</a>
                 </div>
             </div>
             
@@ -97,7 +97,7 @@ function checkConfirm2( username ){
             }
         });
     }else{
-        Wind.use('noty', function () { noty({text: "请输入引介人", type:'error', layout:'center'}); });
+        Wind.use('noty', function () { noty({text: "请输入推荐人", type:'error', layout:'center'}); });
     }
 }
 function checkConfirm3( username ){

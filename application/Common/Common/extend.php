@@ -648,7 +648,7 @@ function fs_user_status($user_status){
 }
 
 function fs_msg_status($msg_id){
-	$mstatus=  M('guestbook')->where(array('id'=>$msg_id))->getField('rstatus');
+	$mstatus=  M('guestbook')->where(array('id'=>$msg_id))->getField('status');
 	if($mstatus==0){
 		return "<font style='color:red;'>未回复</font>";
 	}else if($mstatus==1){

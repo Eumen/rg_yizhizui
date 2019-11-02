@@ -38,7 +38,9 @@
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                     <h4 class="page-title">
-                    		等级 : <font style="color: red;">{$rg_user.rand|fs_user_rand}</font>
+                    		当前等级 : <font style="color: red;">{$rg_user.rand|fs_user_rand}</font>&nbsp;&nbsp;
+                    		投资金额 :<font style="color: red;">{$datas.money|default="0"}</font> &nbsp;&nbsp;
+                    		奖金余额:<font style="color: red;">{$rg_user.amount|default="0"}</font>
                     </h4>
                 </div>
                 <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
@@ -56,87 +58,101 @@
             <div class="row">
                 <div class="col-lg-6 col-sm-12 col-xs-12">
                     <div class="row">
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
+						<div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title" style="margin-bottom: 8px;">推荐人信息</h3>
-                                <div class="breadcrumb" style="margin-bottom:0px;padding: 0px 15px;">
-                                    <php>$rinfo = M('user_infos')->where(array('user_id'=>$rg_user['rid']))->find();</php>
-                                    姓名:{$rinfo['true_name']|default='无'}</br>
-                                    电话:{$rinfo['tel']|default='无'}</br>
-                                    微信:{$rinfo['weixin']|default='无'}</br>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <div class="white-box"><div class="row">
-                                <div class="col-xs-6"><a href="{:U('User/Business/lists_user_rid')}">
-                                    <h3 class="box-title" style="margin-bottom: 6px;">推荐会员</h3>
-                                    <ul class="list-inline two-part">
-                                        <li></li>
-                                        <li><span class="counter">{$rid|default="0"}</span></li>
-                                    </ul>
-                                </a></div>
-                                <div class="col-xs-6"><a href="{:U('User/Business/net_tree')}">
-                                    <h3 class="box-title" style="margin-bottom: 6px;">我的团队</h3>
-                                    <ul class="list-inline two-part">
-                                        <li></li>
-                                        <li><span class="counter">{$rid_number|default="0"}</span></li>
-                                    </ul>
-                                </a></div>
-                            </div></div>
-                        </div>
-                        <div style="clear: both;"></div>
-
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <a href="{:U('User/Finance/award_list')}">
-                            <div class="white-box">
-                                <h3 class="box-title">奖金积分总额</h3>
+                                <h3 class="box-title">账户编号</h3>
                                 <ul class="list-inline two-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
-                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.amount|default="0"}</span></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.user_login}</span></li>
                                 </ul>
                             </div>
-                            </a>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <a href="{:U('User/Finance/award_list')}">
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title">种子积分总额</h3>
+                                <h3 class="box-title">账户昵称</h3>
                                 <ul class="list-inline two-part">
-                                    <li style="width: 38.8%;"><i class="icon-wallet text-inverse"></i></li>
-                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.e_amount|default="0"}</span></li>
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.user_nicename}</span></li>
                                 </ul>
                             </div>
-                            </a>
                         </div>
-                        <div style="clear: both;"></div>
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <a href="{:U('User/Finance/award_list')}">
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <a href="{:U('User/Business/lists_user_rid')}">
                             <div class="white-box">
-                                <h3 class="box-title">电子积分总额</h3>
+                                <h3 class="box-title">推荐会员</h3>
                                 <ul class="list-inline two-part">
-                                    <li style="width: 38.8%;"><i class="icon-wallet text-danger"></i></li>
-                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.shop_amount|default="0"}</span></li>
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid|default="0"}</span></li>
                                 </ul>
                             </div>
                             </a>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-xs-12">
-                            <a href="{:U('User/Finance/award_list')}">
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <a href="{:U('User/Business/net_tree')}">
                             <div class="white-box">
-                                <h3 class="box-title">注册积分总额</h3>
+                                <h3 class="box-title">团队人数</h3>
                                 <ul class="list-inline two-part">
-                                    <li style="width: 38.8%;"><i class="icon-wallet text-red"></i></li>
-                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.r_amount|default="0"}</span></li>
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_number|default="0"}</span></li>
                                 </ul>
                             </div>
                             </a>
                         </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <div class="white-box">
+                                <h3 class="box-title">团队总单数</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_danshu|default="0"}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <div class="white-box">
+                                <h3 class="box-title">团队投资金额</h3>
+                                <ul class="list-inline two-part">
+                                    <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
+                                    <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_total_amount|default="0"}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+<!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
+<!--                             <a href="{:U('User/Finance/award_list')}"> -->
+<!--                             <div class="white-box"> -->
+<!--                                 <h3 class="box-title">种子积分总额</h3> -->
+<!--                                 <ul class="list-inline two-part"> -->
+<!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-inverse"></i></li> -->
+<!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.e_amount|default="0"}</span></li> -->
+<!--                                 </ul> -->
+<!--                             </div> -->
+<!--                             </a> -->
+<!--                         </div> -->
+<!--                         <div style="clear: both;"></div> -->
+<!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
+<!--                             <a href="{:U('User/Finance/award_list')}"> -->
+<!--                             <div class="white-box"> -->
+<!--                                 <h3 class="box-title">电子积分总额</h3> -->
+<!--                                 <ul class="list-inline two-part"> -->
+<!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-danger"></i></li> -->
+<!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.shop_amount|default="0"}</span></li> -->
+<!--                                 </ul> -->
+<!--                             </div> -->
+<!--                             </a> -->
+<!--                         </div> -->
+<!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
+<!--                             <a href="{:U('User/Finance/award_list')}"> -->
+<!--                             <div class="white-box"> -->
+<!--                                 <h3 class="box-title">注册积分总额</h3> -->
+<!--                                 <ul class="list-inline two-part"> -->
+<!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-red"></i></li> -->
+<!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.r_amount|default="0"}</span></li> -->
+<!--                                 </ul> -->
+<!--                             </div> -->
+<!--                             </a> -->
+<!--                         </div> -->
                     	                        
                     </div>
                 </div>
-                
-                
                 <div class="col-lg-6 col-sm-12 col-xs-12">
                     <div class="table-responsive" style="height: 400px;background: #FFF;">
                         <table class="table table-hover manage-u-table">

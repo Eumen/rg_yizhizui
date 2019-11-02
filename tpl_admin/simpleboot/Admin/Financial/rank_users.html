@@ -11,8 +11,8 @@
 							<th>手机</th>
 							<th>推荐人</th>
 							<th>等级</th>
-							<th>合伙人</th>
-							<th>代理</th>
+<!-- 							<th>合伙人</th> -->
+<!-- 							<th>代理</th> -->
                             <th>注册时间</th>
 						</tr>
 					</thead>
@@ -24,11 +24,11 @@
 							<td>{$vo.tel|default='无'}</td>
 							<td>{$vo.rid_name|default='无'}</td>
 							<td>{$vo.rand|fs_user_rand}</td>
-							<td><if condition="$vo['partner'] eq 1">是<else />否 </if></td>
-							<td>
-								<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php>
-								{$sexs[$vo['agent']]}
-							</td>
+<!-- 							<td><if condition="$vo['partner'] eq 1">是<else />否 </if></td> -->
+<!-- 							<td> -->
+<!-- 								<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php> -->
+<!-- 								{$sexs[$vo['agent']]} -->
+<!-- 							</td> -->
 							<td>{$vo['create_time']}</td>
 						</tr>
 						</foreach>

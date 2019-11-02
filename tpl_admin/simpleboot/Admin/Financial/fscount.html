@@ -1,21 +1,43 @@
 <admintpl file="header" />
 <body class="J_scroll_fixed">
 	<div class="wrap J_check_wrap">
+		<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Financial/sh_level')}">
+		        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">一键统计会员等级</button>
+		</form>
+		<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Financial/one_key_award')}">
+		        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">一键发放奖金</button>
+		</form>
+		<form method="post" class="form-horizontal J_ajaxForm" action="{:U('Financial/one_key_delete')}">
+		        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">一键清空数据</button>
+		</form>
 		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">总激活统计</a></li></ul>
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
-					<th>总激活单数</th>
-					<th>未激活总数</th>
-					<th>今日激活总数</th>
 					<th>总会员数</th>
+					<th>激活会员总数</th>
+					<th>未激活会员总数</th>
+					<th>锁定会员总数</th>
+					<th>今日激活会员总数</th>
+					<th>总单量</th>
+					<th>激活总单量</th>
+					<th>未激活总单量</th>
+					<th>锁定总单量</th>
+					
 				</tr>
 			</thead>
 			<tr>
+				<td>{$tatol_user}</td>
                 <td>{$act_count_user}</td>
                 <td>{$count_untivi_user|default="0"}</td>
+                <td>{$count_lock_user|default="0"}</td>
                 <td>{$today_act_count_user|default="0"}</td>
-                <td>{$tatol_user}</td>
+                <td>{$total_danshu|default="0"}</td>
+                <td>{$active_total_danshu|default="0"}</td>
+                <td>{$unactive_total_danshu|default="0"}</td>
+                <td>{$lock_total_danshu|default="0"}</td>
+                
+                
             </tr>
 		</table>
 		<!--begin-->
@@ -48,8 +70,9 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
-					<th>消费返还</th>  <th>推荐奖金</th>  <th>总监分红</th>
-                    <th>董事分红</th>  <th>总计</th>
+					<th>极差奖励</th>
+                    <th>加权分红</th>
+                    <th>总计</th>
 				</tr>
 			</thead>
             <tr>
@@ -59,16 +82,21 @@
 		</table>
 		
 		<!--奖金统计-->
-		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">各种币统计</a></li></ul>
+		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">会员可提现余额总计</a></li></ul>
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
-					<th>奖金积分</th>  <th>种子积分</th>  <th>电子积分</th>
-                    <th>商城积分</th>  <th>注册积分</th>
+					<th>奖金</th>  
+<!-- 					<th>种子积分</th>  <th>电子积分</th> -->
+<!--                     <th>商城积分</th>  <th>注册积分</th> -->
 				</tr>
 			</thead>
             <tr>
-            		<td>{$amount|default="0"}</td><td>{$e_amount|default="0"}</td><td>{$shop_amount|default="0"}</td><td>{$good_amount|default="0"}</td><td>{$r_amount|default="0"}</td>
+            		<td>{$amount|default="0"}</td>
+<!--             		<td>{$e_amount|default="0"}</td> -->
+<!--             		<td>{$shop_amount|default="0"}</td> -->
+<!--             		<td>{$good_amount|default="0"}</td> -->
+<!--             		<td>{$r_amount|default="0"}</td> -->
             </tr>
 		</table>
 		
@@ -76,43 +104,46 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
-				   <th>消费返还</th>  <th>推荐奖金</th>  <th>总监分红</th>
-                    <th>董事分红</th>   <th>总计</th>
+<!-- 				    <th>消费返还</th> -->
+<!-- 					<th>推荐奖金</th>   -->
+				   	<th>极差奖励</th>
+                    <th>董事分红</th>
+					<th>总计</th>
 				</tr>
 			</thead>
             <tr>
-            		<td>{$TSHOPPING|default="0"}</td>
-            		<td>{$TRID|default="0"}</td>
-            		<td>{$TZFENHONG|default="0"}</td>
-            		<td>{$TDFENHONG|default="0"}</td>
+<!--             		<td>{$TSHOPPING|default="0"}</td> -->
+<!--             		<td>{$TRID|default="0"}</td> -->
+            		<td>{$TLEADER|default="0"}</td>
+            		<td>{$TQGFH|default="0"}</td>
             		<td>{$today_sum_toal|default="0"}</td>
             </tr>
 		</table>
 		
-		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">分包总计</a></li></ul>
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr>
-				   <th>分包总计</th>
-				</tr>
-			</thead>
-            <tr>
-            		<td>{$tz_nums|default="0"}</td>
-            </tr>
-		</table>
-		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">日红包统计</a></li></ul>
-		<table class="table table-hover table-bordered">
-			<thead>
-				<tr>
-				   <th>红包总额</th>
-				   <th>红包个数</th>
-				</tr>
-			</thead>
-            <tr>
-            	<td>{$packageAmount}</td>
-            	<td>{$packageNumber}</td>
-            </tr>
-		</table>
+<!-- 		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">分包总计</a></li></ul> -->
+<!-- 		<table class="table table-hover table-bordered"> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 				   <th>分包总计</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!--             <tr> -->
+<!--             		<td>{$tz_nums|default="0"}</td> -->
+<!--             </tr> -->
+<!-- 		</table> -->
+<!-- 		<ul class="nav nav-tabs"> <li class="active"><a style="color: red;">日红包统计</a></li></ul> -->
+<!-- 		<table class="table table-hover table-bordered"> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 				   <th>红包总额</th> -->
+<!-- 				   <th>红包个数</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!--             <tr> -->
+<!--             	<td>{$packageAmount}</td> -->
+<!--             	<td>{$packageNumber}</td> -->
+<!--             </tr> -->
+<!-- 		</table> -->
 		
 		
 	</div>

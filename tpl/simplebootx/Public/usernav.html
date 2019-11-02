@@ -21,7 +21,7 @@
                 <a href="javascript:;" class="waves-effect"><i class="mdi mdi-account-card-details" data-icon="v"></i> <span class="hide-menu">个人信息<span class="fa arrow"></span></span>
                 </a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false">
-                    <li><a href="{:u('User/Profile/myaccount')}"><i class="ti-user"></i> <span class="hide-menu">我的账户</span></a></li>
+<!--                     <li><a href="{:u('User/Profile/myaccount')}"><i class="ti-user"></i> <span class="hide-menu">我的账户</span></a></li> -->
                     <li><a href="{:u('User/Profile/edit')}"><i class="fa fa-edit"></i> <span class="hide-menu">个人资料</span></a></li>
                     <li><a href="{:u('User/Profile/password')}"><i class="ti-lock"></i> <span class="hide-menu">修改密码</span></a></li>
                     <li><a href="{:u('User/Profile/avatar')}"><i class="ti-user"></i> <span class="hide-menu">修改头像</span></a></li>
@@ -34,12 +34,14 @@
 	            </a>
                 <ul class="nav nav-second-level">
                     <li> <a href="{:U('User/Business/add')}"><i class=" fa-fw"><php>echo $iii=1;</php></i><span class="hide-menu">会员注册</span></a> </li>
-                    <li> <a href="{:U('User/Business/readd')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">我要复投</span></a> </li>
                     <li> <a href="{:U('User/Business/lists_centers')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">我的报单</span></a> </li>
-                    <li> <a href="{:U('User/Business/lists_user_rid')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">推荐列表</span></a> </li>
-                    <li> <a href="{:U('User/Business/lists_user_add')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">我的注册</span></a> </li>
                     <li> <a href="{:U('User/Business/net_tree')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">推荐关系</span></a> </li>
-                    <li> <a href="{:U('User/Business/net_pyramid')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">网络结构图</span></a> </li>
+<!--                     <li> <a href="{:U('User/Business/readd')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">我要复投</span></a> </li> -->
+                    
+<!--                     <li> <a href="{:U('User/Business/lists_user_rid')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">推荐列表</span></a> </li> -->
+<!--                     <li> <a href="{:U('User/Business/lists_user_add')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">我的注册</span></a> </li> -->
+                    
+<!--                     <li> <a href="{:U('User/Business/net_pyramid')}"><i class=" fa-fw"><php>echo $iii+=1;</php></i><span class="hide-menu">网络结构图</span></a> </li> -->
                 </ul>
             </li>
             <li>
@@ -50,30 +52,30 @@
                 <ul class="nav nav-second-level">
                     <li> <a href="{:U('User/Finance/award_list')}"><i class="fa-fw">Z1</i><span class="hide-menu">奖金明细</span></a> </li>
                     <li> <a href="{:U('User/Finance/mention')}"><i class="fa-fw">Z2</i><span class="hide-menu">奖金提现</span></a> </li>
-                    <li> <a href="{:U('User/Finance/convert_money')}"><i class="fa-fw">Z3</i><span class="hide-menu">奖金转换</span></a> </li>
+<!--                     <li> <a href="{:U('User/Finance/convert_money')}"><i class="fa-fw">Z3</i><span class="hide-menu">奖金转换</span></a> </li> -->
                     <!--<li> <a href="{:U('User/Finance/change_money')}"><i class="fa-fw">Z4</i><span class="hide-menu">电子转账</span></a> </li>-->
                 </ul>
             </li>
-            <li>
-	            	<a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-cart-outline fa-fw"></i> 
-	            		<span class="hide-menu">购物商城<span class="fa arrow"></span></span>
-	            		<php>$shopping = M('orders')->where(array('user_id'=>session('user.id'),'status'=>0))->count();</php>
-	            	</a>
-                <ul class="nav nav-second-level">
-                    <li> <a href="{:U('Goods/Index/index')}"><i class="mdi mdi-cart-outline fa-fw"> </i><span class="hide-menu">购物商城</span></a> </li>
-                    <li> <a href="{:U('Orders/Index/index')}"><i class="fa fa-file-text">  </i>
-                    	<span class="hide-menu">&nbsp;&nbsp;购物记录</span>
-                    	<if condition="$shopping gt 0 ">
-	            			<span class="label label-rouded label-primary pull-right">{$shopping}</span></span>
-	            		</if>
-                    </a> </li>
-                </ul>
-            </li>
+<!--             <li> -->
+<!-- 	            	<a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-cart-outline fa-fw"></i>  -->
+<!-- 	            		<span class="hide-menu">购物商城<span class="fa arrow"></span></span> -->
+<!-- 	            		<php>$shopping = M('orders')->where(array('user_id'=>session('user.id'),'status'=>0))->count();</php> -->
+<!-- 	            	</a> -->
+<!--                 <ul class="nav nav-second-level"> -->
+<!--                     <li> <a href="{:U('Goods/Index/index')}"><i class="mdi mdi-cart-outline fa-fw"> </i><span class="hide-menu">购物商城</span></a> </li> -->
+<!--                     <li> <a href="{:U('Orders/Index/index')}"><i class="fa fa-file-text">  </i> -->
+<!--                     	<span class="hide-menu">&nbsp;&nbsp;购物记录</span> -->
+<!--                     	<if condition="$shopping gt 0 "> -->
+<!-- 	            			<span class="label label-rouded label-primary pull-right">{$shopping}</span></span> -->
+<!-- 	            		</if> -->
+<!--                     </a> </li> -->
+<!--                 </ul> -->
+<!--             </li> -->
             <li> 
-	            	<a href="javascript:void(0);" class="waves-effect"><i class="fa fa-envelope"></i> 
-	            		<span class="hide-menu">信息管理<span class="fa arrow"></span></span>
-	            		<php>$msgs = M('guestbook')->where(array('user_id'=>session('user.id'),'rstatus'=>1))->count();</php>
-	            	</a>
+            	<a href="javascript:void(0);" class="waves-effect"><i class="fa fa-envelope"></i> 
+            		<span class="hide-menu">信息管理<span class="fa arrow"></span></span>
+            		<php>$msgs = M('guestbook')->where(array('user_id'=>session('user.id'),'status'=>1))->count();</php>
+            	</a>
                 <ul class="nav nav-second-level">
                     <li><a href="{:U('Portal/List/index')}"><i class="fa fa-comment"> </i><span class="hide-menu">  最新通告</span></a></li>
                     <li><a href="{:U('User/Guestbook/messages')}"><i class="fa fa-headphones"> </i><span class="hide-menu">  客服回复</span>
@@ -82,6 +84,14 @@
             			</if>
                     </a></li>
                     <li><a href="{:U('User/Guestbook/index')}"><i class="fa fa-stack-exchange"> </i><span class="hide-menu">  我要留言</span></a></li>
+                </ul>
+            </li>
+            <li> 
+            	<a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-cart-outline fa-fw"></i> 
+            		<span class="hide-menu">激活码管理<span class="fa arrow"></span></span>
+            	</a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{:U('User/Code/index')}"><span class="hide-menu">激活码列表</span></a></li>
                 </ul>
             </li>
             <li><a href="{:u('User/Index/logout')}" class="waves-effect"><i class="mdi mdi-logout fa-fw"></i> <span class="hide-menu">安全退出</span></a></li>

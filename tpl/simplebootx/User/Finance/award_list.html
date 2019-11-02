@@ -47,32 +47,36 @@
                         <div class="mb10">
                             钱包总合计：<font color="red">{$rg_sum|default='0.00'}</font>，
                             &nbsp;&nbsp;&nbsp;
-                            今天合计：<font color="red">{$rg_today_sum|default='0.00'}</font>
+                            今天合计：<font color="red">{$today_amount|default='0.00'}</font>
                         </div>
                     </div>
                 	<div class="table-responsive" style="border: none;">
                         <table class="table table-hover table-bordered table-list">
                            <tr>
                                 <th>日期</th> 
-                                <th>红包返还</th>
-                                <th>推荐奖金</th>
-                                <th>见点奖</th>
-                                <th>报单奖金</th>
-                                <th>领导奖金</th>
-                                <th>董事奖金</th>
-                                <th>管理费</th>
+                                <th>交易分红</th>
+<!--                                 <th>推荐奖金</th> -->
+<!--                                 <th>见点奖</th> -->
+<!--                                 <th>报单奖金</th> -->
+<!--                                 <th>领导奖金</th> -->
+								<if condition="$rand eq 6">
+                                <th>加权分红</th>
+                                </if>
+<!--                                 <th>管理费</th> -->
                                 <th>合计</th>
                             </tr>
                             <foreach name="list" item="vo">
                                 <tr>
                                     <td>{$vo.addtime}</td>
-                                    <td>{$vo.sum_hongbao|default='0.00'}</td>
-                                    <td>{$vo.sum_rid|default='0.00'}</td>
-                                    <td>{$vo.sum_point|default='0.00'}</td>
-                                    <td>{$vo.sum_center|default='0.00'}</td>
                                     <td>{$vo.sum_leader|default='0.00'}</td>
+<!--                                     <td>{$vo.sum_rid|default='0.00'}</td> -->
+<!--                                     <td>{$vo.sum_point|default='0.00'}</td> -->
+<!--                                     <td>{$vo.sum_center|default='0.00'}</td> -->
+<!--                                     <td>{$vo.sum_leader|default='0.00'}</td> -->
+									<if condition="$rand eq 6">
                                     <td>{$vo.sum_qgfh|default='0.00'}</td>
-                                    <td>{$vo.sum_manager|default='0.00'}</td>
+                                    </if>
+<!--                                     <td>{$vo.sum_manager|default='0.00'}</td> -->
                                     <td>{$vo.total|default='0.00'}</td>
                                 </tr>
                              </foreach>

@@ -9,15 +9,18 @@ textarea,input[type="text"]{ margin:0px; width:150px;}
     	<tbody>
         <tr>
             <td width="80">用户名：</td>
-            <td>{$user_login|default='无'}<input type="hidden" id="input-id" name="id" value="{$id}"></td>
+            <td>
+            	<input type="text" id="user_login" placeholder="用户名" name="user_login" value="{$user_login}">
+            	<input type="hidden" id="input-id" name="id" value="{$id}">
+            </td>
             <td width="80">推荐人：</td>
-            <td><input type="text" id="input-rid" placeholder="推荐人" name="input-rid" value="{$rec_name}"></td>
+            <td>{$rec_name|default='无'}</td>
         </tr>
         <tr>
             <td>奖金：</td>
-            <td class="font_color" style="font-size:22px;">{$amount|default='0.00'}</td>
-            <td>昵称：</td>
-            <td><input type="text" id="input-user_nicename" placeholder="昵称" name="user_nicename" value="{$user_nicename}"></td>
+            <td><input type="text" id="amount"  name="amount" value="{$amount}"></td>
+            <td>身份证号：</td>
+            <td><input type="text" id="identity_id" name="identity_id" value="{$userinfo.identity_id}"></td>
         </tr>
         <tr>
             <td>会员等级:</td>
@@ -31,8 +34,30 @@ textarea,input[type="text"]{ margin:0px; width:150px;}
             </td>
             
             <td>姓名：</td>
-            <td><input type="text" id="input-true_name" placeholder="姓名" name="true_name" value="{$userinfo.true_name}"></td>
+            <td><input type="text" id="true_name" name="true_name" value="{$userinfo.true_name}"></td>
         </tr>
+        <tr>
+            <td>开户银行：</td>
+            <td><input type="text" id="account_type"  name="account_type" value="{$userinfo.account_type}"></td>
+            <td>银行卡号：</td>
+            <td><input type="text" id="account_no" name="account_no" value="{$userinfo.account_no}"></td>
+        </tr>
+        <tr>
+            <td>开户姓名：</td>
+            <td><input type="text" id="account_name"  name="account_name" value="{$userinfo.account_name}"></td>
+            <td>开户行地址：</td>
+            <td><input type="text" id="address" name="address" value="{$userinfo.address}"></td>
+        </tr>
+        <tr>
+            <td>单数：</td>
+            <td><input type="text" id="tz_num"  name="tz_num" value="{$tz_num}"></td>
+        </tr>
+<!--         <tr> -->
+<!--             <td>手机：</td> -->
+<!--             <td><input type="text" id="tel"  name="tel" value="{$tel}"></td> -->
+<!--             <td>微信：</td> -->
+<!--             <td><input type="text" id="weixin" name="weixin" value="{$weixin}"></td> -->
+<!--         </tr> -->
 		</tbody>
 	</table>
 </div>

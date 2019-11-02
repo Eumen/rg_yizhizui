@@ -54,16 +54,18 @@
 							</volist> 
 						</select> &nbsp;&nbsp;
 						
-						代理：
-						<select class="select_2" name="agent" style="width: auto;">
-							<option value="0">选择代理</option>
-							<option value="1" <if condition="$formget['agent'] eq 1">selected="selected"</if>>是</option>
-						</select> &nbsp;&nbsp;
+<!-- 						代理： -->
+<!-- 						<select class="select_2" name="agent" style="width: auto;"> -->
+<!-- 							<option value="0">选择代理</option> -->
+<!-- 							<option value="1" <if condition="$formget['agent'] eq 1">selected="selected"</if>>是</option> -->
+<!-- 						</select> &nbsp;&nbsp; -->
 						
 						状态： 
 						<select class="select_2" name="user_status" style="width: auto;">
 							<option value="-1">选择...</option>
-							<option value='1'<php>if($formget[user_status]==1){</php> selected<php>}</php>>已激活</option><option value='2'<php>if($formget[user_status]==2){</php> selected<php>}</php>>未激活</option>
+							<option value='0'<php>if($formget[user_status]==0){</php> selected<php>}</php>>未激活</option>
+							<option value='1'<php>if($formget[user_status]==1){</php> selected<php>}</php>>已激活</option>
+							<option value='2'<php>if($formget[user_status]==2){</php> selected<php>}</php>>锁定</option>
 						</select> &nbsp;&nbsp;
 						时间：
 						<input type="text" name="start_time" class="J_date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
@@ -82,15 +84,15 @@
 							<th>用户名</th>
 							<th>手机</th>
 							<th>推荐人</th>
-							<th>奖金积分</th>
-							<th>种子积分</th>
-							<th>电子积分</th>
-							<th>商城积分</th>
-							<th>注册积分</th>
+							<th>奖金余额</th>
+<!-- 							<th>种子积分</th> -->
+<!-- 							<th>电子积分</th> -->
+<!-- 							<th>商城积分</th> -->
+<!-- 							<th>注册积分</th> -->
 							<th>认购单数</th>
 							<th>状态</th>
 							<th>等级</th>
-							<th>代理</th>
+<!-- 							<th>代理</th> -->
                             <th>登录信息</th>
 							<th align='center'>操作</th>
 						</tr>
@@ -113,29 +115,30 @@
 							</td>
 							
 							<td class="font_color">{$vo.amount|default='0.00'}</td>
-							<td class="font_color">{$vo.e_amount|default='0.00'}</td>
-							<td class="font_color">{$vo.shop_amount|default='0.00'}</td>
-							<td class="font_color">{$vo.good_amount|default='0.00'}</td>
-							<td class="font_color">{$vo.r_amount|default='0.00'}</td>
+<!-- 							<td class="font_color">{$vo.e_amount|default='0.00'}</td> -->
+<!-- 							<td class="font_color">{$vo.shop_amount|default='0.00'}</td> -->
+<!-- 							<td class="font_color">{$vo.good_amount|default='0.00'}</td> -->
+<!-- 							<td class="font_color">{$vo.r_amount|default='0.00'}</td> -->
 							<td class="font_color">{$vo.tz_num|default='0'}</td>
 							<td>{$user_statuses[$vo['user_status']]}</td>
 							<td>{$vo.rand|fs_user_rand}</td>
-							<td>
-								<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php>
-								{$sexs[$vo['agent']]}
-							</td>
+<!-- 							<td> -->
+<!-- 								<php>$sexs=array("0"=>"未是","1"=>"县代理","2"=>"市代理","3"=>"省代理");</php> -->
+<!-- 								{$sexs[$vo['agent']]} -->
+<!-- 							</td> -->
 							<td>{$vo.last_login_time}<br />{$vo.last_login_ip}</td>
 							<td align='center'>
                             <if condition="$vo['user_status'] eq 0">
-                                <a href="{:U('indexadmin/delete',array('id'=>$vo['id']))}" class="J_ajax_del">删除</a>
+                                <a href="{:U('indexadmin/delete',array('id'=>$vo['id']))}" class="J_ajax_del">删除</a> |
+                                <a href="{:U('indexadmin/active_user',array('id'=>$vo['id']))}" class="J_ajax_active">激活</a> |
                             <else />
                                 <a href="javascript:;" class="btn-edit_user" data-id="{$vo.id}">编辑</a> | 
                             		<a href="javascript:;" class="btn-edit_psw" data-id="{$vo.id}">密码</a> | 
                                
                                 <if condition="$vo['user_status'] eq 1">
-                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要锁定此用户吗？">锁定</a>
+                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要锁定此用户吗？">锁定</a> |
                                 <else />
-                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要解除锁定此用户吗？">解除锁定</a>
+                                <a href="{:U('indexadmin/lock',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn" data-msg="您确定要解除锁定此用户吗？">解除锁定</a> |
                                 </if>
                             </if>
                              <a href="{:U('indexadmin/user_login',array('id'=>$vo['id']))}" target="_blank">进入前台</a>
@@ -206,13 +209,23 @@ $(function() {
 });
 function btn_edit_user(uploadid, id){
     var d = uploadid.iframe.contentWindow;
-	
-	var user_nicename 	= d.$("#input-user_nicename").val();
-	var true_name 		= d.$("#input-true_name").val();
+    var user_login 	= d.$("#user_login").val();
+	var true_name 		= d.$("#true_name").val();
 	var rand 			= d.$("#input-rand").val();
 	var rid 			= d.$("#input-rid").val();
+	var identity_id 	= d.$("#identity_id").val();
+	var account_type 	= d.$("#account_type").val();
+	var account_no 	= d.$("#account_no").val();
+	var account_name 	= d.$("#account_name").val();
+	var address 	= d.$("#address").val();
+	var tz_num 	= d.$("#tz_num").val();
+	var amount 	= d.$("#amount").val();
+	
+	
 
-	$.post("{:U('User/Indexadmin/edit_post')}&id="+id,{user_nicename:user_nicename,true_name:true_name,rid:rid,rand : rand }, function(data){
+	$.post("{:U('User/Indexadmin/edit_post')}&id="+id,{user_login:user_login,true_name:true_name,rid:rid
+		,rand : rand,identity_id : identity_id,account_type : account_type,account_no : account_no
+		,account_name : account_name,address : address,tz_num:tz_num ,amount:amount}, function(data){
 		if (data.state === 'fail') {
 			Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
 		}else{

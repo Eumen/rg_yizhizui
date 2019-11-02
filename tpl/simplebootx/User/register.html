@@ -13,8 +13,8 @@
 </div>
 <section id="wrapper" class="login-register" style="background: url({$spic}) center center/cover no-repeat!important;">
   <div class="login-box login-sidebar">
-    <div class="white-box" style="overflow-y: auto;width: 450px;">
-      <form class="form-material form-horizontal J_ajaxForm" id="loginform" action="{:U('User/Register/doregister')}" method="post">
+    <div class="white-box" style="overflow-y: auto;width: 414px;">
+      <form class="form-material form-horizontal J_ajaxForm" style="width:380px;" id="loginform" action="{:U('User/Register/doregister')}" method="post">
         <a href="__ROOT__/" class="text-center db"><img src="__TMPL__Public/images/logo.png" height="50" /></a>
         <div class="col-auto">
         <div class="table_full">
@@ -22,57 +22,57 @@
                 <tr>
                   <th width="80">会员账号 </th>
                   <td>
-                    <input type="text" style="width:160px;" name="username" id="username"  required class="input input_hd J_title_color" placeholder="请输入会员账号" />
+                    <input type="text" style="width:140px;" name="username" id="username"  required class="input input_hd J_title_color" placeholder="请输入会员账号" />
                     <span class="must_red">*</span>
                     <a href="javascript:checkConfirm1( $('#username').val() )">检查用户是否存在</a>
                   </td>
                 </tr>
                 <tr>
-                  <th>引介人 </th>
+                  <th>推荐人</th>
                   <td>
-                    <input type="text" style="width:160px;" name="recname" id="recname"  required class="input input_hd J_title_color" placeholder="请输入引介人账号" />
+                    <input type="text" style="width:140px;" name="recname" id="recname"  required class="input input_hd J_title_color" placeholder="请输入推荐人账号" />
                     <span class="must_red">*</span>
-                    <a href="javascript:checkConfirm1( $('#recname').val() )">检查引介人是否存在</a>
+                    <a href="javascript:checkConfirm1( $('#recname').val() )">检查推荐人是否存在</a>
                   </td>
                 </tr>
-                <tr>
-                  <th>报单中心</th>
-                  <td>
-           			<input class="form-control" type="text" required class='input' name="biz_username" placeholder="*请输入报单中心编号">
-                  </td>
-                </tr>
+<!--                 <tr> -->
+<!--                   <th>报单中心</th> -->
+<!--                   <td> -->
+<!--            			<input class="form-control" type="text" required class='input' name="biz_username" placeholder="*请输入报单中心编号"> -->
+<!--                   </td> -->
+<!--                 </tr> -->
                 <tr>
                   <th>认购单数</th>
                   <td>
-           			<input class="form-control" type="number" required="" name="tz_num" placeholder="*请输入认购单数(1-50)">
+           			<input class="input" type="number" style="width:200px;" required="" name="tz_num" placeholder="*请输入认购单数">
                   </td>
                 </tr>
                 
                 <tr>
                   <th>姓名</th>
-                  <td><input type='text' name='realname' id='realname' required class='input' placeholder='请输入姓名'></td>
+                  <td><input type='text' name='realname' style="width:200px;" id='realname' required class='input' placeholder='请输入姓名'></td>
                 </tr>
                 <tr>
                   <th>身份证号</th>
-                  <td><input class="form-control" type="text" required="" name="identity_id" id="identity_id" placeholder="*请输入身份证号"></td>
+                  <td><input class="input" type="text" style="width:200px;" required="" name="identity_id" id="identity_id" placeholder="*请输入身份证号"></td>
                 </tr>
                 
                 <tr>
                   <th>联系手机</th>
-                  <td><input type="text" id="input_tel" name="tel" required placeholder="请输入联系手机号" class="span3"></td>
+                  <td><input type="text" id="input_tel" style="width:200px;" name="tel" required placeholder="请输入联系手机号" class="span3"></td>
                 </tr>
                 <tr>
                   <th>一级密码</th>
-                  <td><input type="text" id="input_password" name="password" required placeholder="请输入一级密码" class="span3"></td>
+                  <td><input type="text" id="input_password" style="width:200px;" name="password" required placeholder="请输入一级密码" class="span3"></td>
                 </tr>
                 <tr>
                   <th>二级密码</th>
-                  <td><input type="text" id="input_password" name="password2" required placeholder="请输入二级密码" class="span3"></td>
+                  <td><input type="text" id="input_password" style="width:200px;" name="password2" required placeholder="请输入二级密码" class="span3"></td>
                 </tr>
                 <tr>
                   <th>账户类型</th>
                   <td>
-                  	<select name="account_type">
+                  	<select name="account_type" style="width:200px;">
                         <option value="中国农业银行">中国农业银行</option>
                         <option value="中国工商银行">中国工商银行</option>
                         <option value="中国银行">中国银行</option>
@@ -83,11 +83,11 @@
                 </tr>
                 <tr>
                   <th>银行卡号</th>
-                  <td><input type="text" id="input_accountno" name="accountno" placeholder="请输入银行卡号" class="span3"></td>
+                  <td><input type="text" style="width:200px;" id="input_accountno" name="accountno" placeholder="请输入银行卡号" class="span3"></td>
                 </tr>
                 <tr>
                   <th>开户地址</th>
-                  <td><input type="text" id="input_accountinfo" name="accountinfo" placeholder="请输入开户地址" class="span3"></td>
+                  <td><input type="text" style="width:200px;" id="input_accountinfo" name="accountinfo" placeholder="请输入开户地址" class="span3"></td>
                 </tr>
             </tbody>
           </table>
@@ -102,22 +102,22 @@
         </div>
         <php>}</php>
         
-        <div class="form-group">
-          <div class="col-md-12">
-            <div class="checkbox checkbox-primary p-t-0">
-              <input id="checkbox-signup" type="checkbox" name="terms" value="1">
-              <label for="checkbox-signup"> 我同意  <a href="{:U('Portal/article/agreement')}" target="_blank">网站内容服务条款</a></label>
-            </div>
-          </div>
-        </div>
+<!--         <div class="form-group"> -->
+<!--           <div class="col-md-12"> -->
+<!--             <div class="checkbox checkbox-primary p-t-0"> -->
+<!--               <input id="checkbox-signup" type="checkbox" name="terms" value="1"> -->
+<!--               <label for="checkbox-signup"> 我同意  <a href="{:U('Portal/article/agreement')}" target="_blank">网站内容服务条款</a></label> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--         </div> -->
         <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
             <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light J_ajax_submit_btn" type="submit">确定注册</button>
           </div>
         </div>
-        <div class="form-group m-b-0">
+        <div class="form-group text-center m-t-20">
           <div class="col-sm-12 text-center">
-            <p>已经有账号? <a href="{:U('User/Login/index')}" class="text-primary m-l-5"><b>立即登录</b></a></p>
+            <p>已经有账号? <a href="{:U('User/Login/index')}" class="text-primary m-l-5" style="width:200px;"><b>立即登录</b></a></p>
           </div>
         </div>
       </form>

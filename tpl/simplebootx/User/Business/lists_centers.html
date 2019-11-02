@@ -45,18 +45,21 @@
                     <div class="white-box">
                         <div class="scrollable">
                             <div class="table-responsive">
-                                <table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
+                            <div style="margin:0px;padding:0px;">
+                           		<br>激活码:<input type="text" size=40 name="code" id="code" />
+                            </div>
+                               	<table id="demo-foo-addrow" class="table m-t-30 table-hover contact-list" data-page-size="10">
                                     <thead>
                                         <tr>
                                             <th width="60">用户编号</th>
-                                            <th width="100">姓名</th>
-                                            <th width="100">电话</th>
-                                            <th width="100">推荐人编号</th>
-                                            <th width="100">报单人编号</th>
-                                            <th width="100">激活人编号</th>
-                                            <th width="50">状态</th>
-                                            <th width="150">激活时间</th>
-                                            <th width="80">操作</th>
+                                            <th width="60">姓名</th>
+<!--                                             <th width="100">电话</th> -->
+                                            <th width="60">推荐人编号</th>
+<!--                                             <th width="100">报单人编号</th> -->
+<!--                                             <th width="100">激活人编号</th> -->
+<!--                                             <th width="50">状态</th> -->
+<!--                                             <th width="150">激活时间</th> -->
+                                            <th width="200">操作状态</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,22 +67,22 @@
             	                        <tr>
                                             <td>{$vo.user_login|default='无'}</td>
                                             <td>{$vo.true_name|default='无'}</td>
-                                            <td>{$vo.tel|default='无'}</td>
+<!--                                             <td>{$vo.tel|default='无'}</td> -->
                                             <td>{$vo.rip_name|default='无'}</td>
-                                            <td>{$vo.biz_name|default='无'}</td>
-                                            <td>{$vo.audit_name|default='无'}</td>
-                                            <td>
-                                                <if condition="$vo.status eq 0"><span class="cRed">未激活</span>
-                                                <elseif condition="$vo.status eq 1"/><span class="cGreen">已激活</span>
-                                                <else/>锁定</if>
-                                            </td>
-                                            <td><if condition="$vo.audit_time GT 0">{$vo.audit_time}<else/>未激活</if></td>
-                                            <td>
+<!--                                             <td>{$vo.biz_name|default='无'}</td> -->
+<!--                                             <td>{$vo.audit_name|default='无'}</td> -->
+<!--                                             <td> -->
+<!--                                                 <if condition="$vo.status eq 0"><font color="red">未激活</font> -->
+<!--                                                 <elseif condition="$vo.status eq 1"/><font color="green">已激活</font> -->
+<!--                                                 <else/>锁定</if> -->
+<!--                                             </td> -->
+<!--                                             <td><if condition="$vo.audit_time GT 0">{$vo.audit_time}<else/>未激活</if></td> -->
+                                            <td> 
                                                 <if condition="($vo.status eq 0)">
-                                                    <a href="{:U('User/Business/activit',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn"
-                                                     data-msg ="是否确定激活{$vo.user_login}用户?{$vo.need_money}">激活</a> | 
+                                                    <a href="javascript:checkConfirm1('{$vo['id']}')">激活</a> |
                                                     <a href="{:U('User/Business/del_add_user',array('id'=>$vo['id']))}"  class="J_ajax_del" data-msg ="您确定删除{$vo.user_login}用户吗">删除</a>
-                                                <else/>--</if>
+                                                <elseif condition="$vo.status eq 1"/><font color="green">已激活</font>
+                                                <else/>锁定</if>
                                             </td>
             	                        </tr>
                                         </foreach>
@@ -110,5 +113,22 @@
 
 <tc_include file="Public:scripts" />
 <tc_include file="Public:ajax_scripts" />
+<script type="text/javascript">
+function checkConfirm1(id){
+	var code  = $("#code").val();
+	if( code != ''){
+		$.post("{:U('User/Business/activit')}", {code:code,id:id}, function(data){
+			if (data.state === 'fail') {
+				Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+			}else{
+				Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center', timeout:false}); });
+				window.location.href = window.location.href;
+			}
+		});
+	}else{
+		Wind.use('noty', function () { noty({text: "请先输入激活码", type:'error', layout:'center'}); });
+	}
+}
+</script>
 </body>
 </html>
