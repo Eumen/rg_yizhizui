@@ -1,0 +1,40 @@
+<?php
+return array (
+  'app' => 'Goods',
+  'model' => 'Indexadmin',
+  'action' => 'default',
+  'data' => '',
+  'type' => '1',
+  'status' => '1',
+  'name' => '产品中心',
+  'icon' => 'reorder',
+  'remark' => '',
+  'listorder' => '0',
+  'children' => 
+  array (
+    array (
+      'app' => 'Goods',
+      'model' => 'AdminIndex',
+      'action' => 'index',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '产品列表',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+    array (
+      'app' => 'Orders',
+      'model' => 'AdminIndex',
+      'action' => 'index',
+      'data' => '',
+      'type' => '1',
+      'status' => '1',
+      'name' => '订单列表',
+      'icon' => '',
+      'remark' => '',
+      'listorder' => '0',
+    ),
+  ),
+);
