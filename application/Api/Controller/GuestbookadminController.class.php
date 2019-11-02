@@ -11,9 +11,9 @@ class GuestbookadminController extends AdminbaseController{
 	}
 	
 	function index(){
-		$count=$this->guestbook_model->where(array("status"=>1))->count();
+		$count=$this->guestbook_model->where(array("status"=>0))->count();
 		$page = $this->page($count, 20);
-		$guestmsgs=$this->guestbook_model->where(array("status"=>1))->order(array("createtime"=>"DESC"))->limit($page->firstRow . ',' . $page->listRows)->select();
+		$guestmsgs=$this->guestbook_model->where(array("status"=>0))->order(array("createtime"=>"DESC"))->limit($page->firstRow . ',' . $page->listRows)->select();
 		$this->assign("Page", $page->show('Admin'));
 		$this->assign("guestmsgs",$guestmsgs);
 		$this->display();
@@ -42,7 +42,7 @@ class GuestbookadminController extends AdminbaseController{
 		$id			= intval(I("get.id"));
 		$content	= I("post.content");
 
-		$result = $this->guestbook_model->save( array('id'=>$id, 'mid'=>$mid, 'content'=>$content, 'reply_time'=>date('Y-m-d H:i:s')) );
+		$result = $this->guestbook_model->save( array('id'=>$id, 'mid'=>$mid, 'status'=>1,'content'=>$content, 'reply_time'=>date('Y-m-d H:i:s')) );
 		if ($result!==false) {
 			$this->success("保存成功！");
 		} else {

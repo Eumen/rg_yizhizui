@@ -135,8 +135,6 @@ class FinancialController extends AdminbaseController {
                 'id'			=> $v['id'],
                 'amount'		=> $v['amount'],
                 'i_amount'		=> $v['amount']*$rg_pro,
-                'act_amount'	=> $act_amount,
-                'charge'		=> $rg_charge,
                 'status'		=> $status[$v['status']],
                 'addtime'		=> $v['addtime'],
                 'account_type'	=> $v['bank_type'],
@@ -164,14 +162,6 @@ class FinancialController extends AdminbaseController {
     			array (
     					'amount',
     					'提现金额'
-    			),
-    			array (
-    					'charge',
-    					'手续费'
-    			),
-    			array (
-    					'act_amount',
-    					'到帐金额'
     			),
     			array (
     					'account_type',
@@ -516,6 +506,176 @@ class FinancialController extends AdminbaseController {
 			}
 		}
 	}
+	
+    function one_key_award(){
+	    // 取得会员数据ID
+	    $condition['user_type'] = array('eq',2);
+	    $condition['user_status'] = array('eq',1);
+	    $Ids = M('users')->where($condition)->field('id,rand,rid,rid_code,rid_counts,user_type,amount,tz_num')->order('id desc')->select();
+	    foreach ($Ids as $key => $value) {
+	            //奖金发放
+	            $rg_time = array('addtime'=>date('Y-m-d'), 'createtime'=>date('H:i:s'));
+	            //当前用户id
+	            $rid 				= $value['id'];//记录循环用户id
+	            $user_rand 			= 1;//当前用户的等级，用于用户等级对比，后面用户必须要比前面用户等级大
+	            $user_rand_price 	= 0;//当前已经拿到那个比例记录
+	            if ($value['rand'] > 1) {
+	                $rand 	= $value['rand'] ;
+	                $scale 	= $this->site_options['jl_'.$rand];	//用户当前等级可以拿到的比例
+	                $can_get_scale 	= $scale - $user_rand_price;	//可以拿到的用户极差比例
+	                $user_price 	= $can_get_scale * $value['tz_num'];//可以拿到的钱
+	                if($user_price > 0 ){
+	                    $user_rand 			= $rand;//记录到那个等级
+	                    $user_rand_price 	= $scale;//比例记录，用于极差比例对减
+	                    if ($user_price >= 0.01) {
+	                        $other = array('pay_uid'=>$value['id']);
+	                        $income = D('Incomes');
+	                        $flag = $income->income_record($rid,'LEADER','领导级差奖',$user_price,1,$rg_time,$other);
+	                        M('users')->execute("update rg_users set amount=amount + $user_price where id =".$value['id']);
+	                    }
+	                }
+	            }
+	            do {
+	                // 取得当前用户的推荐人id
+	                $rid = M('users')->where(array("id"=>$rid,'user_type'=>2,'user_status'=>1))->getField('rid');
+	                // 如果推荐人存在
+	                if($rid){
+	                    // 取得推荐人的会员信息
+	                    $rg_user = M('users')->where(array("id"=>$rid))->field('id,user_status,rand,user_type,amount')->find();
+	                    // 如果推荐人的状态，会员类型，以及会员等级符合要求
+	                    if( $rg_user['user_status'] == 1 && $rg_user['user_type'] == 2 && $rg_user['rand'] > $user_rand ){
+	                        $rand 	= $rg_user['rand'] ;
+	                        $scale 	= $this->site_options['jl_'.$rand];	//用户当前等级可以拿到的比例
+	                        $can_get_scale 	= $scale - $user_rand_price;	//可以拿到的用户极差比例
+	                        $user_price 	= $can_get_scale * $value['tz_num'];//可以拿到的钱
+	                        if($user_price > 0 ){
+	                            $user_rand 			= $rand;//记录到那个等级
+	                            $user_rand_price 	= $scale;//比例记录，用于极差比例对减
+	                            $user = M('users')->where( array('id'=>$rid,'user_status'=>1) )->find();
+	                            if ($user_price >= 0.01) {
+	                                $other = array('pay_uid'=>$value['id']);
+	                                $income = D('Incomes');
+	                                $flag = $income->income_record($rid,'LEADER','领导级差奖',$user_price,1,$rg_time,$other);
+	                                M('users')->execute("update rg_users set amount=amount+$user_price where id =".$rid);
+	                            }
+	                        }
+	                    }
+	                }
+	            } while($rid > 0);
+	            // 加权分红
+	            $country_director  = $this->site_options['qgyye'];
+	            if($country_director > 0){
+	                $can_get_money = $country_director * $value['tz_num'];
+	                $guser = M('users')->where(array("user_status"=>1,"user_type"=>2,'rand'=>6))->field('id,amount')->select();
+	                if($guser){
+	                    $one_money = round($can_get_money/count($guser),4);
+	                    if($one_money>0){
+	                        foreach($guser as $val){
+	                            $user =  M('users')->where( array('id'=>$val['id'],'user_status'=>1) )->find();
+	                            if ($one_money >= 0.01) {
+	                                $other= array('pay_uid'=>$value['id']);
+	                                $income = D('Incomes');
+	                                $flag = $income->income_record($val['id'],'QGFH','VIP5加权分红',$one_money,1,$rg_time,$other);
+	                                M('users')->execute("update rg_users set amount=amount+$one_money where id =".$val['id']);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+            $this->success("奖金发放成功!", U("Admin/Financial/fscount"));
+	    
+	}
+	
+	/**
+	 * 方法功能：自动检测是否匹配领导级别条件，匹配则提升至对应级别，否则降级
+	 * **/
+	public function sh_level()
+	{
+	    // 取得会员数据ID
+	    $Ids = M('users')->where(array('user_type'=>2,'user_status'=>1))->field('id,rand,rid,rid_code,rid_counts')->order('id desc')->select();
+	    // 根据ID循环检索业绩条件
+	    foreach ($Ids as $key => $value) {
+	        // id
+	        $myid = $value['id'];
+	        // rand
+	        $rand = $value['rand'];
+	        //
+	        while ( $myid > 0 ) {
+	            $users = M('users')->where(array("id"=>$myid))->field('id,rid,user_status,rid_code,tz_num')->find();
+	            if($users){
+	                if ($users['tz_num'] >= 5) {
+	                    //团队业绩
+	                    $rid_code 	= $users['rid_code'].$users['id'];
+	                    $tz_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"),'user_type'=>2,'user_status'=>1) )->sum('tz_num');
+	                    // 团队业绩
+	                    $ach = $tz_num * 2000 + $users['tz_num'] * 2000;
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>1,'user_type'=>2,'user_status'=>1) )->count();
+	                    if($ach >= 10000 && $fl_num > 1 ){ $this->user_update_rand($myid, 2); }//VIP1
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>2,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 30000 && $fl_num > 1 ) { $this->user_update_rand($myid, 3); } //VIP2
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>3,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 70000 && $fl_num > 1 ) { $this->user_update_rand($myid, 4); } //VIP3
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>4,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 140000 && $fl_num > 1 ) { $this->user_update_rand($myid, 5); } //VIP4
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>5,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 300000 && $fl_num > 1 ) { $this->user_update_rand($myid, 6); } //VIP5
+	                    // 单人业绩高于对应等级
+	                    if( $users['tz_num'] * 2000 >= 10000){ $this->user_update_rand($myid, 2); }//VIP1
+	                    if( $users['tz_num'] * 2000 >= 30000) { $this->user_update_rand($myid, 3); } //VIP2
+	                    if( $users['tz_num'] * 2000 >= 70000) { $this->user_update_rand($myid, 4); } //VIP3
+	                    if( $users['tz_num'] * 2000 >= 140000) { $this->user_update_rand($myid, 5); } //VIP4
+	                    if( $users['tz_num'] * 2000 >= 300000) { $this->user_update_rand($myid, 6); } //VIP5
+	                } else {
+	                    //团队业绩
+	                    $rid_code 	= $users['rid_code'].$users['id'];
+	                    $tz_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"),'user_type'=>2,'user_status'=>1) )->sum('tz_num');
+	                    // 团队业绩
+	                    $ach = $tz_num * 2000 + $users['tz_num'] * 2000;
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>1,'user_type'=>2,'user_status'=>1) )->count();
+	                    if($ach >= 10000 && $fl_num > 1 ){ $this->user_update_rand($myid, 2); }//VIP1
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>2,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 30000 && $fl_num > 1 ) { $this->user_update_rand($myid, 3); } //VIP2
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>3,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 70000 && $fl_num > 1 ) { $this->user_update_rand($myid, 4); } //VIP3
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>4,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 140000 && $fl_num > 1 ) { $this->user_update_rand($myid, 5); } //VIP4
+	                    
+	                    $fl_num 	= M('users')->where( array('rid_code'=>array('like', $rid_code."|%"), 'rand'=>5,'user_type'=>2,'user_status'=>1) )->count();
+	                    if( $ach >= 300000 && $fl_num > 1 ) { $this->user_update_rand($myid, 6); } //VIP5
+	                }
+	                
+	            }
+	            $myid = $users['rid'];
+	        }
+	    }
+	    $this->success("会员等级统计成功!", U("Admin/Financial/fscount"));
+	}
+	
+	private function user_update_rand($user_id,$rand){
+	    $ruser_rand = M('users')->where(array("id"=>$user_id,'user_status'=>1))->getField('rand');
+	    if($ruser_rand && $ruser_rand < $rand){
+	        return M('users')->where('id='.$user_id)->setField('rand',$rand);
+	    }
+	}
+	
+	function one_key_delete(){
+        M("users")->where('id > 1')->delete();
+        M("user_infos")->where('id > 0')->delete();
+        M("incomes")->where('id > 0')->delete();
+        M("award_table")->where('id > 0')->delete();
+        M("charges")->where('id > 0')->delete();
+        M("code")->where('id > 0')->delete();
+        M("convert_money_lists")->where('id > 0')->delete();
+        M("fsbonusly")->where('id > 0')->delete();
+        M("mentions")->where('id > 0')->delete();
+        $this->success("删除成功！");
+	}
 
 	public function recharge_del(){
         if($this->charges_model->where('id='.I('get.id'))->setField('status',2)){
@@ -551,9 +711,29 @@ class FinancialController extends AdminbaseController {
      	$condition['user_status'] = 0;
      	$this->assign("count_untivi_user",$this->users_model->where($condition)->count());
      	
+     	//锁定
+     	$condition['user_status'] = 2;
+     	$this->assign("count_lock_user",$this->users_model->where($condition)->count());
+     	
      	//总会员总数
      	unset($condition['user_status']);
      	$this->assign("tatol_user",$this->users_model->where($condition)->count());
+     	
+     	//总单量
+     	unset($condition['user_status']);
+     	$this->assign("total_danshu",$this->users_model->where($condition)->sum('tz_num'));
+     	
+     	//激活总单量
+     	$condition['user_status'] = 1;
+     	$this->assign("active_total_danshu",$this->users_model->where($condition)->sum('tz_num'));
+     	
+     	//未激活总单量
+     	$condition['user_status'] = 0;
+     	$this->assign("unactive_total_danshu",$this->users_model->where($condition)->sum('tz_num'));
+     	
+     	//锁定总单量
+     	$condition['user_status'] = 2;
+     	$this->assign("lock_total_danshu",$this->users_model->where($condition)->sum('tz_num'));
 
      	//会员奖金统计
      	unset($condition['user_status']);
@@ -573,7 +753,7 @@ class FinancialController extends AdminbaseController {
      	$this->assign("today_act_count_user",$this->users_model->where($condition)->count());
      	
      	//总拨出
-     	$award_type = array('SHOPPING','RID','ZFENHONG','DFENHONG');
+     	$award_type = array('LEADER','QGFH');
      	unset($condition);
      	$condition['types'] = array('in',$award_type);
      	$condition['status'] = array('eq',1);
@@ -684,10 +864,10 @@ class FinancialController extends AdminbaseController {
      		$where= "rand=".$rank;
      		if(empty($rank)){ $rank = 0; }
      	}
-		$count	= $this->users_model->alias("u")->join(C ( 'DB_PREFIX' )."user_infos ui ON ui.user_id=u.id")->where( $where )->count();
+		$count	= $this->users_model->alias("u")->join(C ( 'DB_PREFIX' )."user_infos ui ON ui.user_id=u.id")->where( $where.' and u.user_status = 1 and u.user_type = 2')->count();
 		$page	= $this->page($count, 20);
 
-        $lists = $this->users_model->alias("u")->join(C ( 'DB_PREFIX' )."user_infos ui ON ui.user_id=u.id")->where( $where )->field('u.*,ui.true_name,ui.tel,ui.weixin')->limit($page->firstRow . ',' . $page->listRows)->order('u.id desc')->select();
+        $lists = $this->users_model->alias("u")->join(C ( 'DB_PREFIX' )."user_infos ui ON ui.user_id=u.id")->where( $where.' and u.user_status = 1 and u.user_type = 2' )->field('u.*,ui.true_name,ui.tel,ui.weixin')->limit($page->firstRow . ',' . $page->listRows)->order('u.id desc')->select();
         foreach ($lists as $_k => $_v) {
             $lists[$_k]['rid_name'] = $this->users_model->where( array('id'=>$_v['rid']) )->getField('user_login');
             $lists[$_k]['rec_true_name'] = $this->userinfos_model->where( array('user_id'=>$_v['rid']) )->getField('true_name');

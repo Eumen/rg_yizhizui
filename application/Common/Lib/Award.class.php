@@ -13,12 +13,12 @@ class Award{
 	
 	/**@see id 激活会员id，rid推荐人id **/
 	public function begin_award($id,$money,$rg_time=null){
-        $this->rid_award($id,$money,$rg_time);//done 推荐奖金
-        $this->layer_award($id,$money,$rg_time);//done  见点奖金
-        $this->agen_award($id,$money,$rg_time);//done  中心奖金
+//         $this->rid_award($id,$money,$rg_time);//done 推荐奖金
+//         $this->layer_award($id,$money,$rg_time);//done  见点奖金
+//         $this->agen_award($id,$money,$rg_time);//done  中心奖金
         
-        $this->leader_award($id,$money,$rg_time);//done 极差奖金
-		$this->country_director_award($id,$money,$rg_time);//done 全国董事
+        $this->leader_award($id,$rg_time);//done 极差奖金
+		$this->country_director_award($id,$rg_time);//done 全国董事
 		//用户升级判断
 		$this->user_update($id,$money,$rg_time);
 		return true;
@@ -101,21 +101,23 @@ class Award{
     }
     
 	/** 领导级差奖 **/
-    public function leader_award($id,$money,$rg_time){
+    public function leader_award($id,$rg_time){
         if(empty($id)) { return; }
 		//当前用户id
 		$rid 				= $id;//记录循环用户id
 		$user_rand 			= 1;//当前用户的等级，用于用户等级对比，后面用户必须要比前面用户等级大
 		$user_rand_price 	= 0;//当前已经拿到那个比例记录
 		do {
-		 	$rid = $this->user->where(array("id"=>$rid))->getField('pid');
+		 	// $rid = $this->user->where(array("id"=>$rid))->getField('pid');
+		 	$rid = $this->user->where(array("id"=>$rid))->getField('rid');
 		 	if($rid){
 		 		$rg_user = $this->user->where(array("id"=>$rid))->field('id,user_status,rand')->find();
-			 	if( $rg_user['user_status'] == 1 && $rg_user['rand'] > $user_rand ){
+			 	if( $rg_user['user_status'] == 1 && $rg_user['user_type'] == 2 && $rg_user['rand'] > $user_rand ){
 			 		$rand 	= $rg_user['rand'] ;
 			 		$scale 	= $this->site_options['jl_'.$rand];	//用户当前等级可以拿到的比例
 			 		$can_get_scale 	= $scale - $user_rand_price;	//可以拿到的用户极差比例
-			 		$user_price 	= ($can_get_scale/100) * $money;//可以拿到的钱
+// 			 		$user_price 	= ($can_get_scale/100) * $money;//可以拿到的钱
+			 		$user_price 	= $can_get_scale;//可以拿到的钱
 			 		if($user_price > 0 ){
 			 			$user_rand 			= $rand;//记录到那个等级
 			 			$user_rand_price 	= $scale;//比例记录，用于极差比例对减
@@ -127,16 +129,19 @@ class Award{
     }
     
      /**@全国董事**/
-	 public function country_director_award($id,$money,$rg_time){
-	 	$country_director  = $this->site_options['qgyye']/100;
+	 public function country_director_award($id,$rg_time){
+// 	 	$country_director  = $this->site_options['qgyye']/100;
+	 	$country_director  = $this->site_options['qgyye'];
 	 	if($country_director > 0){
-	 		$can_get_money = $money * $country_director;
-	 		$guser = $this->user->where(array("user_status"=>1,'rand'=>6))->field('id')->select();
+// 	 		$can_get_money = $money * $country_director;
+	 		$can_get_money = $country_director;
+	 		$guser = $this->user->where(array("user_status"=>1,"user_type"=>2,'rand'=>6))->field('id')->select();
 	 		if($guser){
 	 			$one_money = round($can_get_money/count($guser),2);
 	 			if($one_money>0){
 	 				foreach($guser as $val){
-	 					$this->integrate->integrates($val['id'],'QGFH','全国董事分红',$one_money,1,$rg_time, $id);
+// 	 					$this->integrate->integrates($val['id'],'QGFH','全国董事分红',$one_money,1,$rg_time, $id);
+	 					$this->integrate->integrates($val['id'],'QGFH','VIP5加权分红',$one_money,1,$rg_time, $id);
 	 				}
 	 			}
 	 		}

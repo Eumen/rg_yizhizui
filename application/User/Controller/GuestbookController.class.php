@@ -52,7 +52,11 @@ class GuestbookController extends MemberbaseController{
 	public function show(){
 		$id = I('get.id');
 		$data = $this->guestbook_model->find($id);
-
+		
+		if ($data['status'] == 1) {
+		    $this->guestbook_model->where('id='.$id)->setField('status',2);
+		}
+		
 		$this->assign($data);
 
         $this->display();

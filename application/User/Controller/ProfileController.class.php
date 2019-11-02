@@ -192,7 +192,7 @@ class ProfileController extends MemberbaseController {
                 array('repassword', 'require', '重复密码不能为空！', 1 ),
                 array('repassword','password','确认密码不正确',0,'confirm'),
                 array('user_pass2', 'require', '二级密码不能为空！', 1 ),
-                array('user_pass3', 'require', '三级密码不能为空！', 1 ),
+//                 array('user_pass3', 'require', '三级密码不能为空！', 1 ),
         );
         if($users_model->validate($rules)->create()===false) $this->error($users_model->getError()); 
 
@@ -200,7 +200,7 @@ class ProfileController extends MemberbaseController {
 
         if(strlen($password) < 5 || strlen($password) > 20) $this->error("密码长度至少5位，最多20位！"); 
         if(strlen($user_pass2) < 5 || strlen($user_pass2) > 20) $this->error("二级密码长度至少5位，最多20位！"); 
-        if(strlen($user_pass3) < 5 || strlen($user_pass3) > 20) $this->error("三级密码长度至少5位，最多20位！"); 
+//         if(strlen($user_pass3) < 5 || strlen($user_pass3) > 20) $this->error("三级密码长度至少5位，最多20位！"); 
 
     	if (IS_POST) {
     		$uid=sp_get_current_userid();
@@ -211,7 +211,7 @@ class ProfileController extends MemberbaseController {
 				}else{
                     $data['user_pass']=sp_password($password);
                     $data['user_pass2']=sp_password($user_pass2);
-                    $data['user_pass3']=sp_password($user_pass3);
+//                     $data['user_pass3']=sp_password($user_pass3);
 					$data['id']=$uid;
 					$r=$this->users_model->save($data);
 					if ($r!==false) {

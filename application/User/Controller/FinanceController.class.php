@@ -24,14 +24,17 @@ class FinanceController extends MemberbaseController {
 	
 	/**  奖金明细  */
     public function award_list() {
+        // 获取级别
+        $this->assign("rand", $this->users_model->where('id = '.$this->uid)->getField('rand'));
+        //获取今天的奖金总和
         $date_string  = date('Y-m-d');
         $condition['user_id'] = array('eq',$this->uid);
         $condition['types'] = array('not in','CHARGE,REGUSER,RECHARGE');
         $condition['addtime'] = array('eq',date('Y-m-d'));
         $this->assign("today_amount", $today_num_info = $this->incomes_model->where($condition)->sum('amount'));
-        //获取今天的奖金总和
-
         unset($condition['addtime']);
+        //获取所有的奖金总和
+        $this->assign("rg_sum", $total_num_info = $this->incomes_model->where($condition)->sum('amount'));
         $num_info = $this->incomes_model->where($condition)->group("addtime")->select();
         $count = count( $num_info );
         $page   = $this->page($count, 20);
@@ -206,7 +209,7 @@ class FinanceController extends MemberbaseController {
 		if (is_numeric(trim($_POST['amount']))) {
 			$amount = intval(trim($_POST['amount']));
 		} else {
-			$this->error('请输入正确的转换金额');
+			$this->error('请输入正确的金额');
 		}
 		$user = $this->users_model->where("id=".$this->uid)->find();
 //		if($user['audit_time'] < '2015-10-16') $this->error('您暂不能提现,给您带来不便请谅解'); 
@@ -220,11 +223,11 @@ class FinanceController extends MemberbaseController {
         $getnum  = $this->site_options['GETMONENUMBER'];
         $fee = $this->site_options['GETMONEYFEE'];
 		
-		if ($types != 'amount') $this->error('请输入选择正确的提现类型'); 
-        if ($min_money > $amount) $this->error('最小提现额度为' . $min_money); 
-        if (1000 < $amount) $this->error('最大提现额度为1000'); 
-		if ($amount > $user[$types] ) $this->error('奖金积分余额不足'); 
-		if ($amount % $multiple != 0) $this->error('提现数额只能为'.$multiple.'元的整数倍'); 
+// 		if ($types != 'amount') $this->error('请输入选择正确的提现类型'); 
+//         if ($min_money > $amount) $this->error('最小提现额度为' . $min_money); 
+//         if (1000 < $amount) $this->error('最大提现额度为1000'); 
+		if ($amount > $user['amount'] ) $this->error('奖金积分余额不足'); 
+// 		if ($amount % $multiple != 0) $this->error('提现数额只能为'.$multiple.'元的整数倍'); 
 
         $m_num = $this->mentions_model->where("addtime > '".date('Y-m-d 00:00:00')."' and addtime < '".date('Y-m-d 23:59:59')."' and user_id = '".$this->uid."'")->count();
         if($m_num>=$getnum) $this->error('当天可以提现次数已超过'.$getnum.'次'); 
@@ -244,7 +247,7 @@ class FinanceController extends MemberbaseController {
 		$data ['bank_adree']		= $userinfos['account_info'];
 		
 	   if($this->mentions_model->add($data)){
-			$this->users_model->where( array('id'=>$this->uid) )->setDec($types, $amount);
+			$this->users_model->where( array('id'=>$this->uid) )->setField('amount', $user['amount'] - $amount);
 			$this->success('提现成功');
 	   }else{
 		   $this->error('提现失败');
@@ -289,7 +292,7 @@ class FinanceController extends MemberbaseController {
         $objMention = $this->mentions_model->find( $id );
         if ($objMention['status'] == 0 && !empty($objMention)) {
             $money = $objMention['amount'];
-            $this->users_model->where( array('id'=>$objMention['user_id']) )->setInc($objMention['types'], $money);
+            $this->users_model->where( array('id'=>$objMention['user_id']) )->setInc('amount',$money);
 
             $data ['id']        = $id;
             $data ['status']    = 3;

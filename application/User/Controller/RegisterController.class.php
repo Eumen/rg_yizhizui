@@ -57,15 +57,14 @@ class RegisterController extends HomeBaseController {
 			$users_model = M('Users');
 			$rules = array(
 					array('username', 'require', '账号不能为空！', 1 ),
-					array('recname', 'require', '引介人不能为空！', 1 ),
+					array('recname', 'require', '推荐人不能为空！', 1 ),
 					array('realname', 'require', '姓名不能为空！', 1 ),
 					array('tel', 'require', '联系手机号不能为空！', 1 ),
 					array('password', 'require', '密码设置不能为空！', 1 ),
 			        array('identity_id',    'require', '身份证不能为空！', 1 ),
 					array('tel','/1[34578]{1}\d{9}$/','联系手机号格式不正确！',1, 'regex'),
-					array('terms',          'require', '您未同意服务条款！', 1 ),
 			);
-			if($tz_num<=0 || $tz_num>50) $this->error("认购单数错误！");
+			if($tz_num<=0) $this->error("认购单数错误！");
 			if($users_model->validate($rules)->create()===false){
 				$this->error($users_model->getError());
 			}
@@ -80,7 +79,7 @@ class RegisterController extends HomeBaseController {
 			if(in_array($username, $banned_usernames)){
 				$this->error("此用户名禁止使用！");
 			}
-			if(strlen($password)<6) $this->error("密码设置不够安全");
+			if(strlen($password)<6) $this->error("请设置6位以上密码！");
 			$ucenter_syn=C("UCENTER_ENABLED");
 			$uc_checkusername=1;
 			if($ucenter_syn){
@@ -94,7 +93,7 @@ class RegisterController extends HomeBaseController {
 			$biz_user	= $this->users_model->where( array('user_login'=>$biz_username, 'user_type'=>2, 'is_agent'=>1) )->find();
 
 			if($rg_user || $uc_checkusername<0) $this->error("用户名已经存在！");
-			if( empty($rec_user) ) $this->error('引介人不存在');
+			if( empty($rec_user) ) $this->error('推荐人不存在');
 			
 			//节点人 和区位查找
 			$pid_info = $this->get_pid_info($rec_user['id']);
@@ -104,15 +103,26 @@ class RegisterController extends HomeBaseController {
 			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
 			
 // 			if(!sp_check_verify_code()) $this->error("验证码错误！");
-			if ($biz_username){
-			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
+// 			if ($biz_username){
+// 			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
+// 			    if(!$biz_user['id']>0){
+// 			        $this->error("报单用户不存在！");
+// 			    }else{
+// 			        $biz_id=$biz_user['id'];
+// 			    }
+// 			}else{
+// 			    $biz_id=$this->uid?$this->uid:675;
+// 			}
+			
+			if ($recname){
+			    $biz_user = M("Users")->where(array('user_login'=>$recname,'is_agent'=>1))->find();
 			    if(!$biz_user['id']>0){
-			        $this->error("报单用户不存在！");
+// 			        $this->error("报单用户不存在！");
 			    }else{
 			        $biz_id=$biz_user['id'];
 			    }
 			}else{
-			    $biz_id=$this->uid?$this->uid:675;
+			    $biz_id=$this->uid?$this->uid:1;
 			}
 
 			$uc_register = true;
@@ -141,6 +151,7 @@ class RegisterController extends HomeBaseController {
 						"area"              => $pid_info['area'],
 						"pid_code"          => $pid_info['pid_code'],
     				    "old_fbnum"         => intval($tz_num),
+				        "is_agent"          => 1,
 				);
 				$user_id = $users_model->add($data);
 				if($user_id){
@@ -154,7 +165,7 @@ class RegisterController extends HomeBaseController {
 					$rg_data['tel']				= $tel;
 					$this->userinfos_model->add($rg_data);
 
-					$this->success("注册成功！等待报单中心激活", U("User/Login/index"));
+					$this->success("注册成功！请联系推荐人激活后再登录！", U("User/Login/index"));
 				}else{
 					$this->error("注册失败！");
 				}

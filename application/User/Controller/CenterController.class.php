@@ -19,7 +19,7 @@ class CenterController extends MemberbaseController {
 	}
     //会员中心
 	public function index() {
-		//推荐人
+		//推荐人数
 		$this->assign("rid",$this->users_model->where(array('rid'=>$this->uid))->count());
 		//优惠券
 		$coupon_where['user_id'] = array('eq',$this->uid);
@@ -61,6 +61,16 @@ class CenterController extends MemberbaseController {
 		$user_where['rid_code'] = array('like',$rid_code."%");
 		$this->assign("rid_number",$this->users_model->where($user_where)->count());
 		
+		//团队总单数
+		$rid_code = session("user.rid_code").session("user.id");
+		$user_where['rid_code'] = array('like',$rid_code."%");
+		$this->assign("rid_danshu",$this->users_model->where($user_where)->sum('tz_num'));
+		
+		//团队投资金额
+		$rid_code = session("user.rid_code").session("user.id");
+		$user_where['rid_code'] = array('like',$rid_code."%");
+		$this->assign("rid_total_amount",$this->users_model->where($user_where)->sum('tz_num') * $this->site_options['readd']);
+		
 		//我的推荐会员
 		$list = $this->users_model->where( array('rid'=>$this->uid, 'user_type'=>2) )->limit(15)->select();
 		$this->assign("my_members",$list);
@@ -68,8 +78,7 @@ class CenterController extends MemberbaseController {
 		//轮播图片
 		$slide = M("slide")->where( array('slide_cid'=>1,'slide_status'=>1) )->order('listorder asc')->select();
 		$this->assign("slide",$slide);
-
-
+		
 		$where=array();
 		//根据参数生成查询条件
 		$where['status'] = array('eq',1);

@@ -140,7 +140,7 @@ class BusinessController extends MemberbaseController {
 			$users_model = M('Users');
 			$rules = array(
 					array('username', 'require', '账号不能为空！', 1 ),
-					array('recname', 'require', '引介人不能为空！', 1 ),
+					array('recname', 'require', '推荐人不能为空！', 1 ),
 					array('realname', 'require', '姓名不能为空！', 1 ),
 					array('tel', 'require', '联系手机号不能为空！', 1 ),
 					array('password', 'require', '密码设置不能为空！', 1 ),
@@ -176,7 +176,7 @@ class BusinessController extends MemberbaseController {
 			$biz_user	= $this->users_model->where( array('user_login'=>$biz_username, 'user_type'=>2, 'is_agent'=>1) )->find();
 		
 			if($rg_user || $uc_checkusername<0) $this->error("用户名已经存在！");
-			if( empty($rec_user) ) $this->error('引介人不存在');
+			if( empty($rec_user) ) $this->error('推荐人不存在');
 			
 			//节点人 和区位查找
 			$pid_info = $this->get_pid_info($rec_user['id']);
@@ -186,15 +186,26 @@ class BusinessController extends MemberbaseController {
 			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
 				
 			// 			if(!sp_check_verify_code()) $this->error("验证码错误！");
-			if ($biz_username){
-				$biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
-				if(!$biz_user['id']>0){
-					$this->error("报单用户不存在！");
-				}else{
-					$biz_id=$biz_user['id'];
-				}
+// 			if ($biz_username){
+// 				$biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
+// 				if(!$biz_user['id']>0){
+// 					$this->error("报单用户不存在！");
+// 				}else{
+// 					$biz_id=$biz_user['id'];
+// 				}
+// 			}else{
+// 				$biz_id=$this->uid?$this->uid:675;
+// 			}
+			
+			if ($recname){
+			    $biz_user = M("Users")->where(array('user_login'=>$recname,'is_agent'=>1))->find();
+			    if(!$biz_user['id']>0){
+// 			        $this->error("报单用户不存在！");
+			    }else{
+			        $biz_id=$biz_user['id'];
+			    }
 			}else{
-				$biz_id=$this->uid?$this->uid:675;
+			    $biz_id=$this->uid?$this->uid:1;
 			}
 		
 			$uc_register = true;
@@ -227,6 +238,7 @@ class BusinessController extends MemberbaseController {
 						"pid_code"          => $pid_info['pid_code'],
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
 				        "old_fbnum"         => intval($tz_num),
+				        "is_agent"          => 1,
 				);
 				$user_id = $users_model->add($data);
 				if($user_id){
@@ -369,18 +381,18 @@ class BusinessController extends MemberbaseController {
 		$this->success("用户名可使用！");
     }
 
-	/*@see 判断 引介人不存在 */
+	/*@see 判断 推荐人不存在 */
 	function rg_isexit_rid() {
         $username	= I('post.username');
         $rg_user	= $this->users_model->where("user_login='$username' and user_type = 2")->find();
-		if( empty($rg_user) ) $this->error("引介人不存在");
+		if( empty($rg_user) ) $this->error("推荐人不存在");
 
 		if( $rg_user ){
 			$user_nicename = $rg_user['user_nicename'] ? $rg_user['user_nicename'] : '无';
 
-			$this->success("引介人：".$user_nicename);
+			$this->success("推荐人：".$user_nicename);
 		}else{
-			$this->error("引介人不可使用！");
+			$this->error("推荐人不可使用！");
 		}
     }
 
@@ -626,7 +638,12 @@ class BusinessController extends MemberbaseController {
 //         }
 // 	}
 	public function activit(){
-        $get_user_id = I('get.id');
+        $get_user_id = I('post.id');
+        $get_code = I('post.code');
+        $get_user_id2 = I('get.id');
+        $get_code2 = I('get.code');
+        $code_obj = M('code')->where(array('code'=>$get_code,'status'=>'0'))->find();
+        if (!$code_obj) $this->error('该激活码已经激活其他会员，不能重复使用!');
         $user_obj = $this->users_model->where(array('id'=>$get_user_id))->find();
 		if (empty($user_obj)) $this->error('无法找到激活用户!'); 
         if ($user_obj['user_status'] == 1) $this->error('已经激活，不能重复激活!'); 
@@ -639,17 +656,18 @@ class BusinessController extends MemberbaseController {
         $neet_money 	= $price * $user_obj['tz_num'];
 
         $shop_amount 	= $this->users_model->where( array('id'=>$this->uid) )->getField('shop_amount');
-        $r_amount   	= $this->users_model->where( array('id'=>$this->uid) )->getField('r_amount');
+//         $r_amount   	= $this->users_model->where( array('id'=>$this->uid) )->getField('r_amount');
 
 //        if ($shop_amount < ($neet_money)) $this->error('您的账户电子积分不足，不能激活！');
 //         if ($shop_amount < ($neet_money*0.5)) $this->error('您的账户电子积分不足，不能激活！');
-        if ($r_amount 	 < ($neet_money*0.5)) $this->error('您的账户注册积分不足，不能激活！');
-        $update_money = array('r_amount'=>$r_amount-($neet_money));
+//         if ($r_amount 	 < ($neet_money*0.5)) $this->error('您的账户注册积分不足，不能激活！');
+//         $update_money = array('r_amount'=>$r_amount-($neet_money));
 // 	    $update_money = array('shop_amount'=>$shop_amount-($neet_money*0.5), 'r_amount'=>$r_amount-($neet_money*0.5));
+        $update_status = array('status'=>1,'uid'=>$get_user_id);
 
         // 扣除激活所需的相应币种金额
-        if( $this->users_model->where( array('id'=>$this->uid) )->setField($update_money) ){
-            D("Common/Incomes")->income_record($this->uid, "REGUSER", "激活普通会员", '-'.$neet_money, 1, $rg_time, array('pay_uid'=>$get_user_id));
+        if( M('code')->where( array('code'=>$get_code,'status'=>'0') )->setField($update_status) ){
+//             D("Common/Incomes")->income_record($this->uid, "REGUSER", "激活普通会员", '-'.$neet_money, 1, $rg_time, array('pay_uid'=>$get_user_id));
 
 			$this->users_model->Activation($get_user_id, $neet_money, $rg_time); //激活并发放奖励
 
@@ -658,7 +676,7 @@ class BusinessController extends MemberbaseController {
             $update_user['audit_time']	= $rg_time['addtime'].' '.$rg_time['createtime'];
             $this->users_model->where( array('id'=>$get_user_id) )->setField($update_user);
 
-            $this->success('恭喜您,激活会员成功！');
+            $this->success('恭喜您,激活会员成功！', U("User/Business/lists_centers"));
         }else{
         	$this->error('不能激活！'); 
         }

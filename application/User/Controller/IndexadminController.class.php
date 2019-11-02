@@ -26,7 +26,7 @@ class IndexadminController extends AdminbaseController {
 		
         if ( isset($_POST['user_status']) && I('post.user_status') != -1 ) {
 			$_GET['user_status'] = I('post.user_status');
-			$rg_user_status = $_GET['user_status'] == 2 ? 0 : $_GET['user_status'];
+			$rg_user_status = $_GET['user_status'];
             array_push($where_ands, "u.user_status = '".$rg_user_status."'");
         }
 		
@@ -77,16 +77,21 @@ class IndexadminController extends AdminbaseController {
 		$this->assign("formget",$_GET);
         $this->assign('lists', $lists);
 		
-		$rg_price = $this->site_options['PRICE'];
+//         $rg_price = $this->site_options['PRICE'];
+		$rg_price = $this->site_options['readd'];
 		$today_arr = $this->users_model->where("user_type = 2 and user_status > 0 and DATE_FORMAT(audit_time,'%Y-%m-%d') = '".date('Y-m-d')."'")->select();
 		$today_rsnum = count($today_arr);
-		foreach($today_arr as $_v){$today_jqnum += $rg_price;}
+// 		foreach($today_arr as $_v){$today_jqnum += $rg_price;}
+		$today_tz_num = $this->users_model->where("user_type = 2 and user_status > 0 and DATE_FORMAT(audit_time,'%Y-%m-%d') = '".date('Y-m-d')."'")->sum("tz_num");
+		$today_jqnum = $today_tz_num * $rg_price;
 		$this->assign('today_rsnum', $today_rsnum ? $today_rsnum : 0); 
 		$this->assign('today_jqnum', $today_jqnum ? $today_jqnum : 0); 
 
 		$rg_arr = $this->users_model->where("user_type = 2 and user_status > 0")->select();
 		$rg_rsnum = count($rg_arr);
-		foreach($rg_arr as $_v){$rg_jqnum += $rg_price;}
+// 		foreach($rg_arr as $_v){$rg_jqnum += $rg_price;}
+		$rg_tz_num = $this->users_model->where("user_type = 2 and user_status > 0")->sum('tz_num');
+		$rg_jqnum = $rg_tz_num * $rg_price;
 		$this->assign('rg_rsnum', $rg_rsnum ? $rg_rsnum : 0); 
 		$this->assign('rg_jqnum', $rg_jqnum ? $rg_jqnum : 0); 
     		
@@ -108,7 +113,7 @@ class IndexadminController extends AdminbaseController {
 		$lists = $this->users_model->alias ( "u" )
 			->join ( C ( 'DB_PREFIX') . "user_infos ui ON ui.user_id=u.id" )
 			->where ( $where )
-			->field ( 'u.id,ui.true_name,ui.tel,u.rid,u.amount,u.e_amount,u.shop_amount,u.good_amount,u.r_amount,u.tz_num,u.user_status,u.rand,u.agent' )
+			->field ( 'u.id,ui.true_name,ui.tel,u.rid,u.amount,u.tz_num,u.user_status,u.rand' )
 			->order ( 'u.id desc' )->select ();
 		$expTableData = $lists;
 		foreach ($expTableData as $_k => $_v) {
@@ -146,23 +151,6 @@ class IndexadminController extends AdminbaseController {
 				case 6 :
 					$expTableData[$_k]['rand'] = '五星会员';
 					break;
-				case 7 :
-					$expTableData[$_k]['rand'] = '预借会员';
-					break;
-			}
-			switch ($_v['agent']) {
-				case 1 :
-					$expTableData[$_k]['agent'] = '县代理';
-					break;
-				case 2 :
-					$expTableData[$_k]['agent'] = '市代理';
-					break;
-				case 3 :
-					$expTableData[$_k]['agent'] = '省代理';
-					break;
-				case 0 :
-					$expTableData[$_k]['agent'] = '未是';
-					break;
 			}
 		}
 		// 导出的Excel表格的名字
@@ -187,23 +175,7 @@ class IndexadminController extends AdminbaseController {
 				),
 				array (
 						'amount',
-						'奖金积分' 
-				),
-				array (
-						'e_amount',
-						'种子积分' 
-				),
-				array (
-						'shop_amount',
-						'电子积分' 
-				),
-				array (
-						'good_amount',
-						'商城积分' 
-				),
-				array (
-						'r_amount',
-						'注册积分' 
+						'奖金余额' 
 				),
 				array (
 						'tz_num',
@@ -216,11 +188,7 @@ class IndexadminController extends AdminbaseController {
 				array (
 						'rand',
 						'等级' 
-				),
-				array (
-						'agent',
-						'代理' 
-				) 
+				)
 		);
 		
 		$fileName = $xlsName;//or $xlsTitle 文件名称可根据自己情况设定
@@ -338,7 +306,7 @@ class IndexadminController extends AdminbaseController {
 			$users_model = M('Users');
 			$rules = array(
 					array('username', 'require', '账号不能为空！', 1 ),
-					array('recname', 'require', '引介人不能为空！', 1 ),
+					array('recname', 'require', '推荐人不能为空！', 1 ),
 					array('realname', 'require', '姓名不能为空！', 1 ),
 					array('tel', 'require', '联系手机号不能为空！', 1 ),
 					array('password', 'require', '密码设置不能为空！', 1 ),
@@ -373,7 +341,7 @@ class IndexadminController extends AdminbaseController {
 			$biz_user	= $this->users_model->where( array('user_login'=>$biz_username, 'user_type'=>2, 'is_agent'=>1) )->find();
 
 			if($rg_user || $uc_checkusername<0) $this->error("用户名已经存在！");
-			if( empty($rec_user) ) $this->error('引介人不存在');
+			if( empty($rec_user) ) $this->error('推荐人不存在');
 			
 			//节点人 和区位查找
 			$pid_info = $this->get_pid_info($rec_user['id']);
@@ -383,15 +351,26 @@ class IndexadminController extends AdminbaseController {
 			$rid_code   = empty($ruser_code)?'':$ruser_code.$rec_user['id']."|";
 			
 // 			if(!sp_check_verify_code()) $this->error("验证码错误！");
-			if ($biz_username){
-			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
+// 			if ($biz_username){
+// 			    $biz_user = M("Users")->where(array('user_login'=>$biz_username,'is_agent'=>1))->find();
+// 			    if(!$biz_user['id']>0){
+// 			        $this->error("报单用户不存在！");
+// 			    }else{
+// 			        $biz_id=$biz_user['id'];
+// 			    }
+// 			}else{
+// 			    $biz_id=$this->uid?$this->uid:675;
+// 			}
+			
+			if ($recname){
+			    $biz_user = M("Users")->where(array('user_login'=>$recname, 'is_agent'=>1))->find();
 			    if(!$biz_user['id']>0){
-			        $this->error("报单用户不存在！");
+// 			        $this->error("报单用户不存在！");
 			    }else{
 			        $biz_id=$biz_user['id'];
 			    }
 			}else{
-			    $biz_id=$this->uid?$this->uid:675;
+			    $biz_id=$this->uid?$this->uid:1;
 			}
 
 			$uc_register = true;
@@ -420,6 +399,7 @@ class IndexadminController extends AdminbaseController {
 						"pid_code"          => $pid_info['pid_code'],
 						"biz_id"			=> $biz_user['id']?$biz_user['id']:0,
 				        "old_fbnum"         => intval($tz_num),
+				        "is_agent"          => 1,
 				);
 				$user_id = $users_model->add($data);
 				if($user_id){
@@ -525,6 +505,24 @@ class IndexadminController extends AdminbaseController {
 		$this->display(":edit");
 	}
 	
+	// 后台激活会员
+	public function active_user(){
+	   $get_add_user_id  = I('get.id');
+		if($get_add_user_id){
+			$condition['id']			= array('eq',$get_add_user_id);
+			$condition['user_status']	= array('EQ', 0);
+			
+			$fields['user_status']	= 1;
+			$fields['audit_time']	= date("Y-m-d H:i:s");
+			
+			if($this->users_model->where($condition)->setField($fields)){
+				$this->success("激活成功");
+			}else{
+				$this->error("激活失败");
+			}
+		}
+	}
+	
 	public function show_user(){
 		$user = $this->users_model->find(I('get.id'));
 		if($user['rid']){
@@ -542,27 +540,47 @@ class IndexadminController extends AdminbaseController {
     
     public function edit_post() {
 		if(IS_POST){
+		    // 取得对应ID的会员表信息
 			$user = $this->users_model->find(I('get.id'));
 			$_POST['id']		 	= $user['id'];
-			$_POST['user_login'] = $user['user_login'];
-			$_POST['user_pass']  = $user['user_pass'];
-			$post_rid = I('rid');
-			if($post_rid){
-				$rid = $user = $this->users_model->where(array("user_login"=>$post_rid))->getField('id');
-				if(empty($rid)){ $this->error("推荐人无法找到，请核对！"); }
-				
-				if($user['rid'] == $rid){ 
-					unset($_POST['rid']); 
-				}else if($rid){
-					$_POST['rid'] = $rid;
-				}
-			}else{
-				if(empty($post_rid)){ unset($_POST['rid']); }
-			}
-			
+			$_POST['user_login'] = I('user_login');
+			$_POST['tz_num'] = I('tz_num');
+			$_POST['amount'] = I('amount');
+// 			$_POST['user_pass']  = $user['user_pass'];
+// 			$post_rid = I('rid');
+			$identity_id 	= I('identity_id');
+			$account_type 	= I('account_type');
+			$account_no 	= I('account_no');
+			$account_name 	= I('account_name');
+			$address 	= I('address');
+			$true_name 	= I('true_name');
+// 			// 推荐人操作相关处理
+// 			if($post_rid){
+// 			    // 检索传入的推荐人信息
+// 				$rid = $user = $this->users_model->where(array("user_login"=>$post_rid))->getField('id');
+// 				// 如果为空，输出错误信息
+// 				if(empty($rid)){ $this->error("推荐人无法找到，请核对！"); }
+// 				// 如果推荐人信息与之前相同，不做处理
+// 				if($user['rid'] == $rid){
+// 					unset($_POST['rid']); 
+// 				}
+// 				// 如果不同，把推荐人ID设置为传入的推荐人ID
+// 				else if($rid){
+// 					$_POST['rid'] = $rid;
+// 				}
+// 			}else{
+// 				if(empty($post_rid)){ unset($_POST['rid']); }
+// 			}
+            $data['true_name'] =  $true_name;
+            $data['address'] =  $address;
+            $data['account_name'] =  $account_name;
+            $data['account_no'] =  $account_no;
+            $data['account_type'] =  $account_type;
+            $data['identity_id'] =  $identity_id;
+            
 			if ($this->users_model->create()) {
 				if ($this->users_model->save()!==false) {
-					$this->userinfos_model->where(array('user_id'=>$user['id']))->save(array('true_name'=>$_POST['true_name']));
+					$this->userinfos_model->where(array('user_id'=>$user['id']))->save($data);
 					$this->success("保存成功！");
 				} else {
 					$this->error("保存失败！");
@@ -587,16 +605,16 @@ class IndexadminController extends AdminbaseController {
 			$user = $this->users_model->find(I('get.id'));
     		if(empty($_POST['password'])) $this->error("一级密码不能为空！");
     		if(empty($_POST['password2'])) $this->error("二级密码不能为空！");
-    		if(empty($_POST['password3'])) $this->error("三级密码不能为空！");
+//     		if(empty($_POST['password3'])) $this->error("三级密码不能为空！");
 
     		$password = I('post.password');
     		$password2 = I('post.password2');
-    		$password3 = I('post.password3');
+//     		$password3 = I('post.password3');
     		
 			$data['id']			= $user['id'];
 			$data['user_pass']	= sp_password($password);
 			$data['user_pass2']	= sp_password($password2);
-			$data['user_pass3']	= sp_password($password3);
+// 			$data['user_pass3']	= sp_password($password3);
 			$r=$this->users_model->save($data);
 			if ($r!==false) {
 				$this->success("修改成功！");

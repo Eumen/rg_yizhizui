@@ -77,18 +77,25 @@ class UsersModel extends CommonModel
         M()->startTrans();
 		//数据累积区
 		$user_rid = $this->where( array('id'=>$id) )->getField ( 'rid' );
-		if($user_rid) $this->where( array('id'=>$user_rid) )->setInc ( 'rid_counts', 1 );
+// 		if($user_rid) $this->where( array('id'=>$user_rid) )->setInc ( 'rid_counts', 1 );
 
 		//奖金区域
-		$award = new \Common\Lib\Award();
-		$r1[] = $award->begin_award($id,$price,$rg_time);
+// 		$award = new \Common\Lib\Award();
+// 		$r1[] = $award->begin_award($id,$price,$rg_time);
 
-        foreach ($r1 as $v) { $r[] = $v;  }
-		if (in_array(false, $r)) {
-            M()->rollback();
-        } else {
-            M()->commit();
-        }
+//         foreach ($r1 as $v) { $r[] = $v;  }
+// 		if (in_array(false, $r)) {
+//             M()->rollback();
+//         } else {
+//             M()->commit();
+//         }
+		if($user_rid) {
+		    if($this->where( array('id'=>$user_rid) )->setInc ( 'rid_counts', 1 )) {
+                M()->commit();
+            } else {
+                M()->rollback();
+            }
+		}
         return true;
 	}
 	

@@ -47,7 +47,15 @@ class HomeBaseController extends AppframeController {
 			$wxheadimg = M()->table('weixin_user')->where(array('ecuid'=>$uid))->getField("headimgurl");
 			$smeta = json_decode($rg_user['avatar'],true); $photo = $smeta['photo']; $avatar = sp_get_asset_upload_path($photo[0][url]);
 			$rg_user['avatar'] = $rg_user['avatar']?$avatar:($wxheadimg?$wxheadimg:"tpl/simplebootx/plugins/images/users/varun.jpg");
-
+			
+			// 等级信息
+			$user_data = M('Users')->where(array("id"=>$uid))->field("audit_time,pid_code,tz_num,hb_amount,hb_amount2,old_fbnum")->find();
+			$datas['money']     = $user_data['tz_num'] * $this->site_options['readd'];
+			$rand = M('Users')->where(array("id"=>$uid))->getField("rand");
+			$datas['news_rank']   = M('rand_price')->where(array('rank_mark'=>$rand))->getField("name");
+			$datas['next_rank']   = M('rand_price')->where(array('rank_mark'=>($rand<6?$rand+1:6)))->getField("name");
+			
+			$this->assign("datas", $datas);
 			$this->assign("rg_user", $rg_user);
 		}
 		
