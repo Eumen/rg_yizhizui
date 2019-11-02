@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{$site_name}</title>
+<meta name="keywords" content="{$site_seo_keywords}" />
+<meta name="description" content="{$site_seo_description}">
+<tc_include file="Public:head" />
+</head>
+
+<body class="fix-header">
+<!-- ============================================================== -->
+<!-- Preloader -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Wrapper -->
+<!-- ============================================================== -->
+<div id="wrapper">
+    <tc_include file="Public:nav" />
+    
+    <tc_include file="Public:usernav"/>
+
+    <!-- ============================================================== -->
+    <!-- Page Content -->
+    <!-- ============================================================== -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">我的激活码</h4> </div>
+                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.php">首页</a></li>
+                        <li class="active">激活码列表</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <div class="scrollable">
+                            <div class="table-responsive">
+                                <table id="demo-foo-addrow" class="table table-hover table-bordered" data-page-size="10">
+                                    <thead>
+                                        <tr>
+<!--                                             <th width="60">ID</th> -->
+                                            <th width="100">激活码编号</th>
+                                            <th width="100">使用者账号</th>
+                                            <th width="100">使用者姓名</th>
+                                            <th width="50">状态</th>
+                                            <th width="80">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <foreach name="posts" item="vo">
+            	                        <tr>
+<!--                                             <td>{$vo.id|default='无'}</td> -->
+                                            <td>{$vo.code|default='无'}</td>
+                                            <td>{$vo.uid|default='无'}</td>
+                                            <td>{$vo.uname|default='无'}</td>
+                                            <td>
+                                                <if condition="$vo.status eq 0"><font color="red">未使用</font>
+                                                <elseif condition="$vo.status eq 1"/>已激活
+                                                <else/>锁定</if>
+                                            </td>
+                                            <td>
+                                                <if condition="($vo.status eq 0)">
+                                                    <a href='javascript:cp("{$vo.code}")'>复制</a>
+                                                <else/>--</if>
+                                            </td>
+            	                        </tr>
+                                        </foreach>
+                                        <if condition="$posts eq null">
+            							<tr><td colspan="20"><div align="center">您当前没有激活码</div></td></tr>
+                                        </if>
+                                    </tbody>
+                                </table>
+                                <div class="pagination">{$Page}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <tc_include file="Public:footer" />
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<tc_include file="Public:scripts" />
+<tc_include file="Public:ajax_scripts" />
+<script type="text/javascript">
+function cp (txt) {
+  document.addEventListener('copy', save); // 监听浏览器copy事件
+  document.execCommand('copy'); // 执行copy事件，这时监听函数会执行save函数。
+  document.removeEventListener('copy', save); // 移除copy事件
+  alert("复制成功！");
+  // 保存方法
+  function save(e) {
+    e.clipboardData.setData('text/plain', txt); // 剪贴板内容设置
+    e.preventDefault();
+  }
+}
+</script>
+</body>
+</html>

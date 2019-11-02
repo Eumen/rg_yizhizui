@@ -1,0 +1,64 @@
+<admintpl file="header" />
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">转激活码给会员</a></li>
+    </ul>
+    <form method="post" class="form-horizontal J_ajaxForm" action="{:U('Code/transfer')}">
+	<div class="col-auto">
+    <div class="table_full">
+      <table class="table table-bordered">
+            <tr>
+              <th width="80">会员账号 </th>
+              <td>
+              	<input type="text" style="width:160px;" name="login_name" id="login_name"  required class="input input_hd J_title_color" placeholder="请输入会员账号" />
+              	<span class="must_red">*</span>
+                <a href="javascript:checkConfirm1()">检查用户是否存在</a>
+              </td>
+            </tr>
+            <tr>
+              <th width="80">操作</th>
+              <td>
+				<select name="types" style="width:auto;">
+					<option value="CHARGE">转激活码</option>
+<!-- 					<option value="RECHARGE">扣减</option> -->
+				</select>
+              </td>
+            </tr>
+            <tr>
+              <th width="80">数量</th>
+              <td><input type='text' name='amount' id='amount' required class='input' placeholder='请输入数量'></td>
+            </tr>
+            <tr>
+              <th width="80">备注</th>
+              <td><textarea name='reason' id='reason' required style='width:98%;height:50px;' placeholder='请填写备注说明'></textarea></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+	</div>
+    <div class="form-actions">
+        <button class="btn btn-primary btn_submit J_ajax_submit_btn"type="submit">提交</button>
+        <a class="btn" href="{:U('Code/recharge_list')}">返回</a>
+	</div>
+	</form>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+<script type="text/javascript">
+function checkConfirm1(){
+	var login_name  = $("#login_name").val();
+	if( login_name != ''){
+		$.post("{:U('Code/rg_isexit')}", {username:login_name}, function(data){
+			if (data.state === 'fail') {
+				Wind.use('noty', function () { noty({text: data.info, type:'error', layout:'center'}); });
+			}else{
+				Wind.use('noty', function () { noty({text: data.info, type:'success', layout:'center', timeout:false}); });
+			}
+		});
+	}else{
+		Wind.use('noty', function () { noty({text: "请输入用户名", type:'error', layout:'center'}); });
+	}
+}
+</script>
+</body>
+</html>
