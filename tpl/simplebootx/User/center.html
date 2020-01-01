@@ -30,20 +30,21 @@
 <div id="wrapper">
     <tc_include file="Public:nav" />
     <tc_include file="Public:usernav"/>
+    <br>
     <!-- ============================================================== -->
     <!-- Page Content -->
     <!-- ============================================================== -->
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row bg-title">
-                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">
-                    		当前等级 : <font style="color: red;">{$rg_user.rand|fs_user_rand}</font>&nbsp;&nbsp;
-                    		投资金额 :<font style="color: red;">{$datas.money|default="0"}</font> &nbsp;&nbsp;
+            	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h5 class="page-title">
+                    		当前等级 : <font style="color: red;">{$rg_user.rand|fs_user_rand}</font><br>
+                    		投资金额 :<font style="color: red;">{$datas.money|default="0"}</font><br>
                     		奖金余额:<font style="color: red;">{$rg_user.amount|default="0"}</font>
-                    </h4>
+                    </h5>
                 </div>
-                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                     <ol class="breadcrumb">
                         <li><a href="index.php">首页</a></li>
                         <li class="active">Home</li>
@@ -60,8 +61,8 @@
                     <div class="row">
 						<div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title">账户编号</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">账户编号</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.user_login}</span></li>
                                 </ul>
@@ -69,8 +70,8 @@
                         </div>
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title">账户昵称</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">账户昵称</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.user_nicename}</span></li>
                                 </ul>
@@ -79,8 +80,8 @@
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <a href="{:U('User/Business/lists_user_rid')}">
                             <div class="white-box">
-                                <h3 class="box-title">推荐会员</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">推荐会员</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid|default="0"}</span></li>
                                 </ul>
@@ -90,8 +91,8 @@
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <a href="{:U('User/Business/net_tree')}">
                             <div class="white-box">
-                                <h3 class="box-title">团队人数</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">团队人数</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_number|default="0"}</span></li>
                                 </ul>
@@ -100,8 +101,8 @@
                         </div>
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title">团队总单数</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">团队总单数</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_danshu|default="0"}</span></li>
                                 </ul>
@@ -109,8 +110,8 @@
                         </div>
                         <div class="col-lg-6 col-sm-6 col-xs-6">
                             <div class="white-box">
-                                <h3 class="box-title">团队投资金额</h3>
-                                <ul class="list-inline two-part">
+                                <h5 class="box-title">团队投资金额</h5>
+                                <ul class="list-inline one-part">
                                     <li style="width: 38.8%;"><i class="icon-wallet text-success"></i></li>
                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rid_total_amount|default="0"}</span></li>
                                 </ul>
@@ -119,8 +120,8 @@
 <!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
 <!--                             <a href="{:U('User/Finance/award_list')}"> -->
 <!--                             <div class="white-box"> -->
-<!--                                 <h3 class="box-title">种子积分总额</h3> -->
-<!--                                 <ul class="list-inline two-part"> -->
+<!--                                 <h5 class="box-title">种子积分总额</h5> -->
+<!--                                 <ul class="list-inline one-part"> -->
 <!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-inverse"></i></li> -->
 <!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.e_amount|default="0"}</span></li> -->
 <!--                                 </ul> -->
@@ -131,8 +132,8 @@
 <!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
 <!--                             <a href="{:U('User/Finance/award_list')}"> -->
 <!--                             <div class="white-box"> -->
-<!--                                 <h3 class="box-title">电子积分总额</h3> -->
-<!--                                 <ul class="list-inline two-part"> -->
+<!--                                 <h5 class="box-title">电子积分总额</h5> -->
+<!--                                 <ul class="list-inline one-part"> -->
 <!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-danger"></i></li> -->
 <!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.shop_amount|default="0"}</span></li> -->
 <!--                                 </ul> -->
@@ -142,8 +143,8 @@
 <!--                         <div class="col-lg-6 col-sm-6 col-xs-12"> -->
 <!--                             <a href="{:U('User/Finance/award_list')}"> -->
 <!--                             <div class="white-box"> -->
-<!--                                 <h3 class="box-title">注册积分总额</h3> -->
-<!--                                 <ul class="list-inline two-part"> -->
+<!--                                 <h5 class="box-title">注册积分总额</h5> -->
+<!--                                 <ul class="list-inline one-part"> -->
 <!--                                     <li style="width: 38.8%;"><i class="icon-wallet text-red"></i></li> -->
 <!--                                     <li class="text-right" style="width: 58.8%;"><span class="counter">{$rg_user.r_amount|default="0"}</span></li> -->
 <!--                                 </ul> -->
@@ -180,39 +181,39 @@
             <!-- ============================================================== -->
             <!-- Demo table -->
             <!-- ============================================================== -->
-            <div class="row">
-                <div class="col-md-12 m-t-10">
-                    <div class="panel">
-                        <div class="panel-heading" style="float:left;">我推荐的会员</div>
-                        <div class="panel-heading" style="float:right;font-size:12px;color:#847b7b;">
-                        	<a href="{:U('User/Business/lists_user_rid')}">更多...</a>
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div class="table-responsive">
-                            <table class="table table-hover manage-u-table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">账号</th>
-                                        <th>姓名</th>
-                                        <th>联系电话</th>
-                                        <th>等级</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-	                        			<foreach name="my_members" item="vo">
-	                                    <tr>
-	                                        <td class="text-center">{$vo.user_login}</td>
-	                                        <td><span class="font-medium">{$vo.id|fs_user_info="true_name"}</span></td>
-	                                        <td>{$vo.id|fs_user_info="tel"}</td>
-	                                        <td>{$vo.rand|fs_user_rand}</td>
-	                                    </tr>
-	                        			</foreach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--             <div class="row"> -->
+<!--                 <div class="col-md-12 m-t-10"> -->
+<!--                     <div class="panel"> -->
+<!--                         <div class="panel-heading" style="float:left;">我推荐的会员</div> -->
+<!--                         <div class="panel-heading" style="float:right;font-size:12px;color:#847b7b;"> -->
+<!--                         	<a href="{:U('User/Business/lists_user_rid')}">更多...</a> -->
+<!--                         </div> -->
+<!--                         <div style="clear: both;"></div> -->
+<!--                         <div class="table-responsive"> -->
+<!--                             <table class="table table-hover manage-u-table"> -->
+<!--                                 <thead> -->
+<!--                                     <tr> -->
+<!--                                         <th class="text-center">账号</th> -->
+<!--                                         <th>姓名</th> -->
+<!--                                         <th>联系电话</th> -->
+<!--                                         <th>等级</th> -->
+<!--                                     </tr> -->
+<!--                                 </thead> -->
+<!--                                 <tbody> -->
+<!-- 	                        			<foreach name="my_members" item="vo"> -->
+<!-- 	                                    <tr> -->
+<!-- 	                                        <td class="text-center">{$vo.user_login}</td> -->
+<!-- 	                                        <td><span class="font-medium">{$vo.id|fs_user_info="true_name"}</span></td> -->
+<!-- 	                                        <td>{$vo.id|fs_user_info="tel"}</td> -->
+<!-- 	                                        <td>{$vo.rand|fs_user_rand}</td> -->
+<!-- 	                                    </tr> -->
+<!-- 	                        			</foreach> -->
+<!--                                 </tbody> -->
+<!--                             </table> -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                 </div> -->
+<!--             </div> -->
         </div>
         <!-- /.container-fluid -->
         <tc_include file="Public:footer" />

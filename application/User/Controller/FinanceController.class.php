@@ -56,6 +56,9 @@ class FinanceController extends MemberbaseController {
             $condition['types'] = array('eq','LEADER');
             $month["sum_leader"] = $this->incomes_model->where($condition)->sum("amount");
             
+            $condition['types'] = array('eq','PJJ');
+            $month["sum_pjj"] = $this->incomes_model->where($condition)->sum("amount");
+            
             $condition['types'] = array('eq','QGFH');
             $month["sum_qgfh"] = $this->incomes_model->where($condition)->sum("amount");
             
@@ -66,7 +69,7 @@ class FinanceController extends MemberbaseController {
             $month["sum_manager"] = $this->incomes_model->where($condition)->sum("amount");
             
             $month["addtime"] = $_v['addtime'];
-            $month["total"] = $month["sum_rid"] + $month["sum_point"] + $month["sum_center"] + $month["sum_leader"] + $month["sum_qgfh"] + $month["sum_hongbao"] + $month["sum_manager"];
+            $month["total"] = $month["sum_rid"] + $month["sum_point"] + $month["sum_center"] + $month["sum_leader"] + $month["sum_pjj"] + $month["sum_qgfh"] + $month["sum_hongbao"] + $month["sum_manager"];
             $list[] = $month;
         }
         $this->assign("list", $list);
@@ -224,7 +227,7 @@ class FinanceController extends MemberbaseController {
         $fee = $this->site_options['GETMONEYFEE'];
 		
 // 		if ($types != 'amount') $this->error('请输入选择正确的提现类型'); 
-//         if ($min_money > $amount) $this->error('最小提现额度为' . $min_money); 
+        if ($min_money > $amount) $this->error('最小提现额度为' . $min_money.'$'); 
 //         if (1000 < $amount) $this->error('最大提现额度为1000'); 
 		if ($amount > $user['amount'] ) $this->error('奖金积分余额不足'); 
 // 		if ($amount % $multiple != 0) $this->error('提现数额只能为'.$multiple.'元的整数倍'); 

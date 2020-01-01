@@ -63,9 +63,9 @@
 						状态： 
 						<select class="select_2" name="user_status" style="width: auto;">
 							<option value="-1">选择...</option>
-							<option value='0'<php>if($formget[user_status]==0){</php> selected<php>}</php>>未激活</option>
-							<option value='1'<php>if($formget[user_status]==1){</php> selected<php>}</php>>已激活</option>
-							<option value='2'<php>if($formget[user_status]==2){</php> selected<php>}</php>>锁定</option>
+							<option value='0'>未激活</option>
+							<option value='1'>已激活</option>
+							<option value='2'>锁定</option>
 						</select> &nbsp;&nbsp;
 						时间：
 						<input type="text" name="start_time" class="J_date" value="{$formget.start_time|default=''}" style="width: 80px;" autocomplete="off">-
